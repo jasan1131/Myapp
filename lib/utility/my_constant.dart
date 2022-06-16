@@ -4,7 +4,7 @@ class MyConstant {
   // Genernal
   static String appName = 'Shopping MAll';
   static String domain =
-      'https://fec4-2001-fb1-1d-5cfb-90b9-49d5-9b53-e39f.ap.ngrok.io';
+      'https://eeef-2001-fb1-1d-5cfb-f978-b7e0-8855-faf8.ap.ngrok.io';
 
   // Route
   static String routeAdminSever = '/admin';
@@ -17,6 +17,7 @@ class MyConstant {
   static String rounteTypeNumPar = '/typenumpar';
   static String rounteTypeNumCom = '/typenumcom';
   static String rounteShowCart = '/showcart';
+  static String rounteAddWallet = '/addwallet';
 
   // Image
   static String image1 = 'images/image1.png';

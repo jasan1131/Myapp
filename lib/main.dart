@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/states/add_product.dart';
+import 'package:flutter_myappication_1/states/add_wallet.dart';
 import 'package:flutter_myappication_1/states/admin.dart';
 import 'package:flutter_myappication_1/states/authen.dart';
 import 'package:flutter_myappication_1/states/buyer_sevice.dart';
@@ -23,6 +24,7 @@ final Map<String, WidgetBuilder> map = {
   '/typenumpar' : (BuildContext context) => TypeNumPar(),
   '/typenumcom' :(BuildContext context) => TypeNumCom(),
   '/showcart' :(BuildContext context) => ShowCart(),
+  '/addwallet' :(BuildContext context) => AddWallet(),
 };
 
 String? initlalRoute;
