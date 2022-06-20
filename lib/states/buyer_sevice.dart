@@ -5,6 +5,7 @@ import 'package:flutter_myappication_1/bodys/buyer_public_relation.dart';
 import 'package:flutter_myappication_1/bodys/buyer_showallproduct.dart';
 import 'package:flutter_myappication_1/bodys/buyer_special_product.dart';
 import 'package:flutter_myappication_1/bodys/buyer_wholesale_product.dart';
+import 'package:flutter_myappication_1/bodys/my_money.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_signout.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
@@ -25,6 +26,7 @@ class _BuyerServiceState extends State<BuyerService> {
     BuyerSpecialProduct(),
     BuyerWholeSaleProduct(),
     BuyerPublicRelation(),
+    MYMoney(),
   ];
   int indexWidget = 0;
 
@@ -53,7 +55,8 @@ class _BuyerServiceState extends State<BuyerService> {
                 buyerProductType(),
                 buyerSpecialProduct(),
                 buyerWholeSaleProduct(),
-                buyerPublicRelation()
+                buyerPublicRelation(),
+                buyerMyMoney(),
               ],
             ),
             ShowSignOut(),
@@ -178,6 +181,26 @@ class _BuyerServiceState extends State<BuyerService> {
       onTap: () {
         setState(() {
           indexWidget = 5;
+          Navigator.pop(context);
+        });
+      },
+    );
+  }
+
+  ListTile buyerMyMoney() {
+    return ListTile(
+      leading: Icon(
+        Icons.account_balance_wallet_outlined,
+        size: 36,
+        color: MyConstant.dark,
+      ),
+      title: ShowTitle(
+        title: 'กระเป๋าตัง',
+        textStyle: MyConstant().h2Style(),
+      ),
+      onTap: () {
+        setState(() {
+          indexWidget = 6;
           Navigator.pop(context);
         });
       },
