@@ -20,6 +20,8 @@ class ShowManageAdmin extends StatefulWidget {
 class _ShowManageAdminState extends State<ShowManageAdmin> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: Text('Show Manage'),
+    );
   }
 }

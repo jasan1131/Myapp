@@ -18,12 +18,16 @@ class _NavigatorCFWState extends State<NavigatorCFW> {
       child: InkWell(
         onTap: () => Navigator.pushNamedAndRemoveUntil(
             context, MyConstant.rounteConfirmAddWallet, (route) => false),
-        child: Card(color: MyConstant.dark,
+        child: Card(
+          color: MyConstant.dark,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(60),
           ),
           child: Center(
-            child: ShowTitle(title: 'AddBill', textStyle: MyConstant().h3WhiteStyle(),),
+            child: ShowTitle(
+              title: 'AddBill',
+              textStyle: MyConstant().h3WhiteStyle(),
+            ),
           ),
         ),
       ),

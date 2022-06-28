@@ -20,7 +20,7 @@ class CreateAccount extends StatefulWidget {
 }
 
 class _CreateAccountState extends State<CreateAccount> {
-  String? typeUser;
+  String? type;
   String avatar = '';
   File? file;
   double? lat, lng;
@@ -382,7 +382,7 @@ class _CreateAccountState extends State<CreateAccount> {
     return IconButton(
       onPressed: () {
         if (formKey.currentState!.validate()) {
-          if (typeUser == null) {
+          if (type == null) {
             print('Non Choose Type User');
             MyDialog().normalDialog(context, 'ยังไม่ได้เลือก ชนิดของผู้ใช้ ',
                 'กรุณา เลือก ที่ ชนิดของผู้ใช้ ที่ ต้องการ ');
@@ -467,7 +467,7 @@ class _CreateAccountState extends State<CreateAccount> {
       String? phone}) async {
     print('## ProcessInsertMySQL Work and avatar ==> $avatar');
     String apiInsertUser =
-        '${MyConstant.domain}/shopping/insertUser.php?isAdd=true&avatar=$avatar&type=$typeUser&name=$name&seconname=$seconname&user=$user&password=$password&address=$address&phone=$phone&lat=$lat&lng=$lng';
+        '${MyConstant.domain}/shopping/insertUser.php?isAdd=true&avatar=$avatar&type=$type&name=$name&seconname=$seconname&user=$user&password=$password&address=$address&phone=$phone&lat=$lat&lng=$lng';
     await Dio().get(apiInsertUser).then((value) {
       if (value.toString() == 'true') {
         Navigator.pop(context);
@@ -567,11 +567,11 @@ class _CreateAccountState extends State<CreateAccount> {
           width: size * 0.6,
           child: RadioListTile(
             value: 'buyer',
-            groupValue: typeUser,
+            groupValue: type,
             onChanged: (value) {
               setState(
                 () {
-                  typeUser = value as String?;
+                  type = value as String?;
                 },
               );
             },
@@ -593,11 +593,11 @@ class _CreateAccountState extends State<CreateAccount> {
           width: size * 0.6,
           child: RadioListTile(
             value: 'rider',
-            groupValue: typeUser,
+            groupValue: type,
             onChanged: (value) {
               setState(
                 () {
-                  typeUser = value as String?;
+                  type = value as String?;
                 },
               );
             },

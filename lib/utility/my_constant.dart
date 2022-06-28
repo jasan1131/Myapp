@@ -4,7 +4,7 @@ class MyConstant {
   // Genernal
   static String appName = 'Shopping MAll';
   static String domain =
-      'https://d0e5-2001-fb1-1f-a94a-c44b-fc29-8ed7-5e0f.ap.ngrok.io';
+      'https://9fd5-2001-fb1-1c-f89c-9894-de-e8bd-960.ap.ngrok.io';
 
   static String urlPromptpay ='https://promptpay.io/0970272217.png';    
 
@@ -22,6 +22,8 @@ class MyConstant {
   static String rounteAddWallet = '/addwallet';
   static String rounteConfirmAddWallet = '/confirmaddwallet';
   static String rounteMyMoney = '/mymoney';
+  static String rounteConfirmOrder = '/confirmorder';
+  static String rountePDPA = '/pdpa';
 
   // Image
   static String image1 = 'images/image1.png';
