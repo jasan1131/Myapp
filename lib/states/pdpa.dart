@@ -18,6 +18,10 @@ class _PDPAState extends State<PDPA> {
         child: Column(
           children: [
             Card(
+              shape: RoundedRectangleBorder(
+                side: BorderSide(color: MyConstant.dark),
+                borderRadius: BorderRadius.circular(15),
+              ),
               child: Column(
                 children: [
                   ShowTitle(title: 'ประกาศกระทรวงดิจิทัลเพื่อเศรษฐกิจและสังคม'),
@@ -104,9 +108,18 @@ class _PDPAState extends State<PDPA> {
                         title:
                             'ข้อ 7 ให้รัฐมนตรีว่าการกระทรวงดิจิทัลเพื่อเศรษฐกิจและสังคมรักษาการตามประกาศนี้ และให้มีอำนาจตีความและวินิจฉัยปัญหาอันเกิดจากการปฏิบัติตามประกาศนี้'),
                   ),
-                  ShowTitle(title: 'ประกาศ ณ วันที่ 24 มิถุนายน พ.ศ. 2563'),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8, bottom: 4),
+                    child: ShowTitle(
+                        title: 'ประกาศ ณ วันที่ 24 มิถุนายน พ.ศ. 2563'),
+                  ),
                   ShowTitle(title: 'พุทธิพงษ์ ปุณณกันต์   '),
-                  ShowTitle(title: 'รัฐมนตรีว่าการกระทรวงดิจิทัลเพื่อเศรษฐกิจและสังคม'),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4, bottom: 8),
+                    child: ShowTitle(
+                        title:
+                            'รัฐมนตรีว่าการกระทรวงดิจิทัลเพื่อเศรษฐกิจและสังคม'),
+                  ),
                 ],
               ),
             ),
@@ -114,7 +127,7 @@ class _PDPAState extends State<PDPA> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(top: 8, bottom: 8, left: 20),
                   child: ElevatedButton(
                     onPressed: () => Navigator.pushNamed(
                         context, MyConstant.routeCreasteAccount),
@@ -125,9 +138,9 @@ class _PDPAState extends State<PDPA> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(right: 20),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () => Navigator.pop(context),
                     child: ShowTitle(
                       title: 'ไม่ยินยอม',
                       textStyle: MyConstant().h3WhiteStyle(),

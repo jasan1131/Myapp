@@ -9,14 +9,14 @@ import 'package:flutter_myappication_1/widgets/show_image.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 
-class TypeNumCom extends StatefulWidget {
-  const TypeNumCom({Key? key}) : super(key: key);
+class TypeVegatables extends StatefulWidget {
+  const TypeVegatables({Key? key}) : super(key: key);
 
   @override
-  State<TypeNumCom> createState() => _TypeNumComState();
+  State<TypeVegatables> createState() => _TypeVegatablesState();
 }
 
-class _TypeNumComState extends State<TypeNumCom> {
+class _TypeVegatablesState extends State<TypeVegatables> {
   bool load = true;
   bool? haveData;
   List<ProductModel> productmodels = [];
@@ -73,7 +73,7 @@ class _TypeNumComState extends State<TypeNumCom> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('น้ำส้ม'),
+        title: Text('ผักผลไม้  '),
       ),
       body: OrientationBuilder(
         builder: (context, orientation) {

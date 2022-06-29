@@ -28,11 +28,11 @@ class ShowSignOut extends StatelessWidget {
             color: Colors.white,
           ),
           title: ShowTitle(
-            title: 'Sign Out',
+            title: 'ออกจากระบบ',
             textStyle: MyConstant().h2WhiteStyle(),
           ),
           subtitle: ShowTitle(
-            title: 'Sign Out And Go to Auten',
+            title: 'ออกจากระบบไปยังหน้าล็อกอิน',
             textStyle: MyConstant().h3WhiteStyle(),
           ),
         ),

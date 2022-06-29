@@ -4,20 +4,19 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/models/product_model.dart';
-import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_image.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 
-class TypeNumPar extends StatefulWidget {
-  const TypeNumPar({Key? key}) : super(key: key);
+class TypeDryGoods extends StatefulWidget {
+  const TypeDryGoods({ Key? key }) : super(key: key);
 
   @override
-  State<TypeNumPar> createState() => _TypeNumParState();
+  State<TypeDryGoods> createState() => _TypeDryGoodsState();
 }
 
-class _TypeNumParState extends State<TypeNumPar> {
+class _TypeDryGoodsState extends State<TypeDryGoods> {
   bool load = true;
   bool? haveData;
   List<ProductModel> productmodels = [];
@@ -74,7 +73,7 @@ class _TypeNumParState extends State<TypeNumPar> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('น้ำปลา'),
+        title: Text('เนื้อสัตว์  '),
       ),
       body: OrientationBuilder(
         builder: (context, orientation) {

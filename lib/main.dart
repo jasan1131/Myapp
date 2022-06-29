@@ -12,8 +12,10 @@ import 'package:flutter_myappication_1/states/edit_profile_admin.dart';
 import 'package:flutter_myappication_1/states/pdpa.dart';
 import 'package:flutter_myappication_1/states/rider_service.dart';
 import 'package:flutter_myappication_1/states/show_cart.dart';
-import 'package:flutter_myappication_1/type/type_numcom.dart';
-import 'package:flutter_myappication_1/type/type_numpar.dart';
+import 'package:flutter_myappication_1/type/type_condiment.dart';
+import 'package:flutter_myappication_1/type/type_dry_good.dart';
+import 'package:flutter_myappication_1/type/type_vegetable.dart';
+import 'package:flutter_myappication_1/type/type_meet.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,8 +27,14 @@ final Map<String, WidgetBuilder> map = {
   '/riderService': (BuildContext context) => RiderService(),
   '/addProduct': (BuildContext context) => AddProduct(),
   '/editProfileAdmin': (BuildContext context) => EditProfileAdmin(),
-  '/typenumpar' : (BuildContext context) => TypeNumPar(),
-  '/typenumcom' :(BuildContext context) => TypeNumCom(),
+  '/typemeet' : (BuildContext context) => TypeMeet(),
+  '/typevegetables' :(BuildContext context) => TypeVegatables(),
+  '/typedrygoods' : (BuildContext context) => TypeDryGoods(),
+  '/typecondiments' : (BuildContext context) => TypeCondiments(),
+
+
+
+
   '/confirmorder' :(BuildContext context) => ConfirmOrder(),
   '/showcart' :(BuildContext context) => ShowCart(),
   '/addwallet' :(BuildContext context) => AddWallet(),

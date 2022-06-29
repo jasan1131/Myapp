@@ -343,7 +343,6 @@ class _CreateAccountState extends State<CreateAccount> {
           buildCreateNewAccount(),
         ],
         title: Text('สมัครสมมาชิก'),
-        backgroundColor: MyConstant.primary,
       ),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(
@@ -359,8 +358,8 @@ class _CreateAccountState extends State<CreateAccount> {
                 buildSubTitle(),
                 buildAvatarIcon(size),
                 buildTitle('ชนิดของผู้ใช้ :'),
-                buildRadioBuyer(size),
-                buildRadioRider(size),
+                // buildRadioBuyer(size),
+                // buildRadioRider(size),
                 buildTitle('ข้อมูลพื้นของผู้ใช้ :'),
                 buildUserName(size),
                 buildSeconName(size),
@@ -370,6 +369,16 @@ class _CreateAccountState extends State<CreateAccount> {
                 buildPhone(size),
                 buildTitle('แสดงพิกัดที่คุณอยู่'),
                 buildMap(),
+                Container(
+                  margin: EdgeInsets.only(
+                    top: 8,
+                    bottom: 8,
+                  ),width: MediaQuery.of(context).size.width * 0.75,
+                  child: ElevatedButton(
+                    onPressed: () => buildCreateNewAccount(),
+                    child: Text('สมัครสมาชิก'),
+                  ),
+                ),
               ],
             ),
           ),
@@ -488,7 +497,7 @@ class _CreateAccountState extends State<CreateAccount> {
       ].toSet();
 
   Widget buildMap() => Container(
-        width: double.infinity,
+        width: MediaQuery.of(context).size.width * 0.75,
         height: 300,
         child: lat == null
             ? ShowProgress()
@@ -559,57 +568,57 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
-  Row buildRadioBuyer(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          width: size * 0.6,
-          child: RadioListTile(
-            value: 'buyer',
-            groupValue: type,
-            onChanged: (value) {
-              setState(
-                () {
-                  type = value as String?;
-                },
-              );
-            },
-            title: ShowTitle(
-              title: 'ผู้ซื้อ',
-              textStyle: MyConstant().h3Style(),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  // Row buildRadioBuyer(double size) {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.center,
+  //     children: [
+  //       Container(
+  //         width: size * 0.6,
+  //         child: RadioListTile(
+  //           value: 'buyer',
+  //           groupValue: type,
+  //           onChanged: (value) {
+  //             setState(
+  //               () {
+  //                 type = value as String?;
+  //               },
+  //             );
+  //           },
+  //           title: ShowTitle(
+  //             title: 'ผู้ซื้อ',
+  //             textStyle: MyConstant().h3Style(),
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
-  Row buildRadioRider(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          width: size * 0.6,
-          child: RadioListTile(
-            value: 'rider',
-            groupValue: type,
-            onChanged: (value) {
-              setState(
-                () {
-                  type = value as String?;
-                },
-              );
-            },
-            title: ShowTitle(
-              title: 'ผู้ส่ง',
-              textStyle: MyConstant().h3Style(),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  // Row buildRadioRider(double size) {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.center,
+  //     children: [
+  //       Container(
+  //         width: size * 0.6,
+  //         child: RadioListTile(
+  //           value: 'rider',
+  //           groupValue: type,
+  //           onChanged: (value) {
+  //             setState(
+  //               () {
+  //                 type = value as String?;
+  //               },
+  //             );
+  //           },
+  //           title: ShowTitle(
+  //             title: 'ผู้ส่ง',
+  //             textStyle: MyConstant().h3Style(),
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Container buildTitle(String title) {
     return Container(

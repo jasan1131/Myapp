@@ -92,8 +92,8 @@ class _EditProdutState extends State<EditProdut> {
                     buildTitle('General :'),
                     buildName(constraints),
                     buildTitle('Type Product :'),
-                    buildProductGlass(size),
-                    buildProductPlastic(size),
+                    buildProductVegetables(size),
+                    buildProductMeet(size),
                     buildNumber(constraints),
                     buildPrice(constraints),
                     buildDetail(constraints),
@@ -198,14 +198,14 @@ class _EditProdutState extends State<EditProdut> {
     );
   }
 
-Row buildProductGlass(double size) {
+Row buildProductVegetables(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
           width: size * 0.6,
           child: RadioListTile(
-            value: 'glass',
+            value: 'vegetables',
             groupValue: typeproduct,
             onChanged: (value) {
               setState(
@@ -215,7 +215,7 @@ Row buildProductGlass(double size) {
               );
             },
             title: ShowTitle(
-              title: 'แบบแก้ว',
+              title: 'ผักผลไม้',
               textStyle: MyConstant().h3Style(),
             ),
           ),
@@ -224,14 +224,14 @@ Row buildProductGlass(double size) {
     );
   }
 
-  Row buildProductPlastic(double size) {
+  Row buildProductMeet(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
           width: size * 0.6,
           child: RadioListTile(
-            value: 'plastic',
+            value: 'meet',
             groupValue: typeproduct,
             onChanged: (value) {
               setState(
@@ -241,7 +241,7 @@ Row buildProductGlass(double size) {
               );
             },
             title: ShowTitle(
-              title: 'แบบพลาสติก',
+              title: 'เนื้อสัตว์',
               textStyle: MyConstant().h3Style(),
             ),
           ),

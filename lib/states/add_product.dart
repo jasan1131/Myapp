@@ -55,7 +55,7 @@ class _AddProductState extends State<AddProduct> {
             icon: Icon(Icons.cloud_upload),
           ),
         ],
-        title: Text('Add Product'),
+        title: Text('เพิ่มสินค้า'),
       ),
       body: LayoutBuilder(
         builder: (context, constraints) => GestureDetector(
@@ -71,8 +71,10 @@ class _AddProductState extends State<AddProduct> {
                   children: [
                     buildProductName(constraints),
                     buildTitle('ชนิดของสินค้า'),
-                    buildProductGlass(size),
-                    buildProductPlastic(size),
+                    buildProductVegetables(size),
+                    buildProductMeet(size),
+                    buildProductDryGoods(size),
+                    buildProductCondiments(size),
                     buildProductNumber(constraints),
                     buildProductPrice(constraints),
                     buildProductDetail(constraints),
@@ -352,7 +354,7 @@ class _AddProductState extends State<AddProduct> {
         controller: PriceProductController,
         keyboardType: TextInputType.phone,
         decoration: InputDecoration(
-          hintText: 'price Product :',
+          hintText: 'ราคาสินค้า :',
           hintStyle: MyConstant().h3Style(),
           prefixIcon: Icon(
             Icons.money,
@@ -385,7 +387,7 @@ class _AddProductState extends State<AddProduct> {
         controller: DetailProductController,
         maxLines: 4,
         decoration: InputDecoration(
-          hintText: 'Product Detail :',
+          hintText: 'รายระเอียดสินค้า :',
           hintStyle: MyConstant().h3Style(),
           prefixIcon: Padding(
             padding: const EdgeInsets.fromLTRB(0, 0, 0, 60),
@@ -413,14 +415,14 @@ class _AddProductState extends State<AddProduct> {
     );
   }
 
-  Row buildProductGlass(double size) {
+  Row buildProductVegetables(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
           width: size * 0.6,
           child: RadioListTile(
-            value: 'glass',
+            value: 'vegetables',
             groupValue: typeproduct,
             onChanged: (value) {
               setState(
@@ -430,7 +432,7 @@ class _AddProductState extends State<AddProduct> {
               );
             },
             title: ShowTitle(
-              title: 'แบบแก้ว',
+              title: 'ผักผลไม้',
               textStyle: MyConstant().h3Style(),
             ),
           ),
@@ -439,14 +441,14 @@ class _AddProductState extends State<AddProduct> {
     );
   }
 
-  Row buildProductPlastic(double size) {
+  Row buildProductMeet(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
           width: size * 0.6,
           child: RadioListTile(
-            value: 'plastic',
+            value: 'meet',
             groupValue: typeproduct,
             onChanged: (value) {
               setState(
@@ -456,7 +458,59 @@ class _AddProductState extends State<AddProduct> {
               );
             },
             title: ShowTitle(
-              title: 'แบบพลาสติก',
+              title: 'เนื้อสัตว์',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductDryGoods(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'dryGoods',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'ของแห้ง',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductCondiments(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'condiments',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'เครื่องปรุงรส',
               textStyle: MyConstant().h3Style(),
             ),
           ),

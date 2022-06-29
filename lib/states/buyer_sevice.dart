@@ -56,7 +56,7 @@ class _BuyerServiceState extends State<BuyerService> {
                 buyerSpecialProduct(),
                 buyerWholeSaleProduct(),
                 buyerPublicRelation(),
-                buyerMyMoney(),
+                buyerDeliveryStatus(),
               ],
             ),
             ShowSignOut(),
@@ -70,7 +70,7 @@ class _BuyerServiceState extends State<BuyerService> {
   ListTile buyerShowAllProduct() {
     return ListTile(
       leading: Icon(
-        Icons.shop_outlined,
+        Icons.shopping_bag_outlined,
         size: 36,
         color: MyConstant.dark,
       ),
@@ -130,7 +130,7 @@ class _BuyerServiceState extends State<BuyerService> {
   ListTile buyerSpecialProduct() {
     return ListTile(
       leading: Icon(
-        Icons.discount_outlined,
+        Icons.sell_outlined,
         size: 36,
         color: MyConstant.dark,
       ),
@@ -187,15 +187,15 @@ class _BuyerServiceState extends State<BuyerService> {
     );
   }
 
-  ListTile buyerMyMoney() {
+  ListTile buyerDeliveryStatus() {
     return ListTile(
       leading: Icon(
-        Icons.account_balance_wallet_outlined,
+        Icons.local_shipping_outlined,
         size: 36,
         color: MyConstant.dark,
       ),
       title: ShowTitle(
-        title: 'กระเป๋าตัง',
+        title: 'สถานะการจัดส่ง',
         textStyle: MyConstant().h2Style(),
       ),
       onTap: () {
