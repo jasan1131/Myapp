@@ -2,8 +2,9 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_myappication_1/bodys/show_manage_admin.dart';
+import 'package:flutter_myappication_1/bodys/show_product_specail_admin.dart';
 import 'package:flutter_myappication_1/bodys/show_order_admin.dart';
+import 'package:flutter_myappication_1/bodys/show_product_whol_sale_admin.dart';
 import 'package:flutter_myappication_1/bodys/show_productadmin.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
@@ -45,8 +46,10 @@ class _AdminServerState extends State<AdminServer> {
           print('### Name Logined ==> ${userModel!.name}');
 
           widgets.add(ShowOrderAdmin());
-          widgets.add(ShowManageAdmin());
           widgets.add(ShowProductAdmin());
+          widgets.add(ShowProductSpecailAdmin());
+          widgets.add(ShowProductWholeSaleAdmin());
+
         });
       }
     });
@@ -69,8 +72,9 @@ class _AdminServerState extends State<AdminServer> {
                     children: [
                       buildHead(),
                       menuShowOrder(),
-                      menuShopManage(),
                       menuProduct(),
+                      menuProductSpecail(),
+                      menuProductWholeSale(),
                     ],
                   ),
                 ],
@@ -119,7 +123,7 @@ class _AdminServerState extends State<AdminServer> {
         Icons.filter_1_outlined,
       ),
       title: ShowTitle(
-        title: 'Show Order',
+        title: 'รายการสินค้าที่ลูกค้าสั่ง',
         textStyle: MyConstant().h2Style(),
       ),
       subtitle: ShowTitle(
@@ -128,7 +132,7 @@ class _AdminServerState extends State<AdminServer> {
     );
   }
 
-  ListTile menuShopManage() {
+  ListTile menuProduct() {
     return ListTile(
       onTap: () {
         setState(() {
@@ -137,19 +141,19 @@ class _AdminServerState extends State<AdminServer> {
         });
       },
       leading: Icon(
-        Icons.filter_2_outlined,
+        Icons.filter_3_outlined,
       ),
       title: ShowTitle(
-        title: 'Show ShopManage',
+        title: 'รายการสินค้า',
         textStyle: MyConstant().h2Style(),
       ),
       subtitle: ShowTitle(
-          title: 'แสดงรายละเอียดของหน้าร้าน',
+          title: 'แสดงรายละเอียดของสินค้าที่ขาย',
           textStyle: MyConstant().h3Style()),
     );
   }
 
-  ListTile menuProduct() {
+  ListTile menuProductSpecail() {
     return ListTile(
       onTap: () {
         setState(() {
@@ -158,14 +162,35 @@ class _AdminServerState extends State<AdminServer> {
         });
       },
       leading: Icon(
-        Icons.filter_3_outlined,
+        Icons.filter_2_outlined,
       ),
       title: ShowTitle(
-        title: 'Show Product',
+        title: 'รายการสินค้าราคาพิเศษ',
         textStyle: MyConstant().h2Style(),
       ),
       subtitle: ShowTitle(
-          title: 'แสดงรายละเอียดของสินค้าที่ขาย',
+          title: 'แสดงรายละเอียดของสินค้าราคาพิเศษ',
+          textStyle: MyConstant().h3Style()),
+    );
+  }
+
+  ListTile menuProductWholeSale() {
+    return ListTile(
+      onTap: () {
+        setState(() {
+          indexWidget = 3;
+          Navigator.pop(context);
+        });
+      },
+      leading: Icon(
+        Icons.filter_2_outlined,
+      ),
+      title: ShowTitle(
+        title: 'รายการสินค้าราคาพิเศษ',
+        textStyle: MyConstant().h2Style(),
+      ),
+      subtitle: ShowTitle(
+          title: 'แสดงรายละเอียดของสินค้าราคาพิเศษ',
           textStyle: MyConstant().h3Style()),
     );
   }

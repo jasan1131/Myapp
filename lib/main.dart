@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/bodys/my_money.dart';
 import 'package:flutter_myappication_1/states/add_product.dart';
+import 'package:flutter_myappication_1/states/add_product_sp.dart';
+import 'package:flutter_myappication_1/states/add_product_ws.dart';
 import 'package:flutter_myappication_1/states/add_wallet.dart';
 import 'package:flutter_myappication_1/states/admin.dart';
 import 'package:flutter_myappication_1/states/authen.dart';
@@ -26,12 +28,14 @@ final Map<String, WidgetBuilder> map = {
   '/buyerService': (BuildContext context) => BuyerService(),
   '/riderService': (BuildContext context) => RiderService(),
   '/addProduct': (BuildContext context) => AddProduct(),
+  '/addProductSpecial': (BuildContext context) => AddProductSpecial(),
+  '/addProductWholeSale': (BuildContext context) => AddProductWholeSale(),
+
   '/editProfileAdmin': (BuildContext context) => EditProfileAdmin(),
   '/typemeet' : (BuildContext context) => TypeMeet(),
   '/typevegetables' :(BuildContext context) => TypeVegatables(),
   '/typedrygoods' : (BuildContext context) => TypeDryGoods(),
   '/typecondiments' : (BuildContext context) => TypeCondiments(),
-
 
 
 
