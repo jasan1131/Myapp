@@ -26,6 +26,7 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
   List<List<String>> listImages = [];
   int indexImage = 0;
   int amountInt = 1;
+  String? currentIdSeller;
 
   @override
   void initState() {
@@ -35,21 +36,16 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
   }
 
   Future<Null> readApiAllShop() async {
-    String urlAPI = '${MyConstant.domain}/shopping/getUserWhereAdmin.php';
-    await Dio().get(urlAPI).then(
-      (value) {
-        setState(() {
-          load = false;
-          haveData = false;
-        });
-        // print('### value ==>> $value');
-        var result = json.decode(value.data);
-        // print('### result ==>> $result');
-        for (var item in result) {
-          // print('### item ==>> $item');
-          ProductModel productModel = ProductModel.fromMap(item);
+    String urlAPI = '${MyConstant.domain}/shopping/getProductWhereIdSeller.php';
+    await Dio().get(urlAPI).then((value) {
+      if (value.toString() == 'null') {
+        haveData = false;
+        load = false;
+      } else {
+        for (var item in json.decode(value.data)) {
+          ProductModel model = ProductModel.fromMap(item);
 
-          String string = productModel.imagesproduct;
+          String string = model.imagesproduct;
           string = string.substring(1, string.length - 1);
           List<String> strings = string.split(',');
           int i = 0;
@@ -59,15 +55,14 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
           }
           listImages.add(strings);
 
-          // print('### name ==>> ${mOdel.name}');
           setState(() {
-            load = false;
             haveData = true;
-            productmodels.add(productModel);
+            load = false;
+            productmodels.add(model);
           });
         }
-      },
-    );
+      }
+    });
   }
 
   @override
@@ -115,6 +110,7 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
 
   Container listProduct() {
     return Container(
+      decoration: MyConstant().planBackground(),
       child: GridView.builder(
         itemCount: productmodels.length,
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
@@ -145,7 +141,8 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       child: CachedNetworkImage(
                         fit: BoxFit.fill,
-                        imageUrl: findUrlImage(productmodels[index].imagesproduct),
+                        imageUrl:
+                            findUrlImage(productmodels[index].imagesproduct),
                         placeholder: (context, url) => ShowProgress(),
                         errorWidget: (context, url, error) =>
                             ShowImage(path: MyConstant.imageeror),
@@ -223,7 +220,8 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       child: CachedNetworkImage(
                         fit: BoxFit.fill,
-                        imageUrl: findUrlImage(productmodels[index].imagesproduct),
+                        imageUrl:
+                            findUrlImage(productmodels[index].imagesproduct),
                         placeholder: (context, url) => ShowProgress(),
                         errorWidget: (context, url, error) =>
                             ShowImage(path: MyConstant.imageeror),
@@ -422,23 +420,21 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
                     String nameProduct = productmodel.nameproduct;
                     String priceProduct = productmodel.priceproduct;
                     String amount = amountInt.toString();
-                    int sumInt = int.parse(priceProduct) * amountInt;
-                    String sum = sumInt.toString();
+                    int sunInt = int.parse(priceProduct) * amountInt;
+                    String sum = sunInt.toString();
 
-                    print(
-                        '### idSeller ==>> $idProduct, name ==>> $nameProduct, price ==>> $priceProduct, amount ==>> $amount, sum = $sum');
                     SQLiteModel sqLiteModel = SQLiteModel(
                         idProduct: idProduct,
                         nameProduct: nameProduct,
                         priceProduct: priceProduct,
                         amount: amount,
                         sum: sum);
-                    await SQLiteHelpper().insertValueSQLite(sqLiteModel).then(
-                      (value) {
-                        amountInt = 1;
-                        Navigator.pop(context);
-                      },
-                    );
+                    await SQLiteHelpper()
+                        .insertValueSQLite(sqLiteModel)
+                        .then((value) {
+                      amountInt = 1;
+                      Navigator.pop(context);
+                    });
                   },
                   child: ShowTitle(
                     title: 'Add',
@@ -447,7 +443,6 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
                 ),
                 TextButton(
                   onPressed: () {
-                    amountInt = 1;
                     Navigator.pop(context);
                   },
                   child: ShowTitle(
@@ -465,7 +460,7 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
 
   String cutWord(String string) {
     String result = string;
-    if (result.length > 100) {
+    if (result.length >= 100) {
       result = result.substring(0, 100);
       result = '$result ... ';
     }

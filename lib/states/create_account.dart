@@ -20,7 +20,7 @@ class CreateAccount extends StatefulWidget {
 }
 
 class _CreateAccountState extends State<CreateAccount> {
-  String? type;
+  String type = 'buyer';
   String avatar = '';
   File? file;
   double? lat, lng;
@@ -357,7 +357,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 buildTitle('รูปภาพ'),
                 buildSubTitle(),
                 buildAvatarIcon(size),
-                buildTitle('ชนิดของผู้ใช้ :'),
+                // buildTitle('ชนิดของผู้ใช้ :'),
                 // buildRadioBuyer(size),
                 // buildRadioRider(size),
                 buildTitle('ข้อมูลพื้นของผู้ใช้ :'),
@@ -369,16 +369,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 buildPhone(size),
                 buildTitle('แสดงพิกัดที่คุณอยู่'),
                 buildMap(),
-                Container(
-                  margin: EdgeInsets.only(
-                    top: 8,
-                    bottom: 8,
-                  ),width: MediaQuery.of(context).size.width * 0.75,
-                  child: ElevatedButton(
-                    onPressed: () => buildCreateNewAccount(),
-                    child: Text('สมัครสมาชิก'),
-                  ),
-                ),
+                builCreate(context),
               ],
             ),
           ),
@@ -387,18 +378,29 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
+  Container builCreate(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(
+        top: 8,
+        bottom: 8,
+      ),
+      width: MediaQuery.of(context).size.width * 0.75,
+      child: ElevatedButton(
+        onPressed: () {
+          if (formKey.currentState!.validate()) {
+            uploadPictureAndInsertData();
+          }
+        },
+        child: Text('สมัครสมาชิก'),
+      ),
+    );
+  }
+
   IconButton buildCreateNewAccount() {
     return IconButton(
       onPressed: () {
         if (formKey.currentState!.validate()) {
-          if (type == null) {
-            print('Non Choose Type User');
-            MyDialog().normalDialog(context, 'ยังไม่ได้เลือก ชนิดของผู้ใช้ ',
-                'กรุณา เลือก ที่ ชนิดของผู้ใช้ ที่ ต้องการ ');
-          } else {
-            print('Process Insert to Database');
-            uploadPictureAndInsertData();
-          }
+          uploadPictureAndInsertData();
         }
       },
       icon: Icon(
@@ -479,7 +481,7 @@ class _CreateAccountState extends State<CreateAccount> {
         '${MyConstant.domain}/shopping/insertUser.php?isAdd=true&avatar=$avatar&type=$type&name=$name&seconname=$seconname&user=$user&password=$password&address=$address&phone=$phone&lat=$lat&lng=$lng';
     await Dio().get(apiInsertUser).then((value) {
       if (value.toString() == 'true') {
-        Navigator.pop(context);
+        Navigator.pushNamedAndRemoveUntil(context, MyConstant.routeAuthen, (route) => false);
       } else {
         MyDialog().normalDialog(
             context, 'การสมัครสมาชิกล้มเหลว !!! ', 'กรุณาลองใหม่อีครั้ง');

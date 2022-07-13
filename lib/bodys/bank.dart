@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
+import 'package:flutter_myappication_1/utility/my_dialog.dart';
 import 'package:flutter_myappication_1/widgets/navigator_confirm_add_wallet.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 import 'package:flutter_svg/svg.dart';
@@ -21,13 +23,14 @@ class _BankState extends State<Bank> {
           buildKBank(),
           buildSCB(),
         ],
-      ),floatingActionButton: NavigatorCFW(),
+      ),
+      floatingActionButton: NavigatorCFW(),
     );
   }
 
   Widget buildKBank() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+      margin: EdgeInsets.symmetric(vertical: 4),
       child: Center(
         child: Card(
           shape: RoundedRectangleBorder(
@@ -36,8 +39,8 @@ class _BankState extends State<Bank> {
           ),
           child: ListTile(
             leading: Container(
-              width: 80,
-              height: 80,
+              width: 50,
+              height: 50,
               decoration: BoxDecoration(
                 color: Colors.green.shade700,
                 borderRadius: BorderRadius.circular(15),
@@ -56,6 +59,22 @@ class _BankState extends State<Bank> {
                   'ชื่อบัญชี : นายธงไชย รัศมีทองสายธาร เลขบัญชี : 045-1-21711-9',
               textStyle: MyConstant().h3Style(),
             ),
+            trailing: IconButton(
+              onPressed: () {
+                Clipboard.setData(
+                  ClipboardData(text: '0451217119'),
+                );
+                MyDialog().normalDialog(
+                  context,
+                  'Copy Prompay ',
+                  'คัดลอก เลขบัญชี Prompay ไปยังคีย์บอร์ดสำเร็จแล้ว',
+                );
+              },
+              icon: Icon(
+                Icons.copy,
+                color: MyConstant.dark,
+              ),
+            ),
           ),
         ),
       ),
@@ -64,7 +83,7 @@ class _BankState extends State<Bank> {
 
   Widget buildSCB() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+      margin: EdgeInsets.symmetric(vertical: 4),
       child: Center(
         child: Card(
           shape: RoundedRectangleBorder(
@@ -73,8 +92,8 @@ class _BankState extends State<Bank> {
           ),
           child: ListTile(
             leading: Container(
-              width: 80,
-              height: 80,
+              width: 50,
+              height: 50,
               decoration: BoxDecoration(
                 color: Colors.purple.shade700,
                 borderRadius: BorderRadius.circular(15),
@@ -85,13 +104,29 @@ class _BankState extends State<Bank> {
               ),
             ),
             title: ShowTitle(
-              title: 'ธนาคารไทยพาณิชย์',
+              title: 'ธนาคารไทยพาณิชย์   ',
               textStyle: MyConstant().h2Style(),
             ),
             subtitle: ShowTitle(
               title:
-                  'ชื่อบัญชี : นายธงไชย รัศมีทองสายธาร เลขบัญชี : 430-0879496-6',
+                  'ชื่อบัญชี : นายธงไชย รัศมีทองสายธาร เลขบัญชี : 430-087949-6',
               textStyle: MyConstant().h3Style(),
+            ),
+            trailing: IconButton(
+              onPressed: () {
+                Clipboard.setData(
+                  ClipboardData(text: '4300879496'),
+                );
+                MyDialog().normalDialog(
+                  context,
+                  'Copy Prompay ',
+                  'คัดลอก เลขบัญชี Prompay ไปยังคีย์บอร์ดสำเร็จแล้ว',
+                );
+              },
+              icon: Icon(
+                Icons.copy,
+                color: MyConstant.dark,
+              ),
             ),
           ),
         ),

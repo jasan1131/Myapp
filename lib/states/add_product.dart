@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_myappication_1/models/product_model.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/utility/my_dialog.dart';
 import 'package:flutter_myappication_1/widgets/show_image.dart';
@@ -19,6 +20,7 @@ class AddProduct extends StatefulWidget {
 
 class _AddProductState extends State<AddProduct> {
   String? typeproduct;
+  String? category;
   final formKey = GlobalKey<FormState>();
   List<File?> files = [];
   File? file;
@@ -69,8 +71,12 @@ class _AddProductState extends State<AddProduct> {
                 key: formKey,
                 child: Column(
                   children: [
+                    buildTitle('หมวดหมู่สินค้า'),
+                    buildCategoryProduct(size),
+                    buildCategoryProductSp(size),
+                    buildCategoryProductWs(size),
                     buildProductName(constraints),
-                    buildTitle('ชนิดของสินค้า'),
+                    buildTitle('ประเภทของสินค้า'),
                     buildProductVegetables(size),
                     buildProductMeet(size),
                     buildProductDryGoods(size),
@@ -138,11 +144,11 @@ class _AddProductState extends State<AddProduct> {
               String nameproduct = NameProductController.text;
               String numberproduct = NumberProductController.text;
               String priceproduct = PriceProductController.text;
-              String productdetail = DetailProductController.text;
+              String detailproduct = DetailProductController.text;
               String imagesproduct = paths.toString();
 
               String path =
-                  '${MyConstant.domain}/shopping/insertProduct.php?isAdd=true&idproduct=$idproduct&nameproduct=$nameproduct&typeproduct=$typeproduct&numberproduct=$numberproduct&priceproduct=$priceproduct&detailproduct=$productdetail&imagesproduct=$imagesproduct';
+                  '${MyConstant.domain}/shopping/insertProduct.php?isAdd=true&idproduct=$idproduct&category=$category&nameproduct=$nameproduct&typeproduct=$typeproduct&numberproduct=$numberproduct&priceproduct=$priceproduct&detailproduct=$detailproduct&imagesproduct=$imagesproduct';
 
               await Dio().get(path).then((value) => Navigator.pop(context));
 
@@ -282,6 +288,84 @@ class _AddProductState extends State<AddProduct> {
     );
   }
 
+  Row buildCategoryProduct(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'product',
+            groupValue: category,
+            onChanged: (value) {
+              setState(
+                () {
+                  category = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'สินค้าทั่วไป',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildCategoryProductSp(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'productspecial',
+            groupValue: category,
+            onChanged: (value) {
+              setState(
+                () {
+                  category = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'สินค้าราคาพิเศษ',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildCategoryProductWs(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'productwholesale',
+            groupValue: category,
+            onChanged: (value) {
+              setState(
+                () {
+                  category = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'สินค้าราคาส่ง',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget buildProductName(BoxConstraints constraints) {
     return Container(
       width: constraints.maxWidth * 0.75,
@@ -318,7 +402,7 @@ class _AddProductState extends State<AddProduct> {
     return Container(
       width: constraints.maxWidth * 0.75,
       margin: EdgeInsets.only(top: 16),
-      child: TextFormField(
+      child: TextFormField(keyboardType: TextInputType.phone,
         controller: NumberProductController,
         decoration: InputDecoration(
           hintText: 'จำนวนสินค้า :',

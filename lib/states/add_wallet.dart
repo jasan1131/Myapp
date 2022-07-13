@@ -24,7 +24,7 @@ class _AddWalletState extends State<AddWallet> {
     Icons.credit_card_outlined,
   ];
 
-  List<String> titles = ['Bank', 'Prompay', 'Credic'];
+  List<String> titles = ['ธนาคาร', 'พร้อมเพ', 'เก็บเงินปลายทาง'];
 
   int indexPosition = 0;
 
@@ -54,7 +54,13 @@ class _AddWalletState extends State<AddWallet> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Wallet from ${titles[indexPosition]}'),
+        leading: IconButton(
+          onPressed: () =>
+              Navigator.pushNamed(context, MyConstant.rounteShowCart),
+          icon: Icon(Icons.arrow_back),
+        ),
+        centerTitle: true,
+        title: Text('ชำระเงินแบบ ${titles[indexPosition]}'),
       ),
       body: widgets[indexPosition],
       bottomNavigationBar: BottomNavigationBar(

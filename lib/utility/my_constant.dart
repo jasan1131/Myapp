@@ -4,9 +4,9 @@ class MyConstant {
   // Genernal
   static String appName = 'Shopping MAll';
   static String domain =
-      'https://5855-2001-fb1-1f-ef4f-b5d8-f974-8f60-c73c.ap.ngrok.io';
+      'https://75f1-2001-fb1-1c-442f-f5da-d999-9e93-7e59.ap.ngrok.io';
 
-  static String urlPromptpay ='https://promptpay.io/0970272217.png';    
+  static String urlPromptpay = 'https://promptpay.io/0970272217.png';
 
   // Route
   static String routeAdminSever = '/admin';
@@ -18,18 +18,15 @@ class MyConstant {
   static String rounteAddProductSpecial = '/addProductSpecial';
   static String rounteAddProductWholeSale = '/addProductWholeSale';
 
-
   static String rounteEditProfileAdmin = '/editProfileAdmin';
+
   static String rounteTypeMeet = '/typemeet';
   static String rounteTypeVegetables = '/typevegetables';
   static String rounteTypeDryGoods = '/typedrygoods';
   static String rounteTypeCondiments = '/typecondiments';
 
-
-
-
-
   static String rounteShowCart = '/showcart';
+  static String rounteBuyerShowShopSeller = '/buyershowshopseller';
   static String rounteAddWallet = '/addwallet';
   static String rounteConfirmAddWallet = '/confirmaddwallet';
   static String rounteMyMoney = '/mymoney';
@@ -62,6 +59,25 @@ class MyConstant {
     800: Color.fromRGBO(255, 34, 134, 0.9),
     900: Color.fromRGBO(255, 34, 134, 1.0),
   };
+
+  // background
+  BoxDecoration planBackground() =>
+      BoxDecoration(color: MyConstant.light.withOpacity(0.75));
+
+  BoxDecoration gradientLinearBackground() => BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Colors.white, MyConstant.light, MyConstant.primary],
+        ),
+      );
+
+  BoxDecoration gradientRadioBackground() => BoxDecoration(
+        gradient: RadialGradient(center: Alignment(0, -0.5),
+          radius: 0.8,
+          colors: [Colors.white, MyConstant.light],
+        ),
+      );
 
   // Style
   TextStyle h1Style() => TextStyle(

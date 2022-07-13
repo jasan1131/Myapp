@@ -63,6 +63,7 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
   Future<Null> findUser() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String user = preferences.getString('user')!;
+
     String apiGetUser =
         '${MyConstant.domain}/shopping/getUserWhereUser.php?isAdd=true&user=$user';
     await Dio().get(apiGetUser).then((value) {
@@ -94,9 +95,7 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) => GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(
-            FocusNode(),
-          ),
+          onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
           behavior: HitTestBehavior.opaque,
           child: Form(
             key: formKey,
@@ -156,11 +155,11 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
     String apiEditProfile =
         '${MyConstant.domain}/shopping/editProfileAdminWhereId.php?isAdd=true&id=${userModel!.id}&avatar=$pathAvatar&name=${nameController.text}&address=${addressController.text}&phone=${phoneController.text}&lat=${latLng!.latitude}&lng=${latLng!.longitude}';
     await Dio().get(apiEditProfile).then(
-          (value) {
-            Navigator.pop(context);
-            Navigator.pop(context);
-          },
-        );
+      (value) {
+        Navigator.pop(context);
+        Navigator.pop(context);
+      },
+    );
   }
 
   ElevatedButton buildButtonEdit() {
@@ -297,7 +296,6 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
     );
   }
 
-  
   Row buildAddress(BoxConstraints constraints) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,

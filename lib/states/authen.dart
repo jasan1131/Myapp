@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_myappication_1/models/splite_model.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/utility/my_dialog.dart';
@@ -33,15 +34,18 @@ class _AuthenState extends State<Authen> {
           behavior: HitTestBehavior.opaque,
           child: Form(
             key: formKey,
-            child: ListView(
-              children: [
-                buildImage(size),
-                // buildAppName(),
-                buildUser(size),
-                buildPassword(size),
-                buildLogin(size),
-                buildCreateAccount(),
-              ],
+            child: Container(
+              decoration: MyConstant().gradientRadioBackground(),
+              child: ListView(
+                children: [
+                  buildImage(size),
+                  // buildAppName(),
+                  buildUser(size),
+                  buildPassword(size),
+                  buildLogin(size),
+                  buildCreateAccount(),
+                ],
+              ),
             ),
           ),
         ),
@@ -58,8 +62,7 @@ class _AuthenState extends State<Authen> {
           textStyle: MyConstant().h3Style(),
         ),
         TextButton(
-          onPressed: () =>
-              Navigator.pushNamed(context, MyConstant.rountePDPA),
+          onPressed: () => Navigator.pushNamed(context, MyConstant.rountePDPA),
           child: Text(
             'สมัครสมาชิก',
             style: TextStyle(fontWeight: FontWeight.bold),
@@ -107,6 +110,7 @@ class _AuthenState extends State<Authen> {
           if (password == model.password) {
             // Success Auten
             String type = model.type;
+
             print('## Auten Success in type ==> $type');
 
             SharedPreferences preferences =
@@ -114,6 +118,7 @@ class _AuthenState extends State<Authen> {
             preferences.setString('id', model.id);
             preferences.setString('type', type);
             preferences.setString('user', model.user);
+            preferences.setString('name', model.name);
             switch (type) {
               case 'buyer':
                 Navigator.pushNamedAndRemoveUntil(
@@ -156,6 +161,8 @@ class _AuthenState extends State<Authen> {
               }
             }),
             decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white.withOpacity(0.75),
               hintText: 'ชื่อผู้ใช้ :',
               hintStyle: MyConstant().h3Style(),
               prefixIcon: Icon(
@@ -197,6 +204,8 @@ class _AuthenState extends State<Authen> {
             },
             obscureText: statusRedEye,
             decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white.withOpacity(0.75),
               suffixIcon: IconButton(
                 onPressed: () {
                   setState(

@@ -33,7 +33,7 @@ class _TypeCondimentsState extends State<TypeCondiments> {
 
   Future<Null> readApiAllShop() async {
     String urlAPI =
-        '${MyConstant.domain}/shopping/getProductWhereIdProductTypeFishSauce.php';
+        '${MyConstant.domain}/shopping/getProductWhereIdProductTypeVinegar.php';
     await Dio().get(urlAPI).then(
       (value) {
         setState(() {

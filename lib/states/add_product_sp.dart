@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:math';
 
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
@@ -12,14 +11,15 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddProductSpecial extends StatefulWidget {
-  const AddProductSpecial({ Key? key }) : super(key: key);
+  const AddProductSpecial({Key? key}) : super(key: key);
 
   @override
   State<AddProductSpecial> createState() => _AddProductSpecialState();
 }
 
 class _AddProductSpecialState extends State<AddProductSpecial> {
-  String? typeproDuct;
+  String? typeproduct;
+  String? category;
   final formKey = GlobalKey<FormState>();
   List<File?> files = [];
   File? file;
@@ -135,15 +135,18 @@ class _AddProductSpecialState extends State<AddProductSpecial> {
               SharedPreferences preference =
                   await SharedPreferences.getInstance();
 
-              String idproDuct = preference.getString('id')!;
-              String nameproDuct = NameProductController.text;
-              String numberproDuct = NumberProductController.text;
-              String priceproDuct = PriceProductController.text;
-              String detailproDuct = DetailProductController.text;
-              String imageproDuct = paths.toString();
+              String idproduct = preference.getString('id')!;
+              String category = 'productspecial';
+              String nameproduct = NameProductController.text;
+              String numberproduct = NumberProductController.text;
+              String priceproduct = PriceProductController.text;
+              String detailproduct = DetailProductController.text;
+              String imagesproduct = paths.toString();
+              
+              
 
               String path =
-                  '${MyConstant.domain}/shopping/insertProductSpecial.php?isAdd=true&idproDuct=$idproDuct&nameproDuct=$nameproDuct&typeproDuct=$typeproDuct&numberproDuct=$numberproDuct&priceproDuct=$priceproDuct&detailproDuct=$detailproDuct&imageproDuct=$imageproDuct';
+                  '${MyConstant.domain}/shopping/insertProduct.php?isAdd=true&idproduct=$idproduct&category=$category&nameproduct=$nameproduct&typeproduct=$typeproduct&numberproduct=$numberproduct&priceproduct=$priceproduct&detailproduct=$detailproduct&imagesproduct=$imagesproduct';
 
               await Dio().get(path).then((value) => Navigator.pop(context));
 
@@ -151,7 +154,7 @@ class _AddProductSpecialState extends State<AddProductSpecial> {
             }
           });
         }
-      } 
+      }
     }
   }
 
@@ -320,6 +323,7 @@ class _AddProductSpecialState extends State<AddProductSpecial> {
       width: constraints.maxWidth * 0.75,
       margin: EdgeInsets.only(top: 16),
       child: TextFormField(
+        keyboardType: TextInputType.phone,
         controller: NumberProductController,
         decoration: InputDecoration(
           hintText: 'จำนวนสินค้า :',
@@ -424,11 +428,11 @@ class _AddProductSpecialState extends State<AddProductSpecial> {
           width: size * 0.6,
           child: RadioListTile(
             value: 'vegetables',
-            groupValue: typeproDuct,
+            groupValue: typeproduct,
             onChanged: (value) {
               setState(
                 () {
-                  typeproDuct = value as String?;
+                  typeproduct = value as String?;
                 },
               );
             },
@@ -450,11 +454,11 @@ class _AddProductSpecialState extends State<AddProductSpecial> {
           width: size * 0.6,
           child: RadioListTile(
             value: 'meet',
-            groupValue: typeproDuct,
+            groupValue: typeproduct,
             onChanged: (value) {
               setState(
                 () {
-                  typeproDuct = value as String?;
+                  typeproduct = value as String?;
                 },
               );
             },
@@ -476,11 +480,11 @@ class _AddProductSpecialState extends State<AddProductSpecial> {
           width: size * 0.6,
           child: RadioListTile(
             value: 'dryGoods',
-            groupValue: typeproDuct,
+            groupValue: typeproduct,
             onChanged: (value) {
               setState(
                 () {
-                  typeproDuct = value as String?;
+                  typeproduct = value as String?;
                 },
               );
             },
@@ -502,11 +506,11 @@ class _AddProductSpecialState extends State<AddProductSpecial> {
           width: size * 0.6,
           child: RadioListTile(
             value: 'condiments',
-            groupValue: typeproDuct,
+            groupValue: typeproduct,
             onChanged: (value) {
               setState(
                 () {
-                  typeproDuct = value as String?;
+                  typeproduct = value as String?;
                 },
               );
             },
@@ -529,6 +533,4 @@ class _AddProductSpecialState extends State<AddProductSpecial> {
       ),
     );
   }
-
-  
 }

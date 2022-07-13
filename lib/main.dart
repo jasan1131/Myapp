@@ -1,5 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_myappication_1/bodys/my_money.dart';
+import 'package:flutter_myappication_1/bodys/buyer_show_deliverystatus.dart';
 import 'package:flutter_myappication_1/states/add_product.dart';
 import 'package:flutter_myappication_1/states/add_product_sp.dart';
 import 'package:flutter_myappication_1/states/add_product_ws.dart';
@@ -7,6 +9,7 @@ import 'package:flutter_myappication_1/states/add_wallet.dart';
 import 'package:flutter_myappication_1/states/admin.dart';
 import 'package:flutter_myappication_1/states/authen.dart';
 import 'package:flutter_myappication_1/states/buyer_sevice.dart';
+import 'package:flutter_myappication_1/states/buyer_show_shop_seller.dart';
 import 'package:flutter_myappication_1/states/confirm_add_wallet.dart';
 import 'package:flutter_myappication_1/states/confirm_order.dart';
 import 'package:flutter_myappication_1/states/create_account.dart';
@@ -30,26 +33,24 @@ final Map<String, WidgetBuilder> map = {
   '/addProduct': (BuildContext context) => AddProduct(),
   '/addProductSpecial': (BuildContext context) => AddProductSpecial(),
   '/addProductWholeSale': (BuildContext context) => AddProductWholeSale(),
-
   '/editProfileAdmin': (BuildContext context) => EditProfileAdmin(),
-  '/typemeet' : (BuildContext context) => TypeMeet(),
-  '/typevegetables' :(BuildContext context) => TypeVegatables(),
-  '/typedrygoods' : (BuildContext context) => TypeDryGoods(),
-  '/typecondiments' : (BuildContext context) => TypeCondiments(),
-
-
-
-  '/confirmorder' :(BuildContext context) => ConfirmOrder(),
-  '/showcart' :(BuildContext context) => ShowCart(),
-  '/addwallet' :(BuildContext context) => AddWallet(),
-  '/confirmaddwallet' :(BuildContext context) => ConfirmAddWallet(),
-  '/mymoney' :(BuildContext context) => MYMoney(),
-  '/pdpa' :(BuildContext context) => PDPA(),
+  '/typemeet': (BuildContext context) => TypeMeet(),
+  '/typevegetables': (BuildContext context) => TypeVegatables(),
+  '/typedrygoods': (BuildContext context) => TypeDryGoods(),
+  '/typecondiments': (BuildContext context) => TypeCondiments(),
+  '/confirmorder': (BuildContext context) => ConfirmOrder(),
+  '/showcart': (BuildContext context) => ShowCart(),
+  '/addwallet': (BuildContext context) => AddWallet(),
+  '/confirmaddwallet': (BuildContext context) => ConfirmAddWallet(),
+  '/mymoney': (BuildContext context) => DeliveryStatus(),
+  '/pdpa': (BuildContext context) => PDPA(),
 };
 
 String? initlalRoute;
 
 Future<Null> main() async {
+  HttpOverrides.global = MyHttpOverride();
+
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   String? type = preferences.getString('type');
@@ -89,5 +90,14 @@ class MyApp extends StatelessWidget {
       initialRoute: initlalRoute,
       theme: ThemeData(primarySwatch: materialColor),
     );
+  }
+}
+
+class MyHttpOverride extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    // TODO: implement createHttpClient
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (cert, host, port) => true;
   }
 }

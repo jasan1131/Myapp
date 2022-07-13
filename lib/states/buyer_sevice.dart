@@ -1,12 +1,14 @@
+import 'dart:convert';
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_myappication_1/bodys/buyer_menu_food.dart';
-import 'package:flutter_myappication_1/bodys/buyer_product_type.dart';
-import 'package:flutter_myappication_1/bodys/buyer_public_relation.dart';
-import 'package:flutter_myappication_1/bodys/buyer_showallproduct.dart';
-import 'package:flutter_myappication_1/bodys/buyer_special_product.dart';
-import 'package:flutter_myappication_1/bodys/buyer_wholesale_product.dart';
-import 'package:flutter_myappication_1/bodys/my_money.dart';
+import 'package:flutter_myappication_1/bodys/show_menu_food.dart';
+import 'package:flutter_myappication_1/bodys/show_order_history.dart';
+import 'package:flutter_myappication_1/bodys/show_shop_seller.dart';
+import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
+import 'package:flutter_myappication_1/widgets/show_image.dart';
 import 'package:flutter_myappication_1/widgets/show_signout.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,65 +21,82 @@ class BuyerService extends StatefulWidget {
 }
 
 class _BuyerServiceState extends State<BuyerService> {
-  List<Widget> wigets = [
-    BuyerShowAllProduct(),
-    BuyerMenuFood(),
-    BuyerProductType(),
-    BuyerSpecialProduct(),
-    BuyerWholeSaleProduct(),
-    BuyerPublicRelation(),
-    MYMoney(),
+  List<Widget> widgets = [
+    ShowShopSeller(),
+    ShowMenuFood(),
+    ShowOrderHistory(),
   ];
   int indexWidget = 0;
+  UserModel? userModel;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    findUserLogin();
+  }
+
+  Future<void> findUserLogin() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var idUserLogin = preferences.getString('id');
+
+    var urlAPI =
+        '${MyConstant.domain}/shopping/getUserWhereId.php?isAdd=true&id=$idUserLogin';
+    await Dio().get(urlAPI).then((value) {
+      for (var item in json.decode(value.data)) {
+        setState(() {
+          userModel = UserModel.fromMap(item);
+          print('### id login ==> ${userModel!.id}');
+        });
+      }
+      ;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () =>
-                Navigator.pushNamed(context, MyConstant.rounteShowCart),
-            icon: Icon(Icons.shopping_cart_outlined),
-          ),
-        ],
         centerTitle: true,
         title: Text('Buyer'),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.shopping_cart_outlined),
+          )
+        ],
       ),
       drawer: Drawer(
         child: Stack(
           children: [
             Column(
               children: [
-                buildHeader(),
-                buyerShowAllProduct(),
-                buyerMenuFood(),
-                buyerProductType(),
-                buyerSpecialProduct(),
-                buyerWholeSaleProduct(),
-                buyerPublicRelation(),
-                buyerDeliveryStatus(),
+                buildHeard(),
+                showShopSeller(),
+                showMenuFood(),
+                showorderHistory(),
               ],
             ),
             ShowSignOut(),
           ],
         ),
       ),
-      body: wigets[indexWidget],
+      body: widgets[indexWidget],
     );
   }
 
-  ListTile buyerShowAllProduct() {
+  ListTile showShopSeller() {
     return ListTile(
       leading: Icon(
-        Icons.shopping_bag_outlined,
-        size: 36,
+        Icons.house_outlined,
+        size: 35,
         color: MyConstant.dark,
       ),
       title: ShowTitle(
-        title: 'สินค้าทั้งหมด',
+        title: 'ร้านขายสินค้า',
         textStyle: MyConstant().h2Style(),
       ),
+      subtitle: ShowTitle(title: 'แสดงร้านขายสินค้า'),
       onTap: () {
         setState(() {
           indexWidget = 0;
@@ -87,17 +106,18 @@ class _BuyerServiceState extends State<BuyerService> {
     );
   }
 
-  ListTile buyerMenuFood() {
+  ListTile showMenuFood() {
     return ListTile(
       leading: Icon(
-        Icons.restaurant_menu,
-        size: 36,
+        Icons.restaurant_menu_outlined,
+        size: 35,
         color: MyConstant.dark,
       ),
       title: ShowTitle(
         title: 'เมนูอาหาร',
         textStyle: MyConstant().h2Style(),
       ),
+      subtitle: ShowTitle(title: 'แนะนำเมนูอาหาร และ วิธีทำอาหาร'),
       onTap: () {
         setState(() {
           indexWidget = 1;
@@ -107,17 +127,18 @@ class _BuyerServiceState extends State<BuyerService> {
     );
   }
 
-  ListTile buyerProductType() {
+  ListTile showorderHistory() {
     return ListTile(
       leading: Icon(
-        Icons.account_tree_outlined,
-        size: 36,
+        Icons.history_outlined,
+        size: 35,
         color: MyConstant.dark,
       ),
       title: ShowTitle(
-        title: 'ประเภทสินค้า',
+        title: 'ประวัติการสั่งซื้อ',
         textStyle: MyConstant().h2Style(),
       ),
+      subtitle: ShowTitle(title: 'แสดงประวัติการสั่งซื้อ'),
       onTap: () {
         setState(() {
           indexWidget = 2;
@@ -127,90 +148,29 @@ class _BuyerServiceState extends State<BuyerService> {
     );
   }
 
-  ListTile buyerSpecialProduct() {
-    return ListTile(
-      leading: Icon(
-        Icons.sell_outlined,
-        size: 36,
-        color: MyConstant.dark,
-      ),
-      title: ShowTitle(
-        title: 'สินค้าราคาพิเศษ',
-        textStyle: MyConstant().h2Style(),
-      ),
-      onTap: () {
-        setState(() {
-          indexWidget = 3;
-          Navigator.pop(context);
-        });
-      },
-    );
-  }
-
-  ListTile buyerWholeSaleProduct() {
-    return ListTile(
-      leading: Icon(
-        Icons.workspace_premium_outlined,
-        size: 36,
-        color: MyConstant.dark,
-      ),
-      title: ShowTitle(
-        title: 'สินค้าราคาส่ง',
-        textStyle: MyConstant().h2Style(),
-      ),
-      onTap: () {
-        setState(() {
-          indexWidget = 4;
-          Navigator.pop(context);
-        });
-      },
-    );
-  }
-
-  ListTile buyerPublicRelation() {
-    return ListTile(
-      leading: Icon(
-        Icons.turned_in_not,
-        size: 36,
-        color: MyConstant.dark,
-      ),
-      title: ShowTitle(
-        title: 'ประชาสัมพันธ์',
-        textStyle: MyConstant().h2Style(),
-      ),
-      onTap: () {
-        setState(() {
-          indexWidget = 5;
-          Navigator.pop(context);
-        });
-      },
-    );
-  }
-
-  ListTile buyerDeliveryStatus() {
-    return ListTile(
-      leading: Icon(
-        Icons.local_shipping_outlined,
-        size: 36,
-        color: MyConstant.dark,
-      ),
-      title: ShowTitle(
-        title: 'สถานะการจัดส่ง',
-        textStyle: MyConstant().h2Style(),
-      ),
-      onTap: () {
-        setState(() {
-          indexWidget = 6;
-          Navigator.pop(context);
-        });
-      },
-    );
-  }
-
-  UserAccountsDrawerHeader buildHeader() {
-    return UserAccountsDrawerHeader(
-      accountName: null,
-      accountEmail: null,
-    );
-  }
+  UserAccountsDrawerHeader buildHeard() => UserAccountsDrawerHeader(
+        decoration: BoxDecoration(
+          gradient: RadialGradient(
+            radius: 1,
+            center: Alignment(-0.8, -0.2),
+            colors: [Colors.white, MyConstant.dark],
+          ),
+        ),
+        currentAccountPicture: userModel == null
+            ? ShowImage(path: MyConstant.avatar)
+            : userModel!.avatar.isEmpty
+                ? ShowImage(path: MyConstant.avatar)
+                : CircleAvatar(
+                    backgroundImage: CachedNetworkImageProvider(
+                        '${MyConstant.domain}${userModel!.avatar}'),
+                  ),
+        accountName: ShowTitle(
+          title: userModel == null ? '' : userModel!.name,
+          textStyle: MyConstant().h2Style(),
+        ),
+        accountEmail: ShowTitle(
+          title: userModel == null ? '' : userModel!.user,
+          textStyle: MyConstant().h3Style(),
+        ),
+      );
 }

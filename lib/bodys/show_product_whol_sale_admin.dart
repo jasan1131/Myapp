@@ -1,9 +1,10 @@
+import 'package:dio/dio.dart';
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_myappication_1/models/product_whole_sale_model.dart';
+import 'package:flutter_myappication_1/models/product_model.dart';
+import 'package:flutter_myappication_1/states/edit_product_ws.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_image.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
@@ -11,16 +12,17 @@ import 'package:flutter_myappication_1/widgets/show_title.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ShowProductWholeSaleAdmin extends StatefulWidget {
-  const ShowProductWholeSaleAdmin({ Key? key }) : super(key: key);
+  const ShowProductWholeSaleAdmin({Key? key}) : super(key: key);
 
   @override
-  State<ShowProductWholeSaleAdmin> createState() => _ShowProductWholeSaleAdminState();
+  State<ShowProductWholeSaleAdmin> createState() =>
+      _ShowProductWholeSaleAdminState();
 }
 
 class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
   bool load = true;
   bool? haveData;
-  List<ProductWholeSaleModel> productwholesalemodel = [];
+  List<ProductModel> productmodel = [];
 
   @override
   void initState() {
@@ -29,14 +31,14 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
   }
 
   Future<Null> loadValueFromApi() async {
-    if (productwholesalemodel.length != 0) {
-      productwholesalemodel.clear();
+    if (productmodel.length != 0) {
+      productmodel.clear();
     } else {}
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String idproduct = preferences.getString('id')!;
     String apiGetProductSpWhereIdProductSp =
-        '${MyConstant.domain}/shopping/getProductWSWhereIdProductWS.php?isAdd=true&idProduct=$idproduct';
+        '${MyConstant.domain}/shopping/getProductWSWhereIdProductWS.php';
     await Dio().get(apiGetProductSpWhereIdProductSp).then(
       (value) {
         // print('### value ==> $value');
@@ -50,13 +52,13 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
         } else {
           // Have Data
           for (var item in json.decode(value.data)) {
-            ProductWholeSaleModel model = ProductWholeSaleModel.fromMap(item);
+            ProductModel model = ProductModel.fromMap(item);
             // print('### nameProduct ==> ${model.NameProduct}');
 
             setState(() {
               load = false;
               haveData = true;
-              productwholesalemodel.add(model);
+              productmodel.add(model);
             });
           }
         }
@@ -78,20 +80,27 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ShowTitle(
-                          title: 'No Product',
+                          title: 'ไม่มีสินค้า',
                           textStyle: MyConstant().h1Style()),
                       ShowTitle(
-                          title: 'Please Add Product',
+                          title: 'กรุราเพิ่มสินค้า',
                           textStyle: MyConstant().h2Style()),
                     ],
                   ),
                 ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: MyConstant.dark,
-        onPressed: () =>
-            Navigator.pushNamed(context, MyConstant.rounteAddProductWholeSale)
-                .then((value) => loadValueFromApi()),
-        child: Text('Add'),
+      floatingActionButton: SizedBox(
+        width: 80,
+        height: 80,
+        child: FloatingActionButton(
+          backgroundColor: MyConstant.dark,
+          onPressed: () =>
+              Navigator.pushNamed(context, MyConstant.rounteAddProductWholeSale)
+                  .then((value) => loadValueFromApi()),
+          child: ShowTitle(
+            title: 'เพิ่มสินค้า',
+            textStyle: MyConstant().h3WhiteStyle(),
+          ),
+        ),
       ),
     );
   }
@@ -105,7 +114,7 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
 
   ListView buildListView(BoxConstraints constraints) {
     return ListView.builder(
-      itemCount: productwholesalemodel.length,
+      itemCount: productmodel.length,
       itemBuilder: (context, index) => Card(
         shape: RoundedRectangleBorder(
             side: BorderSide(color: MyConstant.dark),
@@ -122,7 +131,7 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ShowTitle(
-                      title: productwholesalemodel[index].nameProduct,
+                      title: productmodel[index].nameproduct,
                       textStyle: MyConstant().h2Style(),
                     ),
                     Container(
@@ -136,7 +145,8 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
                         padding: const EdgeInsets.all(8.0),
                         child: CachedNetworkImage(
                           fit: BoxFit.fill,
-                          imageUrl: createUrl(productwholesalemodel[index].imageProduct),
+                          imageUrl: createUrl(
+                              productmodel[index].imagesproduct),
                           placeholder: (context, url) => ShowProgress(),
                           errorWidget: (context, url, error) =>
                               ShowImage(path: MyConstant.imageeror),
@@ -155,16 +165,18 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ShowTitle(
-                    title: 'ราคา :${productwholesalemodel[index].priceProduct} THB',
+                    title:
+                        'ราคา :${productmodel[index].priceproduct} THB',
                     textStyle: MyConstant().h2Style(),
                   ),
                   ShowTitle(
-                    title: 'จำนวนสินค้า :${productwholesalemodel[index].numberProduct}',
+                    title:
+                        'จำนวนสินค้า :${productmodel[index].numberproduct}',
                     textStyle: MyConstant().h3Style(),
                   ),
                   ShowTitle(
                     title:
-                        'รายละเอียดสินค้า : ${productwholesalemodel[index].detailProduct}',
+                        'รายละเอียดสินค้า : ${productmodel[index].detailproduct}',
                     textStyle: MyConstant().h3Style(),
                   ),
                   Row(
@@ -172,14 +184,15 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
                     children: [
                       IconButton(
                         onPressed: () {
-                          // print('## YOu Click Edit');
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) => EditProdut(
-                          //         ,
-                          //       ),
-                          //     )).then((value) => loadValueFromApi());
+                          print('## YOu Click Edit');
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditProductWholeSale(
+                                  productModel:
+                                      productmodel[index],
+                                ),
+                              )).then((value) => loadValueFromApi());
                         },
                         icon: Icon(
                           Icons.edit_outlined,
@@ -190,7 +203,7 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
                       IconButton(
                         onPressed: () {
                           print('## You Click Delete from index = $index');
-                          confirmDialogDelete(productwholesalemodel[index]);
+                          confirmDialogDelete(productmodel[index]);
                         },
                         icon: Icon(
                           Icons.delete_outline,
@@ -209,30 +222,31 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
     );
   }
 
-  Future<Null> confirmDialogDelete(ProductWholeSaleModel productWholeSaleModel) async {
+  Future<Null> confirmDialogDelete(
+      ProductModel productModel) async {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: ListTile(
           leading: CachedNetworkImage(
-            imageUrl: createUrl(productWholeSaleModel.imageProduct),
+            imageUrl: createUrl(productModel.imagesproduct),
             placeholder: (context, url) => ShowProgress(),
           ),
           title: ShowTitle(
-            title: 'Delete ${productWholeSaleModel.nameProduct} ?',
+            title: 'Delete ${productModel.nameproduct} ?',
             textStyle: MyConstant().h2Style(),
           ),
           subtitle: ShowTitle(
-            title: productWholeSaleModel.detailProduct,
+            title: productModel.detailproduct,
             textStyle: MyConstant().h3Style(),
           ),
         ),
         actions: [
           TextButton(
             onPressed: () async {
-              print('## Confirm Delete at id ==> ${productWholeSaleModel.Id}');
+              print('## Confirm Delete at id ==> ${productModel.id}');
               String apiDeleteProductWhereIDProduct =
-                  '${MyConstant.domain}/shopping/deleteProductWhereId.php?isAdd=true&id=${productWholeSaleModel.Id}';
+                  '${MyConstant.domain}/shopping/deleteProductWSWhereId.php?isAdd=true&Id=${productModel.id}';
               await Dio().get(apiDeleteProductWhereIDProduct).then((value) {
                 Navigator.pop(context);
                 loadValueFromApi();

@@ -13,27 +13,29 @@ class _BuyerProductTypeState extends State<BuyerProductType> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 8,
-                  top: 8,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 8,
+                    top: 8,
+                  ),
+                  child: ShowTitle(
+                    title: 'ประเภทสินค้า',
+                    textStyle: MyConstant().h2Style(),
+                  ),
                 ),
-                child: ShowTitle(
-                  title: 'ประเภทสินค้า',
-                  textStyle: MyConstant().h2Style(),
-                ),
-              ),
-            ],
-          ),
-          buildTypeVegetables(context),
-          buildTypeMeet(context),
-          buildTypeDryGoods(context),
-          buildTypeCondiments(context),
-        ],
+              ],
+            ),
+            buildTypeVegetables(context),
+            buildTypeMeet(context),
+            buildTypeDryGoods(context),
+            buildTypeCondiments(context),
+          ],
+        ),
       ),
     );
   }

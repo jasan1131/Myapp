@@ -79,20 +79,24 @@ class _ShowProductAdminState extends State<ShowProductAdmin> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ShowTitle(
-                          title: 'No Product',
+                          title: 'ไม่มีสินค้า',
                           textStyle: MyConstant().h1Style()),
                       ShowTitle(
-                          title: 'Please Add Product',
+                          title: 'กรุณาเพิ่มสินค้า',
                           textStyle: MyConstant().h2Style()),
                     ],
                   ),
                 ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: MyConstant.dark,
-        onPressed: () =>
-            Navigator.pushNamed(context, MyConstant.rounteAddProduct)
-                .then((value) => loadValueFromApi()),
-        child: Text('Add'),
+      floatingActionButton: SizedBox(
+        width: 80,
+        height: 80,
+        child: FloatingActionButton(
+          backgroundColor: MyConstant.dark,
+          onPressed: () =>
+              Navigator.pushNamed(context, MyConstant.rounteAddProduct)
+                  .then((value) => loadValueFromApi()),
+          child: Text('เพิ่มสินค้า'),
+        ),
       ),
     );
   }
@@ -137,7 +141,8 @@ class _ShowProductAdminState extends State<ShowProductAdmin> {
                         padding: const EdgeInsets.all(8.0),
                         child: CachedNetworkImage(
                           fit: BoxFit.fill,
-                          imageUrl: createUrl(productModels[index].imagesproduct),
+                          imageUrl:
+                              createUrl(productModels[index].imagesproduct),
                           placeholder: (context, url) => ShowProgress(),
                           errorWidget: (context, url, error) =>
                               ShowImage(path: MyConstant.imageeror),

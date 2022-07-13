@@ -2,14 +2,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 
-class BuyerMenuFood extends StatefulWidget {
-  const BuyerMenuFood({Key? key}) : super(key: key);
+class ShowMenuFood extends StatefulWidget {
+  const ShowMenuFood({Key? key}) : super(key: key);
 
   @override
-  State<BuyerMenuFood> createState() => _BuyerMenuFoodState();
+  State<ShowMenuFood> createState() => _ShowMenuFoodState();
 }
 
-class _BuyerMenuFoodState extends State<BuyerMenuFood> {
+class _ShowMenuFoodState extends State<ShowMenuFood> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

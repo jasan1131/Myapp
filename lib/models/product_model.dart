@@ -4,6 +4,7 @@ import 'dart:convert';
 class ProductModel {
   final String id;
   final String idproduct;
+  final String category;
   final String nameproduct;
   final String typeproduct;
   final String numberproduct;
@@ -13,6 +14,7 @@ class ProductModel {
   ProductModel({
     required this.id,
     required this.idproduct,
+    required this.category,
     required this.nameproduct,
     required this.typeproduct,
     required this.numberproduct,
@@ -24,6 +26,7 @@ class ProductModel {
   ProductModel copyWith({
     String? id,
     String? idproduct,
+    String? category,
     String? nameproduct,
     String? typeproduct,
     String? numberproduct,
@@ -34,6 +37,7 @@ class ProductModel {
     return ProductModel(
       id: id ?? this.id,
       idproduct: idproduct ?? this.idproduct,
+      category: category ?? this.category,
       nameproduct: nameproduct ?? this.nameproduct,
       typeproduct: typeproduct ?? this.typeproduct,
       numberproduct: numberproduct ?? this.numberproduct,
@@ -47,6 +51,7 @@ class ProductModel {
     return <String, dynamic>{
       'id': id,
       'idproduct': idproduct,
+      'category': category,
       'nameproduct': nameproduct,
       'typeproduct': typeproduct,
       'numberproduct': numberproduct,
@@ -60,6 +65,7 @@ class ProductModel {
     return ProductModel(
       id: map['id'] as String,
       idproduct: map['idproduct'] as String,
+      category: map['category'] as String,
       nameproduct: map['nameproduct'] as String,
       typeproduct: map['typeproduct'] as String,
       numberproduct: map['numberproduct'] as String,
@@ -75,7 +81,7 @@ class ProductModel {
 
   @override
   String toString() {
-    return 'ProductModel(id: $id, idproduct: $idproduct, nameproduct: $nameproduct, typeproduct: $typeproduct, numberproduct: $numberproduct, priceproduct: $priceproduct, detailproduct: $detailproduct, imagesproduct: $imagesproduct)';
+    return 'ProductModel(id: $id, idproduct: $idproduct, category: $category, nameproduct: $nameproduct, typeproduct: $typeproduct, numberproduct: $numberproduct, priceproduct: $priceproduct, detailproduct: $detailproduct, imagesproduct: $imagesproduct)';
   }
 
   @override
@@ -85,6 +91,7 @@ class ProductModel {
     return other is ProductModel &&
       other.id == id &&
       other.idproduct == idproduct &&
+      other.category == category &&
       other.nameproduct == nameproduct &&
       other.typeproduct == typeproduct &&
       other.numberproduct == numberproduct &&
@@ -97,6 +104,7 @@ class ProductModel {
   int get hashCode {
     return id.hashCode ^
       idproduct.hashCode ^
+      category.hashCode ^
       nameproduct.hashCode ^
       typeproduct.hashCode ^
       numberproduct.hashCode ^

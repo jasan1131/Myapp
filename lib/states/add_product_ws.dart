@@ -18,7 +18,8 @@ class AddProductWholeSale extends StatefulWidget {
 }
 
 class _AddProductWholeSaleState extends State<AddProductWholeSale> {
-  String? typeProduct;
+  String? typeproduct;
+  String? category;
   final formKey = GlobalKey<FormState>();
   List<File?> files = [];
   File? file;
@@ -134,15 +135,16 @@ class _AddProductWholeSaleState extends State<AddProductWholeSale> {
               SharedPreferences preference =
                   await SharedPreferences.getInstance();
 
-              String idProduct = preference.getString('id')!;
-              String nameProduct = NameProductController.text;
-              String numberProduct = NumberProductController.text;
-              String priceProduct = PriceProductController.text;
-              String detailProduct = DetailProductController.text;
-              String imageProduct = paths.toString();
+              String idproduct = preference.getString('id')!;
+              String category = 'productwholesale';
+              String nameproduct = NameProductController.text;
+              String numberproduct = NumberProductController.text;
+              String priceproduct = PriceProductController.text;
+              String detailproduct = DetailProductController.text;
+              String imagesproduct = paths.toString();
 
               String path =
-                  '${MyConstant.domain}/shopping/insertProductWholeSale.php?isAdd=true&idProduct=$idProduct&nameProduct=$nameProduct&typeProduct=$typeProduct&numberProduct=$numberProduct&priceProduct=$priceProduct&detailProduct=$detailProduct&imageProduct=$imageProduct';
+                  '${MyConstant.domain}/shopping/insertProduct.php?isAdd=true&idproduct=$idproduct&category=$category&nameproduct=$nameproduct&typeproduct=$typeproduct&numberproduct=$numberproduct&priceproduct=$priceproduct&detailproduct=$detailproduct&imagesproduct=$imagesproduct';
 
               await Dio().get(path).then((value) => Navigator.pop(context));
 
@@ -318,7 +320,7 @@ class _AddProductWholeSaleState extends State<AddProductWholeSale> {
     return Container(
       width: constraints.maxWidth * 0.75,
       margin: EdgeInsets.only(top: 16),
-      child: TextFormField(
+      child: TextFormField(keyboardType: TextInputType.phone,
         controller: NumberProductController,
         decoration: InputDecoration(
           hintText: 'จำนวนสินค้า :',
@@ -423,11 +425,11 @@ class _AddProductWholeSaleState extends State<AddProductWholeSale> {
           width: size * 0.6,
           child: RadioListTile(
             value: 'vegetables',
-            groupValue: typeProduct,
+            groupValue: typeproduct,
             onChanged: (value) {
               setState(
                 () {
-                  typeProduct = value as String?;
+                  typeproduct = value as String?;
                 },
               );
             },
@@ -449,11 +451,11 @@ class _AddProductWholeSaleState extends State<AddProductWholeSale> {
           width: size * 0.6,
           child: RadioListTile(
             value: 'meet',
-            groupValue: typeProduct,
+            groupValue: typeproduct,
             onChanged: (value) {
               setState(
                 () {
-                  typeProduct = value as String?;
+                  typeproduct = value as String?;
                 },
               );
             },
@@ -475,11 +477,11 @@ class _AddProductWholeSaleState extends State<AddProductWholeSale> {
           width: size * 0.6,
           child: RadioListTile(
             value: 'dryGoods',
-            groupValue: typeProduct,
+            groupValue: typeproduct,
             onChanged: (value) {
               setState(
                 () {
-                  typeProduct = value as String?;
+                  typeproduct = value as String?;
                 },
               );
             },
@@ -501,11 +503,11 @@ class _AddProductWholeSaleState extends State<AddProductWholeSale> {
           width: size * 0.6,
           child: RadioListTile(
             value: 'condiments',
-            groupValue: typeProduct,
+            groupValue: typeproduct,
             onChanged: (value) {
               setState(
                 () {
-                  typeProduct = value as String?;
+                  typeproduct = value as String?;
                 },
               );
             },
