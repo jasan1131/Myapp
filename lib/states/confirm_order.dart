@@ -1,13 +1,12 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/models/splite_model.dart';
-import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
+import 'package:flutter_myappication_1/utility/my_dialog.dart';
 import 'package:flutter_myappication_1/utility/sqlite_helpper.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,49 +18,28 @@ class ConfirmOrder extends StatefulWidget {
 }
 
 class _ConfirmOrderState extends State<ConfirmOrder> {
-  List<SQLiteModel> sqlitemodels = [];
-  UserModel? userModel;
-  String? dateOrde;
-  String? timeOrder;
+  String? distance;
+  List<SQLiteModel> sqliteModels = [];
   bool load = true;
-  bool? haveData;
   int? total;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    FinedOrderDate();
-    FindOrderTime();
-    processReadSQLite();
+    processReadSqlite();
   }
 
-  void FinedOrderDate() {
-    DateTime dateTime = DateTime.now();
-    DateFormat dateFormat = DateFormat('dd/MM/yyyy');
-    setState(() {
-      dateOrde = dateFormat.format(dateTime);
-    });
-    // print('#### DateTime ==>> $dateStr');
-  }
-
-  void FindOrderTime() {
-    DateTime dateTimes = DateTime.now();
-    DateFormat dateFormats = DateFormat('HH:mm:ss');
-    setState(() {
-      timeOrder = dateFormats.format(dateTimes);
-    });
-    // print('#### DateTime ==>> $timeOrder');
-  }
-
-  Future<Null> processReadSQLite() async {
-    if (sqlitemodels.isNotEmpty) {
-      sqlitemodels.clear();
+  Future<Null> processReadSqlite() async {
+    if (sqliteModels.isNotEmpty) {
+      sqliteModels.clear();
     }
+
     await SQLiteHelpper().readSQLite().then((value) {
+      print('### value on processReadSQlite ==>> $value');
       setState(() {
         load = false;
-        sqlitemodels = value;
+        sqliteModels = value;
         calculateTotal();
       });
     });
@@ -69,7 +47,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
 
   void calculateTotal() async {
     total = 0;
-    for (var item in sqlitemodels) {
+    for (var item in sqliteModels) {
       int sumInt = int.parse(item.sum.trim());
       setState(() {
         total = total! + sumInt;
@@ -82,8 +60,8 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => Navigator.pushNamedAndRemoveUntil(
-              context, MyConstant.rounteShowCart, (route) => false),
+          onPressed: () =>
+              Navigator.pushNamed(context, MyConstant.rounteBuyerShowShopSeller),
           icon: Icon(Icons.arrow_back),
         ),
         centerTitle: true,
@@ -91,9 +69,8 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
       ),
       body: load
           ? ShowProgress()
-          : haveData!
-              ? buildContent()
-              : Column(
+          : sqliteModels.isEmpty
+              ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Center(
@@ -102,20 +79,13 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                           textStyle: MyConstant().h1Style()),
                     ),
                   ],
-                ),
-      floatingActionButton: FloatingActionButton.extended(
-        label: Text('ยืนยันสินค้า'),
-        onPressed: () {
-          showAlertDialog();
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+                )
+              : buildContent(),
     );
   }
 
   Widget buildContent() {
-    return Container(
-      decoration: MyConstant().planBackground(),
+    return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -131,75 +101,74 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
               ),
             ],
           ),
-          buildDateTime(),
+          buildDivider(),
+          buildNameShop(),
           buildHead(),
           listProductOrder(),
           buildDivider(),
           buildTotal(),
           buildDivider(),
-          // buttonController(),
+          buttonController(),
         ],
       ),
     );
   }
 
-  Widget buildDateTime() {
-    return Column(
-      children: [
-        ShowTitle(
-          title: 'วันเวลาที่สั่งสินค้า',
-          textStyle: MyConstant().h2Style(),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ShowTitle(
-                title: dateOrde == null ? 'dd/mm/yy' : dateOrde!,
+  Widget buildNameShop() {
+    return Container(
+      margin: EdgeInsets.only(bottom: 8),
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              ShowTitle(
+                title: 'ร้าน : ${sqliteModels[0].nameSeller}',
               ),
-            ),
-            ShowTitle(
-              title: timeOrder == null ? 'HH:mm:ss' : timeOrder!,
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              ShowTitle(
+                title: 'ระยะทาง : ${sqliteModels[0].distance} กิโลเมตร',
+              ),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              ShowTitle(
+                title: 'ค่าจัดส่ง : ${sqliteModels[0].transport} บาท',
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
-  // 
-  Future<Null> showAlertDialog() async {
-    showDialog(
-        context: context,
-        builder: (context) => StatefulBuilder(
-              builder: (context, setState) => AlertDialog(
-                title: ListTile(
-                  title: Text('data'),
-                ),
-                content: ListView.builder(
-                  itemCount: sqlitemodels.length,
-                  itemBuilder: (context, index) => Column(
-                    children: [
-                      Text('data'),
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.add),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ));
+  Widget buttonController() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            onPressed: () {
+              ordreThread();
+            },
+            child: Text('Order'),
+          ),
+        ),
+      ],
+    );
   }
 
   Row buildTotal() {
     return Row(
       children: [
         Expanded(
-          flex: 1,
+          flex: 4,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ShowTitle(
                 title: 'Total :',
@@ -209,10 +178,13 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
           ),
         ),
         Expanded(
-          flex: 4,
-          child: ShowTitle(
-            title: total == null ? '' : total.toString(),
-            textStyle: MyConstant().h2Style(),
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 14),
+            child: ShowTitle(
+              title: total == null ? '' : total.toString(),
+              textStyle: MyConstant().h2Style(),
+            ),
           ),
         ),
       ],
@@ -229,9 +201,9 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
     return ListView.builder(
       shrinkWrap: true,
       physics: ScrollPhysics(),
-      itemCount: sqlitemodels.length,
+      itemCount: sqliteModels.length,
       itemBuilder: (context, index) => Padding(
-        padding: const EdgeInsets.only(top: 8, bottom: 4),
+        padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
             Expanded(
@@ -239,7 +211,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 8),
                 child: ShowTitle(
-                  title: sqlitemodels[index].nameProduct,
+                  title: sqliteModels[index].nameProduct,
                   textStyle: MyConstant().h3Style(),
                 ),
               ),
@@ -249,7 +221,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 12),
                 child: ShowTitle(
-                  title: sqlitemodels[index].priceProduct,
+                  title: sqliteModels[index].priceProduct,
                   textStyle: MyConstant().h3Style(),
                 ),
               ),
@@ -259,7 +231,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 16),
                 child: ShowTitle(
-                  title: sqlitemodels[index].amount,
+                  title: sqliteModels[index].amount,
                   textStyle: MyConstant().h3Style(),
                 ),
               ),
@@ -269,10 +241,14 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 16),
                 child: ShowTitle(
-                  title: sqlitemodels[index].sum,
+                  title: sqliteModels[index].sum,
                   textStyle: MyConstant().h3Style(),
                 ),
               ),
+            ),
+            Expanded(
+              flex: 1,
+              child: SizedBox(),
             ),
           ],
         ),
@@ -314,16 +290,82 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
             Expanded(
               flex: 1,
               child: Padding(
-                padding: const EdgeInsets.only(left: 12),
+                padding: const EdgeInsets.only(left: 8),
                 child: ShowTitle(
                   title: 'รวม',
                   textStyle: MyConstant().h2Style(),
                 ),
               ),
             ),
+            Expanded(
+              flex: 1,
+              child: SizedBox(),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  Future<Null> ordreThread() async {
+    DateTime orderDateOrder = DateTime.now();
+    DateTime orderTimeOrder = DateTime.now();
+
+    String dateOrder = DateFormat('dd-MM-yyyy').format(orderDateOrder);
+    String timeOrder = DateFormat('HH:mm:ss').format(orderTimeOrder);
+
+    String idSeller = sqliteModels[0].idSeller;
+    String nameSeller = sqliteModels[0].nameSeller;
+    String distance = sqliteModels[0].distance;
+    String transport = sqliteModels[0].transport;
+
+    List<String> idProducts = [];
+    List<String> nameProducts = [];
+    List<String> priceProducts = [];
+    List<String> amounts = [];
+    List<String> sums = [];
+
+    for (var model in sqliteModels) {
+      idProducts.add(model.idProduct);
+      nameProducts.add(model.nameProduct);
+      priceProducts.add(model.priceProduct);
+      amounts.add(model.amount);
+      sums.add(model.sum);
+    }
+
+    String idProduct = idProducts.toString();
+    String nameProduct = nameProducts.toString();
+    String priceProduct = priceProducts.toString();
+    String amount = amounts.toString();
+    String sum = sums.toString();
+    String totals = total.toString();
+
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    String idBuyer = preferences.getString('id')!;
+    String nameBuyer = preferences.getString('name')!;
+
+    // print('dateOrdre = $dateOrder, timeOrder = $timeOrder');
+    // print('idSeller = $idSeller, nameSeller = $nameSeller, distance = $distance, transport = $transport');
+    print('idProduct = $idProduct, nameProduct = $nameProduct, idBuyer = $idBuyer, nameBuyer = $nameBuyer, priceProduct = $priceProduct, amount = $amount, sum = $sum, total = $totals');
+
+    String url = '${MyConstant.domain}/shopping/insertOrder.php?isAdd=true&idSeller=$idSeller&nameSeller=$nameSeller&idBuyer=$idBuyer&nameBuyer=$nameBuyer&distance=$distance&transport=$transport&dateOrder=$dateOrder&timeOrder=$timeOrder&idProduct=$idProduct&nameProduct=$nameProduct&priceProduct=$priceProduct&amount=$amount&sum=$sum&total=$total&status=awaitOrder';
+    await Dio().get(url).then((value) {
+      if (value.toString() == 'true') {
+        clearAllSqlite();
+      } else {
+        MyDialog().normalDialog(context, 'ไม่สามารทำรายการได้', 'กรุณารองใหม่');
+      }
+    });
+  }
+
+  Future<Null> clearAllSqlite() async {
+    Fluttertoast.showToast(
+      msg: 'ทำรายการเสร็จสิน',
+      toastLength: Toast.LENGTH_LONG,
+    );
+    await SQLiteHelpper().emptySQLite().then((value) {
+      processReadSqlite();
+    });
   }
 }

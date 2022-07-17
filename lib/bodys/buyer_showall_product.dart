@@ -6,63 +6,85 @@ import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/models/product_model.dart';
 import 'package:flutter_myappication_1/models/splite_model.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
+import 'package:flutter_myappication_1/utility/my_api.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/utility/sqlite_helpper.dart';
 import 'package:flutter_myappication_1/widgets/show_image.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
+import 'package:intl/intl.dart';
+import 'package:location/location.dart';
 
 class BuyerShowAllProduct extends StatefulWidget {
-  const BuyerShowAllProduct({Key? key}) : super(key: key);
+  final UserModel userModel;
+  const BuyerShowAllProduct({Key? key, required this.userModel})
+      : super(key: key);
 
   @override
   State<BuyerShowAllProduct> createState() => _BuyerShowAllProductState();
 }
 
 class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
+  UserModel? userModel;
   bool load = true;
   bool? haveData;
   List<ProductModel> productmodels = [];
   List<List<String>> listImages = [];
   int indexImage = 0;
   int amountInt = 1;
+  double? lat1, lng1, lat2, lng2;
+  Location location = Location();
   String? currentIdSeller;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    userModel = widget.userModel;
     readApiAllShop();
+    findLocation();
+  }
+
+  Future<Null> findLocation() async {
+    location.onLocationChanged.listen((event) {
+      lat1 = event.latitude;
+      lng1 = event.longitude;
+    });
   }
 
   Future<Null> readApiAllShop() async {
-    String urlAPI = '${MyConstant.domain}/shopping/getProductWhereIdSeller.php';
-    await Dio().get(urlAPI).then((value) {
-      if (value.toString() == 'null') {
-        haveData = false;
-        load = false;
-      } else {
-        for (var item in json.decode(value.data)) {
-          ProductModel model = ProductModel.fromMap(item);
-
-          String string = model.imagesproduct;
-          string = string.substring(1, string.length - 1);
-          List<String> strings = string.split(',');
-          int i = 0;
-          for (var item in strings) {
-            strings[i] = item.trim();
-            i++;
-          }
-          listImages.add(strings);
-
+    String urlAPI =
+        '${MyConstant.domain}/shopping/getProductWhereIdSeller.php?isAdd=true&idproduct=${userModel!.id}';
+    await Dio().get(urlAPI).then(
+      (value) {
+        if (value.toString() == 'null') {
           setState(() {
-            haveData = true;
+            haveData = false;
             load = false;
-            productmodels.add(model);
           });
+        } else {
+          for (var item in json.decode(value.data)) {
+            ProductModel model = ProductModel.fromMap(item);
+
+            String string = model.imagesproduct;
+            string = string.substring(1, string.length - 1);
+            List<String> strings = string.split(',');
+            int i = 0;
+            for (var item in strings) {
+              strings[i] = item.trim();
+              i++;
+            }
+            listImages.add(strings);
+
+            setState(() {
+              haveData = true;
+              load = false;
+              productmodels.add(model);
+            });
+          }
         }
-      }
-    });
+      },
+    );
   }
 
   @override
@@ -416,6 +438,8 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
               children: [
                 TextButton(
                   onPressed: () async {
+                    String idSeller = userModel!.id;
+                    String nameSeller = userModel!.name;
                     String idProduct = productmodel.id;
                     String nameProduct = productmodel.nameproduct;
                     String priceProduct = productmodel.priceproduct;
@@ -423,12 +447,29 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
                     int sunInt = int.parse(priceProduct) * amountInt;
                     String sum = sunInt.toString();
 
+                    lat2 = double.parse(userModel!.lat);
+                    lng2 = double.parse(userModel!.lng);
+
+                    double distance =
+                        MyAPI().calculateDistance(lat1!, lng1!, lat2!, lng2!);
+
+                    var myFormat = NumberFormat('##0.0#', 'en_US');
+                    String distancestring = myFormat.format(distance);
+
+                    int transport = MyAPI().calculateTransport(distance);
+                    print(
+                        'idproduct = $idProduct, namproduct = $nameProduct, priceproduct = $priceProduct, amount = $amount, sum = $sum, distance = $distancestring, transport = $transport');
+
                     SQLiteModel sqLiteModel = SQLiteModel(
+                        idSeller: idSeller,
+                        nameSeller: nameSeller,
                         idProduct: idProduct,
                         nameProduct: nameProduct,
                         priceProduct: priceProduct,
                         amount: amount,
-                        sum: sum);
+                        sum: sum,
+                        distance: distancestring,
+                        transport: transport.toString());
                     await SQLiteHelpper()
                         .insertValueSQLite(sqLiteModel)
                         .then((value) {

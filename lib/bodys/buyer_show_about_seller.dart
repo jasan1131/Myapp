@@ -6,9 +6,9 @@ import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
-
 
 class ShowAboutSeller extends StatefulWidget {
   final UserModel userModel;
@@ -22,19 +22,20 @@ class _ShowAboutSellerState extends State<ShowAboutSeller> {
   UserModel? userModel;
   double? lat1, lng1, lat2, lng2, distance;
   String? distanceString;
-
+  int? transport;
+  CameraPosition? position;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     userModel = widget.userModel;
-    
+
     findLat1Lng1();
   }
 
-  Future<Null> findLat1Lng1()async{
-    LocationData? locationData  = await finalLocationData();
+  Future<Null> findLat1Lng1() async {
+    LocationData? locationData = await finalLocationData();
     setState(() {
       lat1 = locationData!.latitude;
       lng1 = locationData.longitude;
@@ -46,8 +47,22 @@ class _ShowAboutSellerState extends State<ShowAboutSeller> {
       var myFormat = NumberFormat('##.0#', 'en_US');
       distanceString = myFormat.format(distance);
 
+      transport = calculateTransport(distance!);
+
       print('distance = $distance');
+      print('transport ==> $transport');
     });
+  }
+
+  int calculateTransport(double distance) {
+    int transport;
+    if (distance < 1.0) {
+      transport = 5;
+      return transport;
+    } else {
+      transport = 5 + (distance - 1).round() * 1;
+      return transport;
+    }
   }
 
   double calculateDistance(double lat1, double lng1, double lat2, double lng2) {
@@ -63,7 +78,7 @@ class _ShowAboutSellerState extends State<ShowAboutSeller> {
     return distance;
   }
 
-  Future<LocationData?> finalLocationData()async{
+  Future<LocationData?> finalLocationData() async {
     Location location = Location();
     try {
       return await location.getLocation();
@@ -78,46 +93,102 @@ class _ShowAboutSellerState extends State<ShowAboutSeller> {
       body: userModel == null
           ? ShowProgress()
           : LayoutBuilder(
-              builder: (context, constraints) => Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.symmetric(vertical: 16),
-                            width: constraints.maxWidth * 0.6,
-                            child: CachedNetworkImage(
-                              imageUrl:
-                                  '${MyConstant.domain}${userModel!.avatar}',
-                              placeholder: (context, url) => ShowProgress(),
+              builder: (context, constraints) => SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 16),
+                              width: constraints.maxWidth * 0.6,
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                    '${MyConstant.domain}${userModel!.avatar}',
+                                placeholder: (context, url) => ShowProgress(),
+                              ),
                             ),
+                          ],
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.home_outlined),
+                          title: ShowTitle(title: userModel!.address),
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.phone_outlined),
+                          title: ShowTitle(title: userModel!.phone),
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.local_shipping_outlined),
+                          title: ShowTitle(
+                              title: distance == null
+                                  ? ''
+                                  : '$distanceString กิโลเมตร'),
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.transfer_within_a_station),
+                          title: ShowTitle(
+                            title: transport == null ? '' : '$transport บาท',
                           ),
-                        ],
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.home_outlined),
-                        title: ShowTitle(title: userModel!.address),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.phone_outlined),
-                        title: ShowTitle(title: userModel!.phone),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.local_shipping_outlined),
-                        title: ShowTitle(title: distance == null ? '' : '$distanceString กิโลเมตร'),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.transfer_within_a_station),
-                        title: ShowTitle(title: '100 บาท'),
-                      ),
-                    ],
+                        ),
+                        showmap(),
+                      ],
+                    ),
                   ),
                 ),
               ),
+            ),
+    );
+  }
+
+  Container showmap() {
+    if (lat1 != null) {
+      LatLng latLng1 = LatLng(lat1!, lng1!);
+      position = CameraPosition(
+        target: latLng1,
+        zoom: 10.0,
+      );
+    }
+    Marker userMarker() {
+      return Marker(
+        markerId: MarkerId('userMarker'),
+        position: LatLng(lat1!, lng1!),
+        icon: BitmapDescriptor.defaultMarkerWithHue(60.0),
+        infoWindow: InfoWindow(title: 'คุณอยู่ที่นี้'),
+      );
+    }
+
+    Marker shopMarker() {
+      return Marker(
+        markerId: MarkerId('shopMarker'),
+        position: LatLng(lat2!, lng2!),
+        icon: BitmapDescriptor.defaultMarkerWithHue(150.0),
+        infoWindow: InfoWindow(title: userModel!.name),
+      );
+    }
+
+    Set<Marker> mySet(){
+      return <Marker>[userMarker(), shopMarker()].toSet();
+    }
+
+    return Container(
+      margin: EdgeInsets.only(
+        left: 16,
+        right: 16,
+        top: 16,
+        bottom: 16,
+      ),
+      height: 250,
+      child: lat1 == null
+          ? ShowProgress()
+          : GoogleMap(
+              initialCameraPosition: position!,
+              mapType: MapType.normal,
+              onMapCreated: (context) {},markers: mySet(),
             ),
     );
   }

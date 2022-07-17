@@ -7,11 +7,15 @@ class SQLiteHelpper {
   final int version = 1;
   final String tableDatabase = 'tableOrder';
   final String columId = 'id';
+  final String columIdSeller = 'idSeller';
+  final String columNameSeller = 'nameSeller';
   final String columIdProduct = 'idProduct';
   final String columNameProduct = 'nameProduct';
   final String columPriceProduct = 'priceProduct';
   final String columAmount = 'amount';
   final String columSum = 'sum';
+  final String columDistance = 'distance';
+  final String columTrasport = 'transport';
 
   SQLiteHelpper() {
     initialDatabase();
@@ -21,15 +25,13 @@ class SQLiteHelpper {
     await openDatabase(
       join(await getDatabasesPath(), nameDetabase),
       onCreate: (db, version) => db.execute(
-          'CREATE TABLE $tableDatabase ($columId INTEGER PRIMARY KEY, $columIdProduct TEXT, $columNameProduct TEXT, $columPriceProduct TEXT, $columAmount TEXT, $columSum TEXT)'),
+          'CREATE TABLE $tableDatabase ($columId INTEGER PRIMARY KEY, $columIdSeller TEXT, $columNameSeller TEXT, $columIdProduct TEXT, $columNameProduct TEXT, $columPriceProduct TEXT, $columAmount TEXT, $columSum TEXT, $columDistance TEXT, $columTrasport TEXT)'),
       version: version,
     );
   }
 
   Future<Database> connectedDatabase() async {
-    return await openDatabase(
-      join(await getDatabasesPath(), nameDetabase),
-    );
+    return await openDatabase(join(await getDatabasesPath(), nameDetabase));
   }
 
   Future<List<SQLiteModel>> readSQLite() async {

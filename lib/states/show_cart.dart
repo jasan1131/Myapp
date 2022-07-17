@@ -14,6 +14,7 @@ class ShowCart extends StatefulWidget {
 }
 
 class _ShowCartState extends State<ShowCart> {
+  String? distance;
   List<SQLiteModel> sqliteModels = [];
   bool load = true;
   int? total;
@@ -31,7 +32,7 @@ class _ShowCartState extends State<ShowCart> {
     }
 
     await SQLiteHelpper().readSQLite().then((value) {
-      // print('### value on processReadSQlite ==>> $value');
+      print('### value on processReadSQlite ==>> $value');
       setState(() {
         load = false;
         sqliteModels = value;
@@ -45,7 +46,7 @@ class _ShowCartState extends State<ShowCart> {
     for (var item in sqliteModels) {
       int sumInt = int.parse(item.sum.trim());
       setState(() {
-        total = total! + sumInt;
+        total = total! + sumInt; 
       });
     }
   }
@@ -55,7 +56,7 @@ class _ShowCartState extends State<ShowCart> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Show Cart'),
+        title: Text('ตระกร้าสินค้า'),
       ),
       body: load
           ? ShowProgress()
@@ -74,7 +75,7 @@ class _ShowCartState extends State<ShowCart> {
     );
   }
 
-  SingleChildScrollView buildContent() {
+  Widget buildContent() {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,12 +92,39 @@ class _ShowCartState extends State<ShowCart> {
               ),
             ],
           ),
+          buildDivider(),
+          buildNameShop(),
           buildHead(),
           listProductOrder(),
           buildDivider(),
           buildTotal(),
           buildDivider(),
           buttonController(),
+        ],
+      ),
+    );
+  }
+
+   Widget buildNameShop() {
+    return Container(
+      margin: EdgeInsets.only(bottom: 8),
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              ShowTitle(title: 'ร้าน : ${sqliteModels[0].nameSeller}',),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              ShowTitle(title: 'ระยะทาง : ${sqliteModels[0].distance} กิโลเมตร' ,),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              ShowTitle(title: 'ค่าจัดส่ง : ${sqliteModels[0].transport} บาท',),
+            ],
+          ),
         ],
       ),
     );
@@ -127,11 +155,11 @@ class _ShowCartState extends State<ShowCart> {
               });
 
             },
-            child: Text('Delete'),
+            child: Text('ลบ'),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel'),
+            child: Text('ยกเลิก'),
           ),
         ],
       ),
@@ -144,15 +172,15 @@ class _ShowCartState extends State<ShowCart> {
       children: [
         ElevatedButton(
           onPressed: () {
-            Navigator.pushNamed(context, MyConstant.rounteConfirmOrder);
+            Navigator.pushNamed(context, MyConstant.rounteConfirmAddWallet);
           },
-          child: Text('Order'),
+          child: Text('ยืนยัย'),
         ),
         Container(
           margin: EdgeInsets.only(left: 4, right: 8),
           child: ElevatedButton(
             onPressed: () => confirmEmptyCart(),
-            child: Text('Empty'),
+            child: Text('ลบทั้งหมด'),
           ),
         ),
       ],

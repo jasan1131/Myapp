@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_myappication_1/bodys/buyer_show_about_seller.dart';
 import 'package:flutter_myappication_1/bodys/buyer_show_deliverystatus.dart';
+import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/states/add_product.dart';
 import 'package:flutter_myappication_1/states/add_product_sp.dart';
 import 'package:flutter_myappication_1/states/add_product_ws.dart';
@@ -9,7 +11,6 @@ import 'package:flutter_myappication_1/states/add_wallet.dart';
 import 'package:flutter_myappication_1/states/admin.dart';
 import 'package:flutter_myappication_1/states/authen.dart';
 import 'package:flutter_myappication_1/states/buyer_sevice.dart';
-import 'package:flutter_myappication_1/states/buyer_show_shop_seller.dart';
 import 'package:flutter_myappication_1/states/confirm_add_wallet.dart';
 import 'package:flutter_myappication_1/states/confirm_order.dart';
 import 'package:flutter_myappication_1/states/create_account.dart';

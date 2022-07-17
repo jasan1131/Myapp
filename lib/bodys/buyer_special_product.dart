@@ -4,32 +4,53 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/models/product_model.dart';
+import 'package:flutter_myappication_1/models/splite_model.dart';
+import 'package:flutter_myappication_1/models/user_models.dart';
+import 'package:flutter_myappication_1/utility/my_api.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
+import 'package:flutter_myappication_1/utility/sqlite_helpper.dart';
 import 'package:flutter_myappication_1/widgets/show_image.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
+import 'package:intl/intl.dart';
+import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BuyerSpecialProduct extends StatefulWidget {
-  const BuyerSpecialProduct({Key? key}) : super(key: key);
+  final UserModel userModel;
+  const BuyerSpecialProduct({Key? key, required this.userModel})
+      : super(key: key);
 
   @override
   State<BuyerSpecialProduct> createState() => _BuyerSpecialProductState();
 }
 
 class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
+  UserModel? userModel;
   bool load = true;
   bool? haveData;
   List<ProductModel> productmoduls = [];
   List<List<String>> listImages = [];
   int indexImage = 0;
   int amountInt = 1;
+  double? lat1, lng1, lat2, lng2;
+  Location location = Location();
+  String? currentIdSeller;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    userModel = widget.userModel;
     readApiAllShop();
+    findLocation();
+  }
+
+  Future<Null> findLocation() async {
+    location.onLocationChanged.listen((event) {
+      lat1 = event.latitude;
+      lng1 = event.longitude;
+    });
   }
 
   Future<Null> readApiAllShop() async {
@@ -143,7 +164,8 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       child: CachedNetworkImage(
                         fit: BoxFit.fill,
-                        imageUrl: findUrlImage(productmoduls[index].imagesproduct),
+                        imageUrl:
+                            findUrlImage(productmoduls[index].imagesproduct),
                         placeholder: (context, url) => ShowProgress(),
                         errorWidget: (context, url, error) =>
                             ShowImage(path: MyConstant.imageeror),
@@ -221,7 +243,8 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       child: CachedNetworkImage(
                         fit: BoxFit.fill,
-                        imageUrl: findUrlImage(productmoduls[index].imagesproduct),
+                        imageUrl:
+                            findUrlImage(productmoduls[index].imagesproduct),
                         placeholder: (context, url) => ShowProgress(),
                         errorWidget: (context, url, error) =>
                             ShowImage(path: MyConstant.imageeror),
@@ -416,22 +439,44 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
               children: [
                 TextButton(
                   onPressed: () async {
-                    SharedPreferences preferences = await SharedPreferences.getInstance();
-                    var idBuyer = preferences.getString('id');
-                    var nameBuyer = preferences.getString('name');
-                    String idSeller = productModel.idproduct;
+                    String idSeller = userModel!.id;
+                    String nameSeller = userModel!.name;
                     String idProduct = productModel.id;
                     String nameProduct = productModel.nameproduct;
                     String priceProduct = productModel.priceproduct;
                     String amount = amountInt.toString();
-                    int sumInt = int.parse(priceProduct) * amountInt;
-                    String sum = sumInt.toString();
+                    int sunInt = int.parse(priceProduct) * amountInt;
+                    String sum = sunInt.toString();
 
-                    String SqliteOrder =
-                        '${MyConstant.domain}/shopping/insertOrderSqlite.php?isAdd=true&idSeller=$idSeller&nameBuyer=$nameBuyer&idBuyer=$idBuyer&idProduct=$idProduct&nameProduct=$nameProduct&priceProduct=$priceProduct&amount=$amount&sum=$sum';
-                    await Dio().get(SqliteOrder).then(
-                          (value) => Navigator.pop(context),
-                        );
+                    lat2 = double.parse(userModel!.lat);
+                    lng2 = double.parse(userModel!.lng);
+
+                    double distance =
+                        MyAPI().calculateDistance(lat1!, lng1!, lat2!, lng2!);
+
+                    var myFormat = NumberFormat('##0.0#', 'en_US');
+                    String distancestring = myFormat.format(distance);
+
+                    int transport = MyAPI().calculateTransport(distance);
+                    print(
+                        'idproduct = $idProduct, namproduct = $nameProduct, priceproduct = $priceProduct, amount = $amount, sum = $sum, distance = $distancestring, transport = $transport');
+
+                    SQLiteModel sqLiteModel = SQLiteModel(
+                        idSeller: idSeller,
+                        nameSeller: nameSeller,
+                        idProduct: idProduct,
+                        nameProduct: nameProduct,
+                        priceProduct: priceProduct,
+                        amount: amount,
+                        sum: sum,
+                        distance: distancestring,
+                        transport: transport.toString());
+                    await SQLiteHelpper()
+                        .insertValueSQLite(sqLiteModel)
+                        .then((value) {
+                      amountInt = 1;
+                      Navigator.pop(context);
+                    });
                   },
                   child: ShowTitle(
                     title: 'Add',

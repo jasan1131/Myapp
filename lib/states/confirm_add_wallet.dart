@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_myappication_1/models/splite_model.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/utility/my_dialog.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
@@ -57,8 +56,7 @@ class _ConfirmAddWalletState extends State<ConfirmAddWallet> {
         centerTitle: true,
         title: Text('ชำระเงิน'),
         leading: IconButton(
-          onPressed: () => Navigator.pushNamedAndRemoveUntil(
-              context, MyConstant.rounteAddWallet, (route) => false),
+          onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.arrow_back),
         ),
       ),
@@ -128,7 +126,7 @@ class _ConfirmAddWalletState extends State<ConfirmAddWallet> {
   }
 
   void success(){
-    Navigator.pushNamedAndRemoveUntil(context, MyConstant.rounteConfirmOrder, (route) => false);
+    Navigator.pushNamed(context, MyConstant.rounteConfirmOrder);
   }
 
   Future<void> processTakePhoto(ImageSource source) async {
