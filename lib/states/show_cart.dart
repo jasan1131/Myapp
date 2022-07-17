@@ -44,9 +44,10 @@ class _ShowCartState extends State<ShowCart> {
   void calculateTotal() async {
     total = 0;
     for (var item in sqliteModels) {
+      int sql = int.parse(item.transport);
       int sumInt = int.parse(item.sum.trim());
       setState(() {
-        total = total! + sumInt; 
+        total = total! + sumInt + sql;
       });
     }
   }

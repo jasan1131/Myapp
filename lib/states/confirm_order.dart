@@ -48,9 +48,10 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
   void calculateTotal() async {
     total = 0;
     for (var item in sqliteModels) {
+      int sql = int.parse(item.transport);
       int sumInt = int.parse(item.sum.trim());
       setState(() {
-        total = total! + sumInt;
+        total = total! + sumInt + sql;
       });
     }
   }
@@ -60,8 +61,8 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () =>
-              Navigator.pushNamed(context, MyConstant.rounteBuyerShowShopSeller),
+          onPressed: () => Navigator.pushNamed(
+              context, MyConstant.rounteBuyerShowShopSeller),
           icon: Icon(Icons.arrow_back),
         ),
         centerTitle: true,
@@ -162,7 +163,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
     );
   }
 
-  Row buildTotal() {
+  Widget buildTotal() {
     return Row(
       children: [
         Expanded(
@@ -347,9 +348,11 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
 
     // print('dateOrdre = $dateOrder, timeOrder = $timeOrder');
     // print('idSeller = $idSeller, nameSeller = $nameSeller, distance = $distance, transport = $transport');
-    print('idProduct = $idProduct, nameProduct = $nameProduct, idBuyer = $idBuyer, nameBuyer = $nameBuyer, priceProduct = $priceProduct, amount = $amount, sum = $sum, total = $totals');
+    print(
+        'idProduct = $idProduct, nameProduct = $nameProduct, idBuyer = $idBuyer, nameBuyer = $nameBuyer, priceProduct = $priceProduct, amount = $amount, sum = $sum, total = $totals');
 
-    String url = '${MyConstant.domain}/shopping/insertOrder.php?isAdd=true&idSeller=$idSeller&nameSeller=$nameSeller&idBuyer=$idBuyer&nameBuyer=$nameBuyer&distance=$distance&transport=$transport&dateOrder=$dateOrder&timeOrder=$timeOrder&idProduct=$idProduct&nameProduct=$nameProduct&priceProduct=$priceProduct&amount=$amount&sum=$sum&total=$total&status=awaitOrder';
+    String url =
+        '${MyConstant.domain}/shopping/insertOrder.php?isAdd=true&idSeller=$idSeller&nameSeller=$nameSeller&idBuyer=$idBuyer&nameBuyer=$nameBuyer&distance=$distance&transport=$transport&dateOrder=$dateOrder&timeOrder=$timeOrder&idProduct=$idProduct&nameProduct=$nameProduct&priceProduct=$priceProduct&amount=$amount&sum=$sum&total=$total&status=awaitOrder';
     await Dio().get(url).then((value) {
       if (value.toString() == 'true') {
         clearAllSqlite();
