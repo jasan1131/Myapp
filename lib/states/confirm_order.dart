@@ -1,12 +1,14 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/models/splite_model.dart';
+import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/utility/my_dialog.dart';
 import 'package:flutter_myappication_1/utility/sqlite_helpper.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -61,8 +63,9 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => Navigator.pushNamed(
-              context, MyConstant.rounteBuyerShowShopSeller),
+          onPressed: () {
+            Navigator.pushNamedAndRemoveUntil(context, MyConstant.routeBuyerService, (route) => false);
+          },
           icon: Icon(Icons.arrow_back),
         ),
         centerTitle: true,
@@ -356,6 +359,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
     await Dio().get(url).then((value) {
       if (value.toString() == 'true') {
         clearAllSqlite();
+        notificationToShop(idSeller);
       } else {
         MyDialog().normalDialog(context, 'ไม่สามารทำรายการได้', 'กรุณารองใหม่');
       }
@@ -363,12 +367,30 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
   }
 
   Future<Null> clearAllSqlite() async {
-    Fluttertoast.showToast(
-      msg: 'ทำรายการเสร็จสิน',
-      toastLength: Toast.LENGTH_LONG,
+    MyDialog(funcAction: success).actionDialog(
+      context,
+      'ทำรายการเสร็จสิ้น',
+      'ขอบคุณที่ใช้บริการ',
     );
     await SQLiteHelpper().emptySQLite().then((value) {
       processReadSqlite();
+    });
+  }
+
+  void success() {
+    Navigator.pushNamed(context, MyConstant.routeBuyerService);
+  }
+
+  Future<Null> notificationToShop(String idSeller) async {
+    String urlFindToken = '${MyConstant.domain}/shopping/getUserWhereId.php?isAdd=true&id=$idSeller';
+    await Dio().get(urlFindToken).then((value) {
+      var result = json.decode(value.data);
+      print('result ==> $result');
+       for (var json in result) {
+        UserModel model = UserModel.fromMap(json);
+        String tokenShop = model.token;
+        print('tokenShop ==>> $tokenShop');
+      }
     });
   }
 }

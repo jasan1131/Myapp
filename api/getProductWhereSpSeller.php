@@ -16,11 +16,9 @@ if (!$link->set_charset("utf8")) {
 	}
 
 if (isset($_GET)) {
-	if ($_GET['isAdd'] == 'true') {
+	if (true) {
 				
-		$idproDuct = $_GET['idproDuct'];
-
-		$result = mysqli_query($link, "SELECT * FROM productspecial WHERE idproDuct = '$idproDuct'");
+		$result = mysqli_query($link, "SELECT * FROM product WHERE category = 'productspecial'");
 
 		if ($result) {
 
@@ -33,7 +31,7 @@ if (isset($_GET)) {
 
 		} //if
 
-	} else echo "Welcome Shopping123";	// if2
+	} else echo "Welcome Shopping";	// if2
    
 }	// if1
 

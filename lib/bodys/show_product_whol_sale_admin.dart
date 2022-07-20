@@ -38,7 +38,7 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String idproduct = preferences.getString('id')!;
     String apiGetProductSpWhereIdProductSp =
-        '${MyConstant.domain}/shopping/getProductWSWhereIdProductWS.php';
+        '${MyConstant.domain}/shopping/getProductWhereWsProduct.php';
     await Dio().get(apiGetProductSpWhereIdProductSp).then(
       (value) {
         // print('### value ==> $value');

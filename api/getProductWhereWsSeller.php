@@ -18,7 +18,7 @@ if (!$link->set_charset("utf8")) {
 if (isset($_GET)) {
 	if (true) {
 				
-		$result = mysqli_query($link, "SELECT * FROM product WHERE IdProduct = '3'");
+		$result = mysqli_query($link, "SELECT * FROM product WHERE category = 'productwholesale'");
 
 		if ($result) {
 

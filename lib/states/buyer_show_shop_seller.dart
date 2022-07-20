@@ -29,7 +29,7 @@ class _BuyerShowShopSellerState extends State<BuyerShowShopSeller> {
     userModel = widget.userModel;
     listWidgets.add(ShowAboutSeller(userModel: userModel!));
     listWidgets.add(BuyerShowAllProduct(userModel: userModel!));
-    listWidgets.add(BuyerProductType());
+    listWidgets.add(BuyerProductType(userModel: userModel!,));
     listWidgets.add(BuyerSpecialProduct(userModel: userModel!));
     listWidgets.add(BuyerWholeSaleProduct(userModel: userModel!,));
   }

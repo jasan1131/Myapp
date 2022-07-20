@@ -481,7 +481,8 @@ class _CreateAccountState extends State<CreateAccount> {
         '${MyConstant.domain}/shopping/insertUser.php?isAdd=true&avatar=$avatar&type=$type&name=$name&seconname=$seconname&user=$user&password=$password&address=$address&phone=$phone&lat=$lat&lng=$lng';
     await Dio().get(apiInsertUser).then((value) {
       if (value.toString() == 'true') {
-        Navigator.pushNamedAndRemoveUntil(context, MyConstant.routeAuthen, (route) => false);
+        Navigator.pushNamedAndRemoveUntil(
+            context, MyConstant.routeAuthen, (route) => false);
       } else {
         MyDialog().normalDialog(
             context, 'การสมัครสมาชิกล้มเหลว !!! ', 'กรุณาลองใหม่อีครั้ง');
@@ -498,20 +499,23 @@ class _CreateAccountState extends State<CreateAccount> {
         ),
       ].toSet();
 
-  Widget buildMap() => Container(
-        width: MediaQuery.of(context).size.width * 0.75,
-        height: 300,
-        child: lat == null
-            ? ShowProgress()
-            : GoogleMap(
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(lat!, lng!),
-                  zoom: 15,
-                ),
-                onMapCreated: (controller) {},
-                markers: setMarker(),
+  Widget buildMap() {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.75,
+      height: 300,
+      child: lat == null
+          ? ShowProgress()
+          : GoogleMap(
+              mapType: MapType.normal,
+              initialCameraPosition: CameraPosition(
+                target: LatLng(lat!, lng!),
+                zoom: 15,
               ),
-      );
+              onMapCreated: (controller) {},
+              markers: setMarker(),
+            ),
+    );
+  }
 
   Future<Null> chooseImage(ImageSource source) async {
     try {

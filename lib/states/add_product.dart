@@ -558,7 +558,7 @@ class _AddProductState extends State<AddProduct> {
         Container(
           width: size * 0.6,
           child: RadioListTile(
-            value: 'dryGoods',
+            value: 'driedFoods',
             groupValue: typeproduct,
             onChanged: (value) {
               setState(

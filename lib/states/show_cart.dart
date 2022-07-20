@@ -18,6 +18,7 @@ class _ShowCartState extends State<ShowCart> {
   List<SQLiteModel> sqliteModels = [];
   bool load = true;
   int? total;
+  int? result;
 
   @override
   void initState() {
@@ -42,13 +43,16 @@ class _ShowCartState extends State<ShowCart> {
   }
 
   void calculateTotal() async {
+    result = 0;
     total = 0;
     for (var item in sqliteModels) {
       int sql = int.parse(item.transport);
       int sumInt = int.parse(item.sum.trim());
       setState(() {
-        total = total! + sumInt + sql;
+        result = result! + sumInt;
+        total = result! + sql;
       });
+      print('total = $total');
     }
   }
 
@@ -106,24 +110,30 @@ class _ShowCartState extends State<ShowCart> {
     );
   }
 
-   Widget buildNameShop() {
+  Widget buildNameShop() {
     return Container(
       margin: EdgeInsets.only(bottom: 8),
       child: Column(
         children: <Widget>[
           Row(
             children: <Widget>[
-              ShowTitle(title: 'ร้าน : ${sqliteModels[0].nameSeller}',),
+              ShowTitle(
+                title: 'ร้าน : ${sqliteModels[0].nameSeller}',
+              ),
             ],
           ),
           Row(
             children: <Widget>[
-              ShowTitle(title: 'ระยะทาง : ${sqliteModels[0].distance} กิโลเมตร' ,),
+              ShowTitle(
+                title: 'ระยะทาง : ${sqliteModels[0].distance} กิโลเมตร',
+              ),
             ],
           ),
           Row(
             children: <Widget>[
-              ShowTitle(title: 'ค่าจัดส่ง : ${sqliteModels[0].transport} บาท',),
+              ShowTitle(
+                title: 'ค่าจัดส่ง : ${sqliteModels[0].transport} บาท',
+              ),
             ],
           ),
         ],
@@ -149,12 +159,10 @@ class _ShowCartState extends State<ShowCart> {
         actions: [
           TextButton(
             onPressed: () async {
-              
               await SQLiteHelpper().emptySQLite().then((value) {
                 Navigator.pop(context);
                 processReadSQLite();
               });
-
             },
             child: Text('ลบ'),
           ),
@@ -173,7 +181,7 @@ class _ShowCartState extends State<ShowCart> {
       children: [
         ElevatedButton(
           onPressed: () {
-            Navigator.pushNamed(context, MyConstant.rounteConfirmAddWallet);
+            Navigator.pushNamed(context, MyConstant.rounteAddWallet);
           },
           child: Text('ยืนยัย'),
         ),

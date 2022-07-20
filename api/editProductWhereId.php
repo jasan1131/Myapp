@@ -20,17 +20,17 @@ if (isset($_GET)) {
 	if ($_GET['isAdd'] == 'true') {
 			
 		$id = $_GET['id'];
-		$nameProduct = $_GET['nameProduct'];
+		$nameproduct = $_GET['nameproduct'];
 		$typeproduct = $_GET['typeproduct'];
 		$numberproduct = $_GET['numberproduct'];
-		$priceProduct = $_GET['priceProduct'];
-		$detailProduct = $_GET['detailProduct'];
-		$images = $_GET['images'];
+		$priceproduct = $_GET['priceproduct'];
+		$detailproduct = $_GET['detailproduct'];
+		$imagesproduct = $_GET['imagesproduct'];
 		
 		
 		
 							
-		$sql = "UPDATE `product` SET `nameProduct` = '$nameProduct', `typeproduct` = '$typeproduct', `numberproduct` = '$numberproduct', `priceProduct` = '$priceProduct', `detailProduct` = '$detailProduct', `Images` = '$Images' WHERE id = '$id'";
+		$sql = "UPDATE `product` SET `nameproduct` = '$nameproduct', `typeproduct` = '$typeproduct', `numberproduct` = '$numberproduct', `priceproduct` = '$priceproduct', `detailproduct` = '$detailproduct', `imagesproduct` = '$imagesproduct' WHERE id = '$id'";
 
 		$result = mysqli_query($link, $sql);
 
@@ -40,7 +40,7 @@ if (isset($_GET)) {
 			echo "false";
 		}
 
-	} else echo "Welcome Shopping";
+	} else echo "Welcome Shopping456";
    
 }
 

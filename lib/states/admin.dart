@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/bodys/show_check_stock_product.dart';
 import 'package:flutter_myappication_1/bodys/show_product_specail_admin.dart';
@@ -35,6 +37,11 @@ class _AdminServerState extends State<AdminServer> {
   }
 
   Future<Null> findUserModel() async {
+    await Firebase.initializeApp();
+    FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+    String? token = await firebaseMessaging.getToken();
+    print('token ==>> $token');
+
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String id = preferences.getString('id')!;
     print('### id Logined ==> $id');
@@ -49,7 +56,9 @@ class _AdminServerState extends State<AdminServer> {
 
           setState(() {
             userModel = UserModel.fromMap(item);
-            widgets.add(ShopManageAdmin(userModel: userModel!,));
+            widgets.add(ShopManageAdmin(
+              userModel: userModel!,
+            ));
             widgets.add(ShowOrderAdmin());
             widgets.add(ShowProductAdmin());
             widgets.add(ShowProductSpecailAdmin());

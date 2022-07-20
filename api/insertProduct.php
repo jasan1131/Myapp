@@ -19,17 +19,20 @@ if (isset($_GET)) {
 	if ($_GET['isAdd'] == 'true') {
 				
 		$idproduct = $_GET['idproduct'];
+		$category = $_GET['category'];
 		$nameproduct = $_GET['nameproduct'];
 		$typeproduct = $_GET['typeproduct'];
 		$numberproduct = $_GET['numberproduct'];
 		$priceproduct = $_GET['priceproduct'];
-		$productdetail = $_GET['productdetail'];
-		$Images = $_GET['Images'];
+		$detailproduct = $_GET['detailproduct'];
+		$imagesproduct = $_GET['imagesproduct'];
+
+
 		
 		
 		
 						
-		$sql = "INSERT INTO `product`(`id`, `idproduct`, `nameproduct`, `typeproduct`, `numberproduct`, `priceproduct`, `productdetail`, `Images`) VALUES (Null,'$idproduct','$nameproduct','$typeproduct','$numberproduct','$priceproduct','$productdetail','$Images')";
+		$sql = "INSERT INTO `product`(`id`, `idproduct`, `category`, `nameproduct`, `typeproduct`, `numberproduct`, `priceproduct`, `detailproduct`, `imagesproduct`) VALUES (Null,'$idproduct','$category','$nameproduct','$typeproduct','$numberproduct','$priceproduct','$detailproduct','$imagesproduct')";
 
 		$result = mysqli_query($link, $sql);
 

@@ -14,7 +14,6 @@ import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class BuyerSpecialProduct extends StatefulWidget {
   final UserModel userModel;
@@ -54,7 +53,7 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
   }
 
   Future<Null> readApiAllShop() async {
-    String urlAPI = '${MyConstant.domain}/shopping/getUserWhereAdminSp.php';
+    String urlAPI = '${MyConstant.domain}/shopping/getProductWhereSpSeller.php';
     await Dio().get(urlAPI).then(
       (value) {
         setState(() {

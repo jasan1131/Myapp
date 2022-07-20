@@ -4,7 +4,7 @@ class MyConstant {
   // Genernal
   static String appName = 'Shopping MAll';
   static String domain =
-      'https://2897-2001-fb1-1f-3492-d043-9316-c521-c6c0.ap.ngrok.io';
+      'https://8ef1-2001-fb1-1c-6b26-3863-11bf-a712-ecef.ap.ngrok.io';
 
   static String urlPromptpay = 'https://promptpay.io/0970272217.png';
 
@@ -20,19 +20,12 @@ class MyConstant {
 
   static String rounteEditProfileAdmin = '/editProfileAdmin';
 
-  static String rounteTypeMeet = '/typemeet';
-  static String rounteTypeVegetables = '/typevegetables';
-  static String rounteTypeDryGoods = '/typedrygoods';
-  static String rounteTypeCondiments = '/typecondiments';
-
   static String rounteShowCart = '/showcart';
-  static String rounteBuyerShowShopSeller = '/buyershowshopseller';
   static String rounteAddWallet = '/addwallet';
   static String rounteConfirmAddWallet = '/confirmaddwallet';
   static String rounteMyMoney = '/mymoney';
   static String rounteConfirmOrder = '/confirmorder';
   static String rountePDPA = '/pdpa';
-
   // Image
   static String image1 = 'images/image1.png';
   static String image2 = 'images/image2.png';
@@ -73,7 +66,8 @@ class MyConstant {
       );
 
   BoxDecoration gradientRadioBackground() => BoxDecoration(
-        gradient: RadialGradient(center: Alignment(0, -0.5),
+        gradient: RadialGradient(
+          center: Alignment(0, -0.5),
           radius: 0.8,
           colors: [Colors.white, MyConstant.light],
         ),
@@ -90,6 +84,7 @@ class MyConstant {
         color: Colors.white,
         fontWeight: FontWeight.w800,
       );
+
   TextStyle h2Style() => TextStyle(
         fontSize: 18,
         color: dark,
@@ -110,6 +105,7 @@ class MyConstant {
         color: Colors.blue.shade800,
         fontWeight: FontWeight.w700,
       );
+
   TextStyle h3Style() => TextStyle(
         fontSize: 14,
         color: dark,
@@ -120,6 +116,17 @@ class MyConstant {
         color: Colors.white,
         fontWeight: FontWeight.normal,
       );
+  TextStyle h3BlackStyle() => TextStyle(
+        fontSize: 14,
+        color: Colors.black,
+        fontWeight: FontWeight.normal,
+      );
+
+  TextStyle h4Style() => TextStyle(
+        fontSize: 12,
+        color: dark,
+        fontWeight: FontWeight.normal,
+      );
 
   // Button
   ButtonStyle myButtonStyle() => ElevatedButton.styleFrom(
@@ -127,5 +134,10 @@ class MyConstant {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),
+      );
+
+  SizedBox mySizeBox() => SizedBox(
+        width: 8.0,
+        height: 16.0,
       );
 }

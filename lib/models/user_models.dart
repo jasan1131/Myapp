@@ -13,6 +13,7 @@ class UserModel {
   final String phone;
   final String lat;
   final String lng;
+  final String token;
   UserModel({
     required this.id,
     required this.avatar,
@@ -25,6 +26,7 @@ class UserModel {
     required this.phone,
     required this.lat,
     required this.lng,
+    required this.token,
   });
 
   UserModel copyWith({
@@ -39,6 +41,7 @@ class UserModel {
     String? phone,
     String? lat,
     String? lng,
+    String? token,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -52,6 +55,7 @@ class UserModel {
       phone: phone ?? this.phone,
       lat: lat ?? this.lat,
       lng: lng ?? this.lng,
+      token: token ?? this.token,
     );
   }
 
@@ -68,6 +72,7 @@ class UserModel {
       'phone': phone,
       'lat': lat,
       'lng': lng,
+      'token': token,
     };
   }
 
@@ -84,6 +89,7 @@ class UserModel {
       phone: map['phone'] as String,
       lat: map['lat'] as String,
       lng: map['lng'] as String,
+      token: map['token'] as String,
     );
   }
 
@@ -93,14 +99,14 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, avatar: $avatar, type: $type, name: $name, seconname: $seconname, user: $user, password: $password, address: $address, phone: $phone, lat: $lat, lng: $lng)';
+    return 'UserModel(id: $id, avatar: $avatar, type: $type, name: $name, seconname: $seconname, user: $user, password: $password, address: $address, phone: $phone, lat: $lat, lng: $lng, token: $token)';
   }
 
   @override
-  bool operator ==(Object other) {
+  bool operator ==(covariant UserModel other) {
     if (identical(this, other)) return true;
   
-    return other is UserModel &&
+    return 
       other.id == id &&
       other.avatar == avatar &&
       other.type == type &&
@@ -111,7 +117,8 @@ class UserModel {
       other.address == address &&
       other.phone == phone &&
       other.lat == lat &&
-      other.lng == lng;
+      other.lng == lng &&
+      other.token == token;
   }
 
   @override
@@ -126,6 +133,7 @@ class UserModel {
       address.hashCode ^
       phone.hashCode ^
       lat.hashCode ^
-      lng.hashCode;
+      lng.hashCode ^
+      token.hashCode;
   }
-}
+  }

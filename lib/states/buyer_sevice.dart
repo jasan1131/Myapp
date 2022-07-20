@@ -2,9 +2,12 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/bodys/show_menu_food.dart';
 import 'package:flutter_myappication_1/bodys/show_order_history.dart';
+import 'package:flutter_myappication_1/bodys/show_order_status.dart';
 import 'package:flutter_myappication_1/bodys/show_shop_seller.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
@@ -24,6 +27,7 @@ class _BuyerServiceState extends State<BuyerService> {
   List<Widget> widgets = [
     ShowShopSeller(),
     ShowMenuFood(),
+    ShowOrderStatus(),
     ShowOrderHistory(),
   ];
   int indexWidget = 0;
@@ -34,11 +38,24 @@ class _BuyerServiceState extends State<BuyerService> {
     // TODO: implement initState
     super.initState();
     findUserLogin();
+    
   }
 
   Future<void> findUserLogin() async {
+
+    await Firebase.initializeApp();
+    FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+    String? token = await firebaseMessaging.getToken();
+    print('token ==>> $token');
+
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var idUserLogin = preferences.getString('id');
+
+    if (idUserLogin != null && idUserLogin.isNotEmpty) {
+      String url = '${MyConstant.domain}/shopping/editTokenWhereId.php?isAdd=true&id=$idUserLogin&token=$token';
+      await Dio().get(url).then((value) => print('#### Update Token Success ####'));
+    }
+
 
     var urlAPI =
         '${MyConstant.domain}/shopping/getUserWhereId.php?isAdd=true&id=$idUserLogin';
@@ -59,12 +76,6 @@ class _BuyerServiceState extends State<BuyerService> {
       appBar: AppBar(
         centerTitle: true,
         title: Text('Buyer'),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.shopping_cart_outlined),
-          )
-        ],
       ),
       drawer: Drawer(
         child: Stack(
@@ -74,7 +85,8 @@ class _BuyerServiceState extends State<BuyerService> {
                 buildHeard(),
                 showShopSeller(),
                 showMenuFood(),
-                showorderHistory(),
+                showOrderStatus(),
+                showOrderHistory()
               ],
             ),
             ShowSignOut(),
@@ -88,7 +100,7 @@ class _BuyerServiceState extends State<BuyerService> {
   ListTile showShopSeller() {
     return ListTile(
       leading: Icon(
-        Icons.house_outlined,
+        Icons.storefront_outlined,
         size: 35,
         color: MyConstant.dark,
       ),
@@ -109,7 +121,7 @@ class _BuyerServiceState extends State<BuyerService> {
   ListTile showMenuFood() {
     return ListTile(
       leading: Icon(
-        Icons.restaurant_menu_outlined,
+        Icons.restaurant_outlined,
         size: 35,
         color: MyConstant.dark,
       ),
@@ -127,7 +139,28 @@ class _BuyerServiceState extends State<BuyerService> {
     );
   }
 
-  ListTile showorderHistory() {
+  ListTile showOrderStatus() {
+    return ListTile(
+      leading: Icon(
+        Icons.inbox,
+        size: 35,
+        color: MyConstant.dark,
+      ),
+      title: ShowTitle(
+        title: 'สถานะการสั่งซื้อ',
+        textStyle: MyConstant().h2Style(),
+      ),
+      subtitle: ShowTitle(title: 'แสดงสถานะการสั่งซื้อ'),
+      onTap: () {
+        setState(() {
+          indexWidget = 2;
+          Navigator.pop(context);
+        });
+      },
+    );
+  }
+
+  ListTile showOrderHistory() {
     return ListTile(
       leading: Icon(
         Icons.history_outlined,
@@ -141,7 +174,7 @@ class _BuyerServiceState extends State<BuyerService> {
       subtitle: ShowTitle(title: 'แสดงประวัติการสั่งซื้อ'),
       onTap: () {
         setState(() {
-          indexWidget = 2;
+          indexWidget = 3;
           Navigator.pop(context);
         });
       },

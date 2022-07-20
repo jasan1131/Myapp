@@ -15,15 +15,15 @@ import 'package:flutter_myappication_1/widgets/show_title.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 
-class TypeMeet extends StatefulWidget {
+class TypeDriedGoods extends StatefulWidget {
   final UserModel userModel;
-  const TypeMeet({Key? key, required this.userModel}) : super(key: key);
+  const TypeDriedGoods({Key? key, required this.userModel}) : super(key: key);
 
   @override
-  State<TypeMeet> createState() => _TypeMeetState();
+  State<TypeDriedGoods> createState() => _TypeDriedGoodsState();
 }
 
-class _TypeMeetState extends State<TypeMeet> {
+class _TypeDriedGoodsState extends State<TypeDriedGoods> {
 
   UserModel? userModel;
   bool load = true;
@@ -54,7 +54,7 @@ class _TypeMeetState extends State<TypeMeet> {
 
   Future<Null> readApiAllShop() async {
     String urlAPI =
-        '${MyConstant.domain}/shopping/getProductWhereTypeMeet.php';
+        '${MyConstant.domain}/shopping/getProductWhereTypeDriedFood.php';
     await Dio().get(urlAPI).then(
       (value) {
         if (value.toString() == 'null') {

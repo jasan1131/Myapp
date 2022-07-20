@@ -117,8 +117,8 @@ class _ConfirmAddWalletState extends State<ConfirmAddWallet> {
         await Dio().get(urlAPIInsert).then(
               (value) => MyDialog(funcAction: success).actionDialog(
                 context,
-                'Confirm Success',
-                'Confirm Add Qrder',
+                'ทำรายการเสร้จสิ้น',
+                'ขอบคุณที่ใช้บริการ',
               ),
             );
       });
@@ -126,7 +126,7 @@ class _ConfirmAddWalletState extends State<ConfirmAddWallet> {
   }
 
   void success(){
-    Navigator.pushNamed(context, MyConstant.rounteConfirmOrder);
+    Navigator.pushNamedAndRemoveUntil(context, MyConstant.rounteConfirmOrder, (route) => false);
   }
 
   Future<void> processTakePhoto(ImageSource source) async {

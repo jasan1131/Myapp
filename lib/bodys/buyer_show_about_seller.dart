@@ -150,7 +150,7 @@ class _ShowAboutSellerState extends State<ShowAboutSeller> {
       LatLng latLng1 = LatLng(lat1!, lng1!);
       position = CameraPosition(
         target: latLng1,
-        zoom: 10.0,
+        zoom: 10,
       );
     }
     Marker userMarker() {

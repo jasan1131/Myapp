@@ -16,7 +16,7 @@ class _NavigatorCFWState extends State<NavigatorCFW> {
       width: 95,
       height: 95,
       child: InkWell(
-        onTap: () => Navigator.pushNamedAndRemoveUntil(context, MyConstant.rounteConfirmAddWallet, (route) => false),
+        onTap: () => Navigator.pushNamed(context, MyConstant.rounteConfirmAddWallet),
         child: Card(
           color: MyConstant.dark,
           shape: RoundedRectangleBorder(

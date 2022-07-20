@@ -54,11 +54,6 @@ class _AddWalletState extends State<AddWallet> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () =>
-              Navigator.pushNamed(context, MyConstant.rounteShowCart),
-          icon: Icon(Icons.arrow_back),
-        ),
         centerTitle: true,
         title: Text('ชำระเงินแบบ ${titles[indexPosition]}'),
       ),

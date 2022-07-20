@@ -18,18 +18,14 @@ if (!$link->set_charset("utf8")) {
 if (isset($_GET)) {
 	if ($_GET['isAdd'] == 'true') {
 				
-		$idProduct = $_GET['idProduct'];
-		$nameProduct = $_GET['nameProduct'];
-		$typeProduct = $_GET['typeProduct'];
-		$numberProduct = $_GET['numberProduct'];
-		$priceProduct = $_GET['priceProduct'];
-		$detailProduct = $_GET['detailProduct'];
-		$imageProduct = $_GET['imageProduct'];
+		$idbuyer = $_GET['idbuyer'];
+		$userbuyer = $_GET['userbuyer'];
+		$datepay = $_GET['datepay'];
+		$pathslip = $_GET['pathslip'];
+		$status = $_GET['status'];
 
-
-		
 						
-		$sql = "INSERT INTO `productwholesale`(`Id`, `idProduct`, `nameProduct`, `typeProduct`, `numberProduct`, `priceProduct`, `detailProduct`, `imageProduct`) VALUES (Null,'$idProduct','$nameProduct','$typeProduct','$numberProduct','$priceProduct','$detailProduct','$imageProduct')";
+		$sql = "INSERT INTO `slip`(`id`, `idbuyer`, `userbuyer`, `datepay`, `pathslip`, `status`) VALUES (Null,'$idbuyer','$userbuyer','$datepay','$pathslip','$status')";
 
 		$result = mysqli_query($link, $sql);
 
@@ -39,7 +35,7 @@ if (isset($_GET)) {
 			echo "false";
 		}
 
-	} else echo "Welcome Shopping??";
+	} else echo "Welcome Shopping";
    
 }
 	mysqli_close($link);
