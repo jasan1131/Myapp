@@ -12,6 +12,7 @@ import 'package:flutter_myappication_1/bodys/show_productadmin.dart';
 import 'package:flutter_myappication_1/bodys/show_shop_manage_admin.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
+import 'package:flutter_myappication_1/utility/my_dialog.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_signout.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
@@ -34,6 +35,7 @@ class _AdminServerState extends State<AdminServer> {
     // TODO: implement initState
     super.initState();
     findUserModel();
+    aboutNotification();
   }
 
   Future<Null> findUserModel() async {
@@ -56,9 +58,7 @@ class _AdminServerState extends State<AdminServer> {
 
           setState(() {
             userModel = UserModel.fromMap(item);
-            widgets.add(ShopManageAdmin(
-              userModel: userModel!,
-            ));
+            // widgets.add(ShopManageAdmin(userModel: userModel!));
             widgets.add(ShowOrderAdmin());
             widgets.add(ShowProductAdmin());
             widgets.add(ShowProductSpecailAdmin());
@@ -85,7 +85,7 @@ class _AdminServerState extends State<AdminServer> {
                   Column(
                     children: [
                       buildHead(),
-                      showShopManage(),
+                      // showShopManage(),
                       menuShowOrder(),
                       menuProduct(),
                       menuProductSpecail(),
@@ -100,8 +100,26 @@ class _AdminServerState extends State<AdminServer> {
     );
   }
 
-  UserAccountsDrawerHeader buildHead() {
+  Widget buildHead() {
     return UserAccountsDrawerHeader(
+      otherAccountsPictures: [
+        IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ShopManageAdmin(userModel: userModel!),
+              ),
+            );
+          },
+          icon: Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: Icon(Icons.home),
+          ),
+          iconSize: 36,
+          color: MyConstant.light,
+        )
+      ],
       decoration: BoxDecoration(
         gradient: RadialGradient(
           colors: [MyConstant.light, MyConstant.dark],
@@ -118,32 +136,32 @@ class _AdminServerState extends State<AdminServer> {
     );
   }
 
-  ListTile showShopManage() {
-    return ListTile(
-      onTap: () {
-        setState(() {
-          indexWidget = 0;
-          Navigator.pop(context);
-        });
-      },
-      leading: Icon(
-        Icons.home_outlined,
-      ),
-      title: ShowTitle(
-        title: 'หน้าร้าน',
-        textStyle: MyConstant().h2Style(),
-      ),
-      subtitle: ShowTitle(
-          title: 'แสดงรายละเอียดของหน้าร้าน',
-          textStyle: MyConstant().h3Style()),
-    );
-  }
+  // ListTile showShopManage() {
+  //   return ListTile(
+  //     onTap: () {
+  //       setState(() {
+  //         indexWidget = 0;
+  //         Navigator.pop(context);
+  //       });
+  //     },
+  //     leading: Icon(
+  //       Icons.home_outlined,
+  //     ),
+  //     title: ShowTitle(
+  //       title: 'หน้าร้าน',
+  //       textStyle: MyConstant().h2Style(),
+  //     ),
+  //     subtitle: ShowTitle(
+  //         title: 'แสดงรายละเอียดของหน้าร้าน',
+  //         textStyle: MyConstant().h3Style()),
+  //   );
+  // }
 
   ListTile menuShowOrder() {
     return ListTile(
       onTap: () {
         setState(() {
-          indexWidget = 1;
+          indexWidget = 0;
           Navigator.pop(context);
         });
       },
@@ -164,7 +182,7 @@ class _AdminServerState extends State<AdminServer> {
     return ListTile(
       onTap: () {
         setState(() {
-          indexWidget = 2;
+          indexWidget = 1;
           Navigator.pop(context);
         });
       },
@@ -185,7 +203,7 @@ class _AdminServerState extends State<AdminServer> {
     return ListTile(
       onTap: () {
         setState(() {
-          indexWidget = 3;
+          indexWidget = 2;
           Navigator.pop(context);
         });
       },
@@ -206,7 +224,7 @@ class _AdminServerState extends State<AdminServer> {
     return ListTile(
       onTap: () {
         setState(() {
-          indexWidget = 4;
+          indexWidget = 3;
           Navigator.pop(context);
         });
       },
@@ -227,7 +245,7 @@ class _AdminServerState extends State<AdminServer> {
     return ListTile(
       onTap: () {
         setState(() {
-          indexWidget = 5;
+          indexWidget = 4;
           Navigator.pop(context);
         });
       },
@@ -242,5 +260,33 @@ class _AdminServerState extends State<AdminServer> {
           title: 'แสดงรายละเอียดของสต็อกสินค้า',
           textStyle: MyConstant().h3Style()),
     );
+  }
+
+  Future<void> backgroundHandler(RemoteMessage message)async{
+    print(message.data.toString());
+    print(message.notification!.title);
+  }
+  void backgroundMessage()async{
+    await Firebase.initializeApp();
+    FirebaseMessaging.onBackgroundMessage(backgroundHandler);
+  }
+
+  Future<Null> aboutNotification() async {
+    await await Firebase.initializeApp();
+    
+    FirebaseMessaging.instance.getInitialMessage();
+
+
+    FirebaseMessaging.onMessage.listen((message) {
+      if (message.notification != null) {
+        String? messageBody = message.notification!.body;
+        String? messageTitle = message.notification!.title;
+        // print(message.notification!.body);
+        // print(message.notification!.title);
+        MyDialog().normalDialog(context, messageBody!, messageTitle!);
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {});
   }
 }

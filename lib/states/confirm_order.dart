@@ -9,6 +9,7 @@ import 'package:flutter_myappication_1/utility/my_dialog.dart';
 import 'package:flutter_myappication_1/utility/sqlite_helpper.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -64,7 +65,8 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.pushNamedAndRemoveUntil(context, MyConstant.routeBuyerService, (route) => false);
+            Navigator.pushNamedAndRemoveUntil(
+                context, MyConstant.routeBuyerService, (route) => false);
           },
           icon: Icon(Icons.arrow_back),
         ),
@@ -367,11 +369,6 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
   }
 
   Future<Null> clearAllSqlite() async {
-    MyDialog(funcAction: success).actionDialog(
-      context,
-      'ทำรายการเสร็จสิ้น',
-      'ขอบคุณที่ใช้บริการ',
-    );
     await SQLiteHelpper().emptySQLite().then((value) {
       processReadSqlite();
     });
@@ -382,15 +379,26 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
   }
 
   Future<Null> notificationToShop(String idSeller) async {
-    String urlFindToken = '${MyConstant.domain}/shopping/getUserWhereId.php?isAdd=true&id=$idSeller';
+    String urlFindToken =
+        '${MyConstant.domain}/shopping/getUserWhereId.php?isAdd=true&id=$idSeller';
     await Dio().get(urlFindToken).then((value) {
       var result = json.decode(value.data);
       print('result ==> $result');
-       for (var json in result) {
+      for (var json in result) {
         UserModel model = UserModel.fromMap(json);
         String tokenShop = model.token;
         print('tokenShop ==>> $tokenShop');
+
+        String title = 'มีสินค้าจากลูกค้า';
+        String body = 'มีการสั่งสินค้าจากลูกค้า';
+        String urlSendToken =
+            '${MyConstant.domain}/shopping/apiNotification.php?isAdd=true&token=$tokenShop&title=$title&body=$body';
+        sendNotificationToShop(urlSendToken);
       }
     });
+  }
+
+  Future<Null> sendNotificationToShop(String urlSendToken) async {
+    await Dio().get(urlSendToken).then((value) => MyDialog().normalDialog(context, 'ทำรายการเสร็จสินขอบคุณที่ใช้บริการ', 'คำสั่งซื้อของคุณได้ถูกเพิ่มไปยังร้านค้าแล้ว'));
   }
 }

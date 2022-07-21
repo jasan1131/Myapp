@@ -43,6 +43,10 @@ class _ShopManageAdminState extends State<ShopManageAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: Text('หน้าร้าน'),
+          centerTitle: true,
+        ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: MyConstant.primary,
           child: Icon(Icons.edit_outlined),
