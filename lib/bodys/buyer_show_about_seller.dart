@@ -30,7 +30,6 @@ class _ShowAboutSellerState extends State<ShowAboutSeller> {
     // TODO: implement initState
     super.initState();
     userModel = widget.userModel;
-
     findLat1Lng1();
   }
 

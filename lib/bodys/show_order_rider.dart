@@ -2,22 +2,28 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_myappication_1/bodys/show_confirm_order_by_rider.dart';
 import 'package:flutter_myappication_1/models/order_model.dart';
-import 'package:flutter_myappication_1/states/admin.dart';
+import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
-class ShowOrderAdmin extends StatefulWidget {
-  const ShowOrderAdmin({Key? key}) : super(key: key);
+class ShowOrderRider extends StatefulWidget {
+  const ShowOrderRider({Key? key}) : super(key: key);
 
   @override
-  State<ShowOrderAdmin> createState() => _ShowOrderAdminState();
+  State<ShowOrderRider> createState() => _ShowOrderRiderState();
 }
 
-class _ShowOrderAdminState extends State<ShowOrderAdmin> {
+class _ShowOrderRiderState extends State<ShowOrderRider> {
+  OrderModel? orderModel;
   bool statusOrder = true;
   bool? haveData;
+  List<UserModel> userModel = [];
   List<OrderModel> orderModels = [];
   List<List<String>> listOrderProducts = [];
   List<List<String>> listOrderPrices = [];
@@ -35,7 +41,7 @@ class _ShowOrderAdminState extends State<ShowOrderAdmin> {
 
   Future<Null> findIdSellerAndReadOrder() async {
     String path =
-        '${MyConstant.domain}/shopping/getOrderWhereStatusAwaitOrder.php';
+        '${MyConstant.domain}/shopping/getOrderWhereStatusSellerConfirmOrder.php';
     await Dio().get(path).then((value) {
       if (value.toString() == 'null') {
         setState(() {
@@ -134,7 +140,7 @@ class _ShowOrderAdminState extends State<ShowOrderAdmin> {
 
   Row buildButton(index) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         ElevatedButton(
             style: ButtonStyle(
@@ -145,17 +151,21 @@ class _ShowOrderAdminState extends State<ShowOrderAdmin> {
                 ),
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ShowConfirmOrderByRider(orderModel: orderModels[index]),
+                ),
+              );
+            },
             child: Row(
               children: [
-                Icon(
-                  Icons.cancel_outlined,
-                  color: Colors.red.shade700,
-                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ShowTitle(
-                    title: 'ยกเลิกสินค้า',
+                    title: 'ดูข้อมูลผู้สั่งซื้อ',
                     textStyle: MyConstant().h3WhiteStyle(),
                   ),
                 ),
@@ -170,30 +180,15 @@ class _ShowOrderAdminState extends State<ShowOrderAdmin> {
               ),
             ),
           ),
-          onPressed: () async {
-            id = orderModels[index].id;
-            String status = 'sellerConfirmOrder';
-            String url =
-                '${MyConstant.domain}/shopping/editStatusWhereId.php?isAdd=true&id=$id&status=$status';
-            await Dio().get(url).then((value) {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AdminServer(),
-                  ),
-                  (route) => false);
-            });
+          onPressed: () {
+            print('idBuyer = ${orderModels[index].idBuyer}');
           },
           child: Row(
             children: [
-              Icon(
-                Icons.radio_button_off,
-                color: Colors.green.shade400,
-              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ShowTitle(
-                  title: 'ยืนยันสินค้า',
+                  title: 'ยืนยัน',
                   textStyle: MyConstant().h3WhiteStyle(),
                 ),
               ),
@@ -204,8 +199,14 @@ class _ShowOrderAdminState extends State<ShowOrderAdmin> {
     );
   }
 
-  Future confirmOrder(index) async {}
-
+  // Future<LocationData?> finalLocationData() async {
+  //   Location location = Location();
+  //   try {
+  //     return await location.getLocation();
+  //   } catch (e) {
+  //     return null;
+  //   }
+  // }
   ListView bildListViewOrder(int index) {
     return ListView.builder(
       itemCount: listOrderProducts[index].length,

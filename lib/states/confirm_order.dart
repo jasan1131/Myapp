@@ -369,6 +369,9 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
   }
 
   Future<Null> clearAllSqlite() async {
+    Fluttertoast.showToast(
+      msg: 'ขอบคุณที่ใช้บริการ',
+    );
     await SQLiteHelpper().emptySQLite().then((value) {
       processReadSqlite();
     });
@@ -399,6 +402,10 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
   }
 
   Future<Null> sendNotificationToShop(String urlSendToken) async {
-    await Dio().get(urlSendToken).then((value) => MyDialog().normalDialog(context, 'ทำรายการเสร็จสินขอบคุณที่ใช้บริการ', 'คำสั่งซื้อของคุณได้ถูกเพิ่มไปยังร้านค้าแล้ว'));
+    MyDialog().normalDialog(context, 'ทำรายการเสร็จสินขอบคุณที่ใช้บริการ',
+        'คำสั่งซื้อของคุณได้ถูกเพิ่มไปยังร้านค้าแล้ว,');
+    await Dio().get(urlSendToken).then((value) {
+      Navigator.pushNamedAndRemoveUntil(context, MyConstant.routeBuyerService, (route) => false);
+    });
   }
 }

@@ -4,7 +4,7 @@ class MyConstant {
   // Genernal
   static String appName = 'Shopping MAll';
   static String domain =
-      'https://4e13-2001-fb1-1e-ff21-102f-5cdc-24b7-a578.ap.ngrok.io';
+      'https://5664-2001-fb1-1c-789a-1504-6bcc-9013-8cb1.ap.ngrok.io';
 
   static String urlPromptpay = 'https://promptpay.io/0970272217.png';
 
@@ -140,4 +140,9 @@ class MyConstant {
         width: 8.0,
         height: 16.0,
       );
+
+   String keyId = 'id';
+   String keyType = 'type';
+   String keyUser = 'user';
+   String keyName  = 'name'; 
 }

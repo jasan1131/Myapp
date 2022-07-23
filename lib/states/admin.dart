@@ -5,11 +5,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/bodys/show_check_stock_product.dart';
+import 'package:flutter_myappication_1/bodys/show_history_order_by_user.dart';
 import 'package:flutter_myappication_1/bodys/show_product_specail_admin.dart';
 import 'package:flutter_myappication_1/bodys/show_order_admin.dart';
 import 'package:flutter_myappication_1/bodys/show_product_whol_sale_admin.dart';
 import 'package:flutter_myappication_1/bodys/show_productadmin.dart';
 import 'package:flutter_myappication_1/bodys/show_shop_manage_admin.dart';
+import 'package:flutter_myappication_1/models/order_model.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/utility/my_dialog.dart';
@@ -29,6 +31,7 @@ class _AdminServerState extends State<AdminServer> {
   List<Widget> widgets = [];
   int indexWidget = 0;
   UserModel? userModel;
+  OrderModel? orderModel;
 
   @override
   void initState() {
@@ -46,20 +49,27 @@ class _AdminServerState extends State<AdminServer> {
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String id = preferences.getString('id')!;
-    print('### id Logined ==> $id');
+    // print('### id Logined ==> $id');
+
+    if (id != null && id.isNotEmpty) {
+      String url = '${MyConstant.domain}/shopping/editTokenWhereId.php?isAdd=true&id=$id&token=$token';
+      await Dio().get(url).then((value) => print('#### Update Token Success ####'));
+    }
+
     String apiGetUserWhereId =
         '${MyConstant.domain}/shopping/getUserWhereId.php?isAdd=true&id=$id';
     await Dio().get(apiGetUserWhereId).then((value) {
-      print('### value ==> $value');
+      // print('### value ==> $value');
       for (var item in json.decode(value.data)) {
         setState(() {
           userModel = UserModel.fromMap(item);
-          print('### Name Logined ==> ${userModel!.name}');
+          // print('### Name Logined ==> ${userModel!.name}');
 
           setState(() {
             userModel = UserModel.fromMap(item);
             // widgets.add(ShopManageAdmin(userModel: userModel!));
             widgets.add(ShowOrderAdmin());
+            widgets.add(ShowHistoryByOrderByUser());
             widgets.add(ShowProductAdmin());
             widgets.add(ShowProductSpecailAdmin());
             widgets.add(ShowProductWholeSaleAdmin());
@@ -85,8 +95,8 @@ class _AdminServerState extends State<AdminServer> {
                   Column(
                     children: [
                       buildHead(),
-                      // showShopManage(),
                       menuShowOrder(),
+                      menuShowHistoryOrder(),
                       menuProduct(),
                       menuProductSpecail(),
                       menuProductWholeSale(),
@@ -136,27 +146,6 @@ class _AdminServerState extends State<AdminServer> {
     );
   }
 
-  // ListTile showShopManage() {
-  //   return ListTile(
-  //     onTap: () {
-  //       setState(() {
-  //         indexWidget = 0;
-  //         Navigator.pop(context);
-  //       });
-  //     },
-  //     leading: Icon(
-  //       Icons.home_outlined,
-  //     ),
-  //     title: ShowTitle(
-  //       title: 'หน้าร้าน',
-  //       textStyle: MyConstant().h2Style(),
-  //     ),
-  //     subtitle: ShowTitle(
-  //         title: 'แสดงรายละเอียดของหน้าร้าน',
-  //         textStyle: MyConstant().h3Style()),
-  //   );
-  // }
-
   ListTile menuShowOrder() {
     return ListTile(
       onTap: () {
@@ -178,11 +167,32 @@ class _AdminServerState extends State<AdminServer> {
     );
   }
 
-  ListTile menuProduct() {
+  ListTile menuShowHistoryOrder() {
     return ListTile(
       onTap: () {
         setState(() {
           indexWidget = 1;
+          Navigator.pop(context);
+        });
+      },
+      leading: Icon(
+        Icons.filter_2_outlined,
+      ),
+      title: ShowTitle(
+        title: 'ประวัติสินค้าที่ลูกค้าสั่ง',
+        textStyle: MyConstant().h2Style(),
+      ),
+      subtitle: ShowTitle(
+          title: 'แสดงรายละเอียดประวัติการสั่งซื้อสินค้าจากลูกค้า',
+          textStyle: MyConstant().h3Style()),
+    );
+  }
+
+  ListTile menuProduct() {
+    return ListTile(
+      onTap: () {
+        setState(() {
+          indexWidget = 2;
           Navigator.pop(context);
         });
       },
@@ -203,7 +213,7 @@ class _AdminServerState extends State<AdminServer> {
     return ListTile(
       onTap: () {
         setState(() {
-          indexWidget = 2;
+          indexWidget = 3;
           Navigator.pop(context);
         });
       },
@@ -224,7 +234,7 @@ class _AdminServerState extends State<AdminServer> {
     return ListTile(
       onTap: () {
         setState(() {
-          indexWidget = 3;
+          indexWidget = 4;
           Navigator.pop(context);
         });
       },
@@ -245,7 +255,7 @@ class _AdminServerState extends State<AdminServer> {
     return ListTile(
       onTap: () {
         setState(() {
-          indexWidget = 4;
+          indexWidget = 5;
           Navigator.pop(context);
         });
       },
@@ -281,12 +291,18 @@ class _AdminServerState extends State<AdminServer> {
       if (message.notification != null) {
         String? messageBody = message.notification!.body;
         String? messageTitle = message.notification!.title;
-        // print(message.notification!.body);
-        // print(message.notification!.title);
+        
         MyDialog().normalDialog(context, messageBody!, messageTitle!);
       }
     });
 
-    FirebaseMessaging.onMessageOpenedApp.listen((message) {});
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      if (message.notification != null) {
+        String? messageBody = message.notification!.body;
+        String? messageTitle = message.notification!.title;
+        
+        MyDialog().normalDialog(context, messageBody!, messageTitle!);
+      }
+    });
   }
 }

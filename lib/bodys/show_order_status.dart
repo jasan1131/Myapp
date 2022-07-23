@@ -33,6 +33,86 @@ class _ShowOrderStatusState extends State<ShowOrderStatus> {
     findBuyer();
   }
 
+  Center buildNonOrder() => Center(child: Text('ไม่มีข้อมูลการสั่งวื้อ'));
+
+  Future<Null> findBuyer() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    idBuyer = preferences.getString('id');
+    print('idBuyer = $idBuyer');
+    readOrderFromIdBuyer();
+  }
+
+  Future<Null> readOrderFromIdBuyer() async {
+    if (idBuyer != null) {
+      String url =
+          '${MyConstant.domain}/shopping/getOrderWhereUser.php?isAdd=true&idBuyer=$idBuyer';
+
+      Response response = await Dio().get(url);
+      // print('response = $response');
+      if (response.toString() != 'null') {
+        var result = json.decode(response.data);
+        for (var map in result) {
+          OrderModel model = OrderModel.fromJson(map);
+          List<String> orderProducts = changeArrey(model.nameProduct!);
+          List<String> orderPrices = changeArrey(model.priceProduct!);
+          List<String> orderAmounts = changeArrey(model.amount!);
+          List<String> orderSums = changeArrey(model.sum!);
+          // print('orderProducts = $orderProducts');
+
+          int status = 0;
+          switch (model.status) {
+            case 'awaitOrder': 
+              status = 0;
+              break;
+              case 'sellerConfirmOrder':
+              status = 1;
+              break;
+              case 'riderConfirmOrder':
+              status = 2;
+              break;
+              case 'Finish':
+              status = 3;
+              break;
+            default:
+          }
+
+          int total = int.parse(model.transport!);
+          for (var string in orderSums) {
+            total = total + int.parse(string.trim());
+            // total = transport + total;
+          }
+          print('total = $total');
+
+          setState(() {
+            statusOrder = false;
+            orderModels.add(model);
+
+            listOrderProducts.add(orderProducts);
+            listOrderPrices.add(orderPrices);
+            listOrderAmunts.add(orderAmounts);
+            listOrderSums.add(orderSums);
+            totalProductTnts.add(total);
+            statusInts.add(status);
+            print('orderProducts = $orderProducts');
+          });
+        }
+      }
+    }
+  }
+
+  List<String> changeArrey(String string) {
+    List<String> list = [];
+    String myString = string.substring(1, string.length - 1);
+    print('myString = $myString');
+    list = myString.split(',');
+    int index = 0;
+    for (var string in list) {
+      list[index] = string.trim();
+      index++;
+    }
+    return list;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -235,85 +315,5 @@ class _ShowOrderStatusState extends State<ShowOrderStatus> {
         Text('ร้าน : ${orderModels[index].nameSeller!}'),
       ],
     );
-  }
-
-  Center buildNonOrder() => Center(child: Text('ไม่มีข้อมูลการสั่งวื้อ'));
-
-  Future<Null> findBuyer() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    idBuyer = preferences.getString('id');
-    print('idBuyer = $idBuyer');
-    readOrderFromIdBuyer();
-  }
-
-  Future<Null> readOrderFromIdBuyer() async {
-    if (idBuyer != null) {
-      String url =
-          '${MyConstant.domain}/shopping/getOrderWhereUser.php?isAdd=true&idBuyer=$idBuyer';
-
-      Response response = await Dio().get(url);
-      // print('response = $response');
-      if (response.toString() != 'null') {
-        var result = json.decode(response.data);
-        for (var map in result) {
-          OrderModel model = OrderModel.fromJson(map);
-          List<String> orderProducts = changeArrey(model.nameProduct!);
-          List<String> orderPrices = changeArrey(model.priceProduct!);
-          List<String> orderAmounts = changeArrey(model.amount!);
-          List<String> orderSums = changeArrey(model.sum!);
-          // print('orderProducts = $orderProducts');
-
-          int status = 0;
-          switch (model.status) {
-            case 'awaitOrder': 
-              status = 0;
-              break;
-              case 'sellerConfirmOrder':
-              status = 1;
-              break;
-              case 'riderConfirmOrder':
-              status = 2;
-              break;
-              case 'Finish':
-              status = 3;
-              break;
-            default:
-          }
-
-          int total = int.parse(model.transport!);
-          for (var string in orderSums) {
-            total = total + int.parse(string.trim());
-            // total = transport + total;
-          }
-          print('total = $total');
-
-          setState(() {
-            statusOrder = false;
-            orderModels.add(model);
-
-            listOrderProducts.add(orderProducts);
-            listOrderPrices.add(orderPrices);
-            listOrderAmunts.add(orderAmounts);
-            listOrderSums.add(orderSums);
-            totalProductTnts.add(total);
-            statusInts.add(status);
-            print('orderProducts = $orderProducts');
-          });
-        }
-      }
-    }
-  }
-
-  List<String> changeArrey(String string) {
-    List<String> list = [];
-    String myString = string.substring(1, string.length - 1);
-    print('myString = $myString');
-    list = myString.split(',');
-    int index = 0;
-    for (var string in list) {
-      list[index] = string.trim();
-      index++;
-    }
-    return list;
   }
 }
