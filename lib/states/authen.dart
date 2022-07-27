@@ -59,14 +59,11 @@ class _AuthenState extends State<Authen> {
       children: [
         ShowTitle(
           title: 'มีบัญชีหรือยัง ? ถ้ายังไม่มี กด',
-          textStyle: MyConstant().h3Style(),
+          textStyle: MyConstant().h3BlackStyle(),
         ),
         TextButton(
           onPressed: () => Navigator.pushNamed(context, MyConstant.rountePDPA),
-          child: Text(
-            'สมัครสมาชิก',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
+          child: ShowTitle(title: 'สมัครสมาชิก',textStyle: MyConstant().h3BlackStyle(),)
         ),
       ],
     );
@@ -103,7 +100,7 @@ class _AuthenState extends State<Authen> {
       print('## value for Api ==>> $value');
       if (value.toString() == 'null') {
         MyDialog()
-            .normalDialog(context, 'User False !!!', 'No $user in my Database');
+            .normalDialog(context, 'ชื่อผู้ใช้ไม่ถูกต้อง !!!', 'ไม่มีชื่อ $user นี้อยู่ในระบบ');
       } else {
         for (var item in json.decode(value.data)) {
           UserModel model = UserModel.fromMap(item);
@@ -136,8 +133,8 @@ class _AuthenState extends State<Authen> {
             }
           } else {
             // Auten False
-            MyDialog().normalDialog(context, 'Password False !!!',
-                'Password False Please try Again');
+            MyDialog().normalDialog(context, 'รหัสผ่านไม่ถูกต้อง !!!',
+                'กรุณากรอกรหัสผ่านใหม่อีกครั้ง');
           }
         }
       }
@@ -155,7 +152,7 @@ class _AuthenState extends State<Authen> {
             controller: userController,
             validator: ((value) {
               if (value!.isEmpty) {
-                return 'Please Fill User in Blank';
+                return 'กรุณากรอกชื่อผู้ใช้';
               } else {
                 return null;
               }
@@ -197,7 +194,7 @@ class _AuthenState extends State<Authen> {
             controller: passwordController,
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Please Fill Password in Blank';
+                return 'กรุรากรอกรหัสผ่าน';
               } else {
                 return null;
               }

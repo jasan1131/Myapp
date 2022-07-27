@@ -10,7 +10,6 @@ import 'package:flutter_myappication_1/states/admin.dart';
 import 'package:flutter_myappication_1/states/authen.dart';
 import 'package:flutter_myappication_1/states/buyer_sevice.dart';
 import 'package:flutter_myappication_1/states/confirm_add_wallet.dart';
-import 'package:flutter_myappication_1/states/confirm_order.dart';
 import 'package:flutter_myappication_1/states/create_account.dart';
 import 'package:flutter_myappication_1/states/edit_profile_admin.dart';
 import 'package:flutter_myappication_1/states/pdpa.dart';
@@ -29,7 +28,6 @@ final Map<String, WidgetBuilder> map = {
   '/addProductSpecial': (BuildContext context) => AddProductSpecial(),
   '/addProductWholeSale': (BuildContext context) => AddProductWholeSale(),
   '/editProfileAdmin': (BuildContext context) => EditProfileAdmin(),
-  '/confirmorder': (BuildContext context) => ConfirmOrder(),
   '/showcart': (BuildContext context) => ShowCart(),
   '/addwallet': (BuildContext context) => AddWallet(),
   '/confirmaddwallet': (BuildContext context) => ConfirmAddWallet(),

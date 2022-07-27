@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/bodys/show_order_rider.dart';
+import 'package:flutter_myappication_1/bodys/show_order_shipped.dart';
 import 'package:flutter_myappication_1/models/order_model.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
@@ -26,7 +27,6 @@ class _RiderServiceState extends State<RiderService> {
   int indexWidget = 0;
   UserModel? userModel;
   OrderModel? orderModel;
-  
 
   @override
   void initState() {
@@ -47,8 +47,11 @@ class _RiderServiceState extends State<RiderService> {
     // print('### id Logined ==> $id');
 
     if (id != null && id.isNotEmpty) {
-      String url = '${MyConstant.domain}/shopping/editTokenWhereId.php?isAdd=true&id=$id&token=$token';
-      await Dio().get(url).then((value) => print('#### Update Token Success ####'));
+      String url =
+          '${MyConstant.domain}/shopping/editTokenWhereId.php?isAdd=true&id=$id&token=$token';
+      await Dio()
+          .get(url)
+          .then((value) => print('#### Update Token Success ####'));
     }
 
     String apiGetUserWhereId =
@@ -64,6 +67,7 @@ class _RiderServiceState extends State<RiderService> {
             userModel = UserModel.fromMap(item);
             // widgets.add(ShopManageAdmin(userModel: userModel!));
             widgets.add(ShowOrderRider());
+            widgets.add(ShowOrderShipped());
             // widgets.add();
             // widgets.add();
           });
@@ -72,13 +76,11 @@ class _RiderServiceState extends State<RiderService> {
     });
   }
 
-  
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: MyConstant.primary,
         centerTitle: true,
         title: Text('rider'),
       ),
@@ -92,6 +94,7 @@ class _RiderServiceState extends State<RiderService> {
                     children: [
                       buildHead(),
                       showOrderRider(),
+                      showOrderShipped()
                     ],
                   ),
                 ],
@@ -158,26 +161,47 @@ class _RiderServiceState extends State<RiderService> {
     );
   }
 
-  Future<void> backgroundHandler(RemoteMessage message)async{
+  ListTile showOrderShipped() {
+    return ListTile(
+      onTap: () {
+        setState(() {
+          indexWidget = 1;
+          Navigator.pop(context);
+        });
+      },
+      leading: Icon(
+        Icons.filter_2_outlined,
+      ),
+      title: ShowTitle(
+        title: 'รายการสินค้าที่ลูกค้าสั่ง',
+        textStyle: MyConstant().h2Style(),
+      ),
+      subtitle: ShowTitle(
+          title: 'แสดงรายละเอียดของสินค้าทีลูกค้าสั่ง',
+          textStyle: MyConstant().h3Style()),
+    );
+  }
+
+  Future<void> backgroundHandler(RemoteMessage message) async {
     print(message.data.toString());
     print(message.notification!.title);
   }
-  void backgroundMessage()async{
+
+  void backgroundMessage() async {
     await Firebase.initializeApp();
     FirebaseMessaging.onBackgroundMessage(backgroundHandler);
   }
 
   Future<Null> aboutNotification() async {
     await await Firebase.initializeApp();
-    
-    FirebaseMessaging.instance.getInitialMessage();
 
+    FirebaseMessaging.instance.getInitialMessage();
 
     FirebaseMessaging.onMessage.listen((message) {
       if (message.notification != null) {
         String? messageBody = message.notification!.body;
         String? messageTitle = message.notification!.title;
-        
+
         MyDialog().normalDialog(context, messageBody!, messageTitle!);
       }
     });
@@ -186,7 +210,7 @@ class _RiderServiceState extends State<RiderService> {
       if (message.notification != null) {
         String? messageBody = message.notification!.body;
         String? messageTitle = message.notification!.title;
-        
+
         MyDialog().normalDialog(context, messageBody!, messageTitle!);
       }
     });

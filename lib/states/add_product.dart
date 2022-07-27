@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_myappication_1/models/product_model.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/utility/my_dialog.dart';
 import 'package:flutter_myappication_1/widgets/show_image.dart';
@@ -41,7 +40,7 @@ class _AddProductState extends State<AddProduct> {
 
   void initialFile() {
     for (var i = 0; i < 4; i++) {
-      files.add(null);
+      files.add(file);
     }
   }
 
@@ -156,7 +155,10 @@ class _AddProductState extends State<AddProduct> {
             }
           });
         }
-      } 
+      } else {
+        MyDialog()
+            .normalDialog(context, 'รูปภาพไม่ครบ', 'กรุณาเลือกรูปภาพให้ครบ');
+      }
     }
   }
 
@@ -402,7 +404,8 @@ class _AddProductState extends State<AddProduct> {
     return Container(
       width: constraints.maxWidth * 0.75,
       margin: EdgeInsets.only(top: 16),
-      child: TextFormField(keyboardType: TextInputType.phone,
+      child: TextFormField(
+        keyboardType: TextInputType.phone,
         controller: NumberProductController,
         decoration: InputDecoration(
           hintText: 'จำนวนสินค้า :',

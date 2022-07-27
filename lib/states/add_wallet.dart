@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/bodys/bank.dart';
-import 'package:flutter_myappication_1/bodys/credic.dart';
+import 'package:flutter_myappication_1/bodys/cash_on_delivery.dart';
 import 'package:flutter_myappication_1/bodys/prompay.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 
@@ -15,7 +15,7 @@ class _AddWalletState extends State<AddWallet> {
   List<Widget> widgets = [
     Bank(),
     Prompay(),
-    Credic(),
+    CashOnDelivery(),
   ];
 
   List<IconData> icons = [
@@ -54,15 +54,16 @@ class _AddWalletState extends State<AddWallet> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: MyConstant.primary,
         centerTitle: true,
         title: Text('ชำระเงินแบบ ${titles[indexPosition]}'),
       ),
       body: widgets[indexPosition],
       bottomNavigationBar: BottomNavigationBar(
-        // selectedIconTheme: IconThemeData(color: MyConstant.dark),
-        // unselectedIconTheme: IconThemeData(color: MyConstant.light),
-        selectedItemColor: MyConstant.dark,
-        unselectedItemColor: MyConstant.light,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: MyConstant.primary,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.white,
         items: bottomNavigationBarItems,
         currentIndex: indexPosition,
         onTap: (value) {

@@ -38,11 +38,9 @@ class _BuyerServiceState extends State<BuyerService> {
     // TODO: implement initState
     super.initState();
     findUserLogin();
-    
   }
 
   Future<void> findUserLogin() async {
-
     await Firebase.initializeApp();
     FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
     String? token = await firebaseMessaging.getToken();
@@ -52,10 +50,12 @@ class _BuyerServiceState extends State<BuyerService> {
     var idUserLogin = preferences.getString('id');
 
     if (idUserLogin != null && idUserLogin.isNotEmpty) {
-      String url = '${MyConstant.domain}/shopping/editTokenWhereId.php?isAdd=true&id=$idUserLogin&token=$token';
-      await Dio().get(url).then((value) => print('#### Update Token Success ####'));
+      String url =
+          '${MyConstant.domain}/shopping/editTokenWhereId.php?isAdd=true&id=$idUserLogin&token=$token';
+      await Dio()
+          .get(url)
+          .then((value) => print('#### Update Token Success ####'));
     }
-
 
     var urlAPI =
         '${MyConstant.domain}/shopping/getUserWhereId.php?isAdd=true&id=$idUserLogin';
@@ -74,6 +74,7 @@ class _BuyerServiceState extends State<BuyerService> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: MyConstant.primary,
         centerTitle: true,
         title: Text('Buyer'),
       ),

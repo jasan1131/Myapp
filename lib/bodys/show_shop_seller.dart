@@ -50,7 +50,7 @@ class _ShowShopSellerState extends State<ShowShopSeller> {
       body: load
           ? ShowProgress()
           : Container(
-              decoration: MyConstant().planBackground(),
+              decoration: MyConstant().gradientRadioBackground(),
               child: ListView.builder(
                 padding: EdgeInsets.only(top: 150),
                 itemCount: userModels.length,

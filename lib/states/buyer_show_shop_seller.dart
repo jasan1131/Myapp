@@ -29,9 +29,9 @@ class _BuyerShowShopSellerState extends State<BuyerShowShopSeller> {
     userModel = widget.userModel;
     listWidgets.add(ShowAboutSeller(userModel: userModel!));
     listWidgets.add(BuyerShowAllProduct(userModel: userModel!));
-    listWidgets.add(BuyerProductType(userModel: userModel!,));
+    listWidgets.add(BuyerProductType(userModel: userModel!));
     listWidgets.add(BuyerSpecialProduct(userModel: userModel!));
-    listWidgets.add(BuyerWholeSaleProduct(userModel: userModel!,));
+    listWidgets.add(BuyerWholeSaleProduct(userModel: userModel!));
   }
 
   BottomNavigationBarItem showAboutSeller() {
@@ -78,6 +78,7 @@ class _BuyerShowShopSellerState extends State<BuyerShowShopSeller> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: MyConstant.primary,
         centerTitle: true,
         title: Text(userModel!.name),
         actions: [
@@ -93,13 +94,14 @@ class _BuyerShowShopSellerState extends State<BuyerShowShopSeller> {
     );
   }
 
-  BottomNavigationBar showBottomNAvigationBar() {
+  Widget showBottomNAvigationBar() {
     return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: MyConstant.primary,
       unselectedFontSize: 12,
-      // showUnselectedLabels: false,
-      unselectedItemColor: Colors.white70,
+      showUnselectedLabels: false,
+      unselectedItemColor: Colors.white,
       selectedItemColor: Colors.black,
-      backgroundColor: MyConstant.dark,
       currentIndex: indexPage,
       onTap: (value) {
         setState(() {

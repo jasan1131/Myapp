@@ -4,7 +4,7 @@ class MyConstant {
   // Genernal
   static String appName = 'Shopping MAll';
   static String domain =
-      'https://5664-2001-fb1-1c-789a-1504-6bcc-9013-8cb1.ap.ngrok.io';
+      'https://0dc4-2001-fb1-1c-8a68-3cab-40b7-3ea6-c929.ap.ngrok.io';
 
   static String urlPromptpay = 'https://promptpay.io/0970272217.png';
 
@@ -59,17 +59,17 @@ class MyConstant {
 
   BoxDecoration gradientLinearBackground() => BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
+          begin: Alignment.bottomCenter,
+          end: Alignment.topRight,
           colors: [Colors.white, MyConstant.light, MyConstant.primary],
         ),
       );
 
   BoxDecoration gradientRadioBackground() => BoxDecoration(
         gradient: RadialGradient(
-          center: Alignment(0, -0.5),
+          center: Alignment(0, -0.2),
           radius: 0.8,
-          colors: [Colors.white, MyConstant.light],
+          colors: [Colors.blue.shade100, MyConstant.dark],
         ),
       );
 
@@ -82,6 +82,11 @@ class MyConstant {
   TextStyle h1WhiteStyle() => TextStyle(
         fontSize: 24,
         color: Colors.white,
+        fontWeight: FontWeight.w800,
+      );
+      TextStyle h1BackStyle() => TextStyle(
+        fontSize: 24,
+        color: Colors.black,
         fontWeight: FontWeight.w800,
       );
 
@@ -103,6 +108,11 @@ class MyConstant {
   TextStyle h2BlueStyle() => TextStyle(
         fontSize: 18,
         color: Colors.blue.shade800,
+        fontWeight: FontWeight.w700,
+      );
+  TextStyle h2BackStyle() => TextStyle(
+        fontSize: 18,
+        color: Colors.black,
         fontWeight: FontWeight.w700,
       );
 
@@ -141,8 +151,8 @@ class MyConstant {
         height: 16.0,
       );
 
-   String keyId = 'id';
-   String keyType = 'type';
-   String keyUser = 'user';
-   String keyName  = 'name'; 
+  String keyId = 'id';
+  String keyType = 'type';
+  String keyUser = 'user';
+  String keyName = 'name';
 }

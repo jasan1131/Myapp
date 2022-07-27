@@ -13,18 +13,19 @@ class _NavigatorCFWState extends State<NavigatorCFW> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 95,
-      height: 95,
+      width: 80,
+      height: 80,
       child: InkWell(
-        onTap: () => Navigator.pushNamed(context, MyConstant.rounteConfirmAddWallet),
+        onTap: () =>
+            Navigator.pushNamed(context, MyConstant.rounteConfirmAddWallet),
         child: Card(
-          color: MyConstant.dark,
+          color: MyConstant.primary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(60),
           ),
           child: Center(
             child: ShowTitle(
-              title: 'AddBill',
+              title: 'เพิ่มบิล',
               textStyle: MyConstant().h3WhiteStyle(),
             ),
           ),

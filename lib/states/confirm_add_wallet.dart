@@ -3,6 +3,8 @@ import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_myappication_1/models/user_models.dart';
+import 'package:flutter_myappication_1/states/confirm_order.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/utility/my_dialog.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
@@ -18,6 +20,7 @@ class ConfirmAddWallet extends StatefulWidget {
 }
 
 class _ConfirmAddWalletState extends State<ConfirmAddWallet> {
+  UserModel? userModel;
   String? dateTimeStr;
   File? file;
   bool load = true;
@@ -126,7 +129,7 @@ class _ConfirmAddWalletState extends State<ConfirmAddWallet> {
   }
 
   void success(){
-    Navigator.pushNamedAndRemoveUntil(context, MyConstant.rounteConfirmOrder, (route) => false);
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ConfirmOrder(),), (route) => false);
   }
 
   Future<void> processTakePhoto(ImageSource source) async {

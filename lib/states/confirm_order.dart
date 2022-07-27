@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/models/splite_model.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
+import 'package:flutter_myappication_1/states/buyer_sevice.dart';
+import 'package:flutter_myappication_1/states/buyer_show_shop_seller.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/utility/my_dialog.dart';
 import 'package:flutter_myappication_1/utility/sqlite_helpper.dart';
@@ -22,6 +24,9 @@ class ConfirmOrder extends StatefulWidget {
 
 class _ConfirmOrderState extends State<ConfirmOrder> {
   String? distance;
+  String? idBuyer;
+  UserModel? userModel;
+  List<UserModel> userModels = [];
   List<SQLiteModel> sqliteModels = [];
   bool load = true;
   int? total;
@@ -369,8 +374,10 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
   }
 
   Future<Null> clearAllSqlite() async {
-    Fluttertoast.showToast(
-      msg: 'ขอบคุณที่ใช้บริการ',
+    MyDialog().normalDialogNavigator(
+      context,
+      'ทำรายการเสร็จสิน',
+      'ส่งรายการสินค้าที่สั่งไปยังร้านค้าเรียบร้อยแล้ว ขอบคุณที่ใช้บริการ',
     );
     await SQLiteHelpper().emptySQLite().then((value) {
       processReadSqlite();
@@ -402,10 +409,8 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
   }
 
   Future<Null> sendNotificationToShop(String urlSendToken) async {
-    MyDialog().normalDialog(context, 'ทำรายการเสร็จสินขอบคุณที่ใช้บริการ',
-        'คำสั่งซื้อของคุณได้ถูกเพิ่มไปยังร้านค้าแล้ว,');
     await Dio().get(urlSendToken).then((value) {
-      Navigator.pushNamedAndRemoveUntil(context, MyConstant.routeBuyerService, (route) => false);
+      print('UploadFinish');
     });
   }
 }

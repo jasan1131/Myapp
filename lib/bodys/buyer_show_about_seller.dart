@@ -91,51 +91,75 @@ class _ShowAboutSellerState extends State<ShowAboutSeller> {
     return Scaffold(
       body: userModel == null
           ? ShowProgress()
-          : LayoutBuilder(
-              builder: (context, constraints) => SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: 16),
-                              width: constraints.maxWidth * 0.6,
-                              child: CachedNetworkImage(
-                                imageUrl:
-                                    '${MyConstant.domain}${userModel!.avatar}',
-                                placeholder: (context, url) => ShowProgress(),
+          : Container(
+              decoration: MyConstant().gradientRadioBackground(),
+              child: LayoutBuilder(
+                builder: (context, constraints) => SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 16),
+                                width: constraints.maxWidth * 0.6,
+                                child: CachedNetworkImage(
+                                  imageUrl:
+                                      '${MyConstant.domain}${userModel!.avatar}',
+                                  placeholder: (context, url) => ShowProgress(),
+                                ),
                               ),
+                            ],
+                          ),
+                          ListTile(
+                            leading: Icon(
+                              Icons.home_outlined,
+                              color: Colors.black,
                             ),
-                          ],
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.home_outlined),
-                          title: ShowTitle(title: userModel!.address),
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.phone_outlined),
-                          title: ShowTitle(title: userModel!.phone),
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.local_shipping_outlined),
-                          title: ShowTitle(
+                            title: ShowTitle(
+                              title: userModel!.address,
+                              textStyle: MyConstant().h3BlackStyle(),
+                            ),
+                          ),
+                          ListTile(
+                            leading: Icon(
+                              Icons.phone_outlined,
+                              color: Colors.black,
+                            ),
+                            title: ShowTitle(
+                              title: userModel!.phone,
+                              textStyle: MyConstant().h3BlackStyle(),
+                            ),
+                          ),
+                          ListTile(
+                            leading: Icon(
+                              Icons.local_shipping_outlined,
+                              color: Colors.black,
+                            ),
+                            title: ShowTitle(
                               title: distance == null
                                   ? ''
-                                  : '$distanceString กิโลเมตร'),
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.transfer_within_a_station),
-                          title: ShowTitle(
-                            title: transport == null ? '' : '$transport บาท',
+                                  : '$distanceString กิโลเมตร',
+                              textStyle: MyConstant().h3BlackStyle(),
+                            ),
                           ),
-                        ),
-                        showmap(),
-                      ],
+                          ListTile(
+                            leading: Icon(
+                              Icons.transfer_within_a_station,
+                              color: Colors.black,
+                            ),
+                            title: ShowTitle(
+                              title: transport == null ? '' : '$transport บาท',
+                              textStyle: MyConstant().h3BlackStyle(),
+                            ),
+                          ),
+                          showmap(),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -149,7 +173,7 @@ class _ShowAboutSellerState extends State<ShowAboutSeller> {
       LatLng latLng1 = LatLng(lat1!, lng1!);
       position = CameraPosition(
         target: latLng1,
-        zoom: 10,
+        zoom: 13,
       );
     }
     Marker userMarker() {
@@ -170,7 +194,7 @@ class _ShowAboutSellerState extends State<ShowAboutSeller> {
       );
     }
 
-    Set<Marker> mySet(){
+    Set<Marker> mySet() {
       return <Marker>[userMarker(), shopMarker()].toSet();
     }
 
@@ -187,7 +211,8 @@ class _ShowAboutSellerState extends State<ShowAboutSeller> {
           : GoogleMap(
               initialCameraPosition: position!,
               mapType: MapType.normal,
-              onMapCreated: (context) {},markers: mySet(),
+              onMapCreated: (context) {},
+              markers: mySet(),
             ),
     );
   }

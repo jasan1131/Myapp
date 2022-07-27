@@ -2,20 +2,22 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_myappication_1/bodys/show_confirm_order_by_rider.dart';
+import 'package:flutter_myappication_1/bodys/show_order_shipped_by_rider.dart';
 import 'package:flutter_myappication_1/models/order_model.dart';
-import 'package:flutter_myappication_1/states/admin.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 
-class ShowOrderAdmin extends StatefulWidget {
-  const ShowOrderAdmin({Key? key}) : super(key: key);
+class ShowOrderShipped extends StatefulWidget {
+  const ShowOrderShipped({Key? key}) : super(key: key);
 
   @override
-  State<ShowOrderAdmin> createState() => _ShowOrderAdminState();
+  State<ShowOrderShipped> createState() => _ShowOrderShippedState();
 }
 
-class _ShowOrderAdminState extends State<ShowOrderAdmin> {
+class _ShowOrderShippedState extends State<ShowOrderShipped> {
+  OrderModel? orderModel;
   bool statusOrder = true;
   bool? haveData;
   List<OrderModel> orderModels = [];
@@ -35,7 +37,7 @@ class _ShowOrderAdminState extends State<ShowOrderAdmin> {
 
   Future<Null> findIdSellerAndReadOrder() async {
     String path =
-        '${MyConstant.domain}/shopping/getOrderWhereStatusAwaitOrder.php';
+        '${MyConstant.domain}/shopping/getOrderWhereStatusRiderConfirmOrder.php';
     await Dio().get(path).then((value) {
       if (value.toString() == 'null') {
         setState(() {
@@ -83,39 +85,41 @@ class _ShowOrderAdminState extends State<ShowOrderAdmin> {
       body: statusOrder
           ? ShowProgress()
           : haveData!
-              ? ListView.builder(
-                  itemCount: orderModels.length,
-                  itemBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ShowTitle(
-                              title: orderModels[index].nameBuyer!,
-                              textStyle: MyConstant().h2Style(),
-                            ),
-                            Row(
-                              children: [
-                                ShowTitle(title: orderModels[index].dateOrder!),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 4),
-                                  child: ShowTitle(
-                                      title: orderModels[index].timeOrder!),
-                                ),
-                              ],
-                            ),
-                            buildTitle(),
-                            bildListViewOrder(index),
-                            buildButton(index),
-                          ],
+              ? Container(decoration: MyConstant().gradientRadioBackground(),
+                child: ListView.builder(
+                    itemCount: orderModels.length,
+                    itemBuilder: (context, index) => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ShowTitle(
+                                title: orderModels[index].nameBuyer!,
+                                textStyle: MyConstant().h2Style(),
+                              ),
+                              Row(
+                                children: [
+                                  ShowTitle(title: orderModels[index].dateOrder!),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4),
+                                    child: ShowTitle(
+                                        title: orderModels[index].timeOrder!),
+                                  ),
+                                ],
+                              ),
+                              buildTitle(),
+                              bildListViewOrder(index),
+                              buildButton(index),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                )
+              )
               : Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -134,7 +138,7 @@ class _ShowOrderAdminState extends State<ShowOrderAdmin> {
 
   Row buildButton(index) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         ElevatedButton(
             style: ButtonStyle(
@@ -145,67 +149,28 @@ class _ShowOrderAdminState extends State<ShowOrderAdmin> {
                 ),
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ShowOrderShippedByRider(orderModel: orderModels[index]),
+                ),
+              );
+            },
             child: Row(
               children: [
-                Icon(
-                  Icons.cancel_outlined,
-                  color: Colors.red.shade700,
-                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ShowTitle(
-                    title: 'ยกเลิกสินค้า',
+                    title: 'ดูข้อมูลผู้สั่งซื้อ',
                     textStyle: MyConstant().h3WhiteStyle(),
                   ),
                 ),
               ],
             )),
-        ElevatedButton(
-          style: ButtonStyle(
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18),
-                side: BorderSide(color: MyConstant.dark, width: 145),
-              ),
-            ),
-          ),
-          onPressed: () async {
-            confirmOrder(index);
-          },
-          child: Row(
-            children: [
-              Icon(
-                Icons.radio_button_off,
-                color: Colors.green.shade400,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ShowTitle(
-                  title: 'ยืนยันสินค้า',
-                  textStyle: MyConstant().h3WhiteStyle(),
-                ),
-              ),
-            ],
-          ),
-        ),
       ],
     );
-  }
-
-  Future confirmOrder(index) async {
-    id = orderModels[index].id;
-    String status = 'sellerConfirmOrder';
-    String url =
-        '${MyConstant.domain}/shopping/editStatusWhereId.php?isAdd=true&id=$id&status=$status';
-    await Dio().get(url).then((value) {
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => AdminServer(),
-          ),
-          (route) => false);
-    });
   }
 
   ListView bildListViewOrder(int index) {

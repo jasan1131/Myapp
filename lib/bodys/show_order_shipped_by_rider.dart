@@ -3,36 +3,33 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_myappication_1/bodys/rider_map.dart';
 import 'package:flutter_myappication_1/models/order_model.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
-import 'package:flutter_myappication_1/states/rider_service.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 
-class ShowConfirmOrderByRider extends StatefulWidget {
+class ShowOrderShippedByRider extends StatefulWidget {
   final OrderModel orderModel;
-  const ShowConfirmOrderByRider({Key? key, required this.orderModel})
+  const ShowOrderShippedByRider({Key? key, required this.orderModel})
       : super(key: key);
 
   @override
-  State<ShowConfirmOrderByRider> createState() =>
-      _ShowConfirmOrderByRiderState();
+  State<ShowOrderShippedByRider> createState() =>
+      _ShowOrderShippedByRiderState();
 }
 
-class _ShowConfirmOrderByRiderState extends State<ShowConfirmOrderByRider> {
+class _ShowOrderShippedByRiderState extends State<ShowOrderShippedByRider> {
   OrderModel? orderModel;
   UserModel? userModel;
   List<UserModel> userModels = [];
   String? idBuyer;
   bool loadData = false;
   bool haveData = false;
-  double? lat1, lng1, lat2, lng2;
   CameraPosition? position;
   String? id;
-  GoogleMapController? mapController;
 
   @override
   void initState() {
@@ -56,27 +53,11 @@ class _ShowConfirmOrderByRiderState extends State<ShowConfirmOrderByRider> {
         setState(() {
           userModels.add(model);
         });
-        LocationData? locationData = await finalLocationData();
-        setState(() {
-          lat1 = double.parse(model.lat);
-          lng1 = double.parse(model.lng);
-          lat2 = locationData!.latitude;
-          lng2 = locationData.longitude;
-          print('lat = $lat1, lng = $lng1, lat1 = $lat2, lng1 = $lng2');
-        });
       }
     });
   }
 
-  Future<LocationData?> finalLocationData() async {
-    Location location = Location();
-    try {
-      return await location.getLocation();
-    } catch (e) {
-      return null;
-    }
-  } // print('orderModel = ${orderModel!.nameProduct}');
-
+// print('orderModel = ${orderMod
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,96 +114,56 @@ class _ShowConfirmOrderByRiderState extends State<ShowConfirmOrderByRider> {
                       textStyle: MyConstant().h2BackStyle(),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: showmap(),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(vertical: 16),
+                  //   child: showmap(),
+                  // ),
                 ],
               ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.75,
-                child: ElevatedButton(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(MyConstant.light)),
-                    onPressed: () {
-                      confirmOrder(index);
-                    },
-                    child: ShowTitle(
-                      title: 'ยันยันการรับสินค้า',
-                      textStyle: MyConstant().h3BlackStyle(),
-                    )),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(MyConstant.light)),
+                      onPressed: () {
+                        confirmOrder(index);
+                      },
+                      child: ShowTitle(
+                        title: 'ยันยันการส่งสินค้า',
+                        textStyle: MyConstant().h3BlackStyle(),
+                      )),
+                ),
               ),
             ],
+          ),
+        ),
+      ),
+      floatingActionButton: Container(
+        width: 80,
+        height: 80,
+        child: FloatingActionButton(
+          backgroundColor: Colors.white,
+          onPressed: () {
+            print('idBuyer = $idBuyer');
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => RiderMaps(orderModel: orderModel!),
+                ));
+          },
+          tooltip: 'Incrment',
+          child: Icon(
+            Icons.near_me,
+            size: 35,
+            color: MyConstant.dark,
           ),
         ),
       ),
     );
   }
 
-  Future confirmOrder(index) async {
-    id = orderModel!.id;
-    String status = 'riderConfirmOrder';
-    String url =
-        '${MyConstant.domain}/shopping/editStatusWhereId.php?isAdd=true&id=$id&status=$status';
-    await Dio().get(url).then((value) {
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => RiderService(),
-          ),
-          (route) => false);
-    });
-  }
-
-  Container showmap() {
-    if (lat1 != null) {
-      LatLng latLng1 = LatLng(lat1!, lng1!);
-      position = CameraPosition(
-        target: latLng1,
-        zoom: 13,
-      );
-    }
-    Marker userMarker() {
-      return Marker(
-        markerId: MarkerId('userMarker'),
-        position: LatLng(lat1!, lng1!),
-        icon: BitmapDescriptor.defaultMarkerWithHue(150.0),
-        infoWindow: InfoWindow(title: 'คุณอยู่ที่นี้'),
-      );
-    }
-
-    // Marker shopMarker() {
-    //   return Marker(
-    //     markerId: MarkerId('shopMarker'),
-    //     position: LatLng(lat2!, lng2!),
-    //     icon: BitmapDescriptor.defaultMarkerWithHue(60.0),
-    //     infoWindow: InfoWindow(title: 'คุณอยู่ที่นี้'),
-    //   );
-    // }
-
-    Set<Marker> mySet() {
-      return <Marker>[userMarker()].toSet();
-    }
-
-    void _onMapCreated(GoogleMapController controller){
-      mapController = controller;
-    }
-
-    return Container(
-      margin: EdgeInsets.only(
-        left: 16,
-        right: 16,
-        top: 16,
-        bottom: 16,
-      ),
-      height: 250,
-      child: lat1 == null
-          ? ShowProgress()
-          : GoogleMap(
-            myLocationEnabled: true,
-              initialCameraPosition: position!,
-              mapType: MapType.normal,
-              onMapCreated: _onMapCreated,
-              markers: mySet(),
-            ),
-    );
-  }
+  Future confirmOrder(index) async {}
 }

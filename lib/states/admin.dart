@@ -52,8 +52,11 @@ class _AdminServerState extends State<AdminServer> {
     // print('### id Logined ==> $id');
 
     if (id != null && id.isNotEmpty) {
-      String url = '${MyConstant.domain}/shopping/editTokenWhereId.php?isAdd=true&id=$id&token=$token';
-      await Dio().get(url).then((value) => print('#### Update Token Success ####'));
+      String url =
+          '${MyConstant.domain}/shopping/editTokenWhereId.php?isAdd=true&id=$id&token=$token';
+      await Dio()
+          .get(url)
+          .then((value) => print('#### Update Token Success ####'));
     }
 
     String apiGetUserWhereId =
@@ -272,27 +275,27 @@ class _AdminServerState extends State<AdminServer> {
     );
   }
 
-  Future<void> backgroundHandler(RemoteMessage message)async{
+  Future<void> backgroundHandler(RemoteMessage message) async {
     print(message.data.toString());
     print(message.notification!.title);
   }
-  void backgroundMessage()async{
+
+  void backgroundMessage() async {
     await Firebase.initializeApp();
     FirebaseMessaging.onBackgroundMessage(backgroundHandler);
   }
 
   Future<Null> aboutNotification() async {
     await await Firebase.initializeApp();
-    
-    FirebaseMessaging.instance.getInitialMessage();
 
+    FirebaseMessaging.instance.getInitialMessage();
 
     FirebaseMessaging.onMessage.listen((message) {
       if (message.notification != null) {
         String? messageBody = message.notification!.body;
         String? messageTitle = message.notification!.title;
-        
-        MyDialog().normalDialog(context, messageBody!, messageTitle!);
+
+        MyDialog().normalDialogNavigatorAdmin(context, messageBody!, messageTitle!);
       }
     });
 
@@ -300,8 +303,8 @@ class _AdminServerState extends State<AdminServer> {
       if (message.notification != null) {
         String? messageBody = message.notification!.body;
         String? messageTitle = message.notification!.title;
-        
-        MyDialog().normalDialog(context, messageBody!, messageTitle!);
+
+        MyDialog().normalDialogNavigatorAdmin(context, messageBody!, messageTitle!);
       }
     });
   }

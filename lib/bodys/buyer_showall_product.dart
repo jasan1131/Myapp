@@ -90,53 +90,55 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: OrientationBuilder(
-        builder: (context, orientation) {
-          if (orientation == Orientation.portrait) {
-            return load
-                ? ShowProgress()
-                : haveData!
-                    ? listProduct()
-                    : Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ShowTitle(
-                              title: 'NO DATA',
-                              textStyle: MyConstant().h1Style(),
-                            ),
-                          ],
-                        ),
-                      );
-          } else {
-            return load
-                ? ShowProgress()
-                : haveData!
-                    ? listProductHolizon()
-                    : Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ShowTitle(
-                              title: 'NO DATA',
-                              textStyle: MyConstant().h1Style(),
-                            ),
-                          ],
-                        ),
-                      );
-          }
-        },
+      body: Container(
+        decoration: MyConstant().gradientRadioBackground(),
+        child: OrientationBuilder(
+          builder: (context, orientation) {
+            if (orientation == Orientation.portrait) {
+              return load
+                  ? ShowProgress()
+                  : haveData!
+                      ? listProduct()
+                      : Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ShowTitle(
+                                title: 'NO DATA',
+                                textStyle: MyConstant().h1Style(),
+                              ),
+                            ],
+                          ),
+                        );
+            } else {
+              return load
+                  ? ShowProgress()
+                  : haveData!
+                      ? listProductHolizon()
+                      : Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ShowTitle(
+                                title: 'NO DATA',
+                                textStyle: MyConstant().h1Style(),
+                              ),
+                            ],
+                          ),
+                        );
+            }
+          },
+        ),
       ),
     );
   }
 
   Container listProduct() {
     return Container(
-      decoration: MyConstant().planBackground(),
       child: GridView.builder(
         itemCount: productmodels.length,
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          childAspectRatio: 2 / 4,
+          childAspectRatio: 2 / 3,
           maxCrossAxisExtent: 260,
         ),
         itemBuilder: (context, index) => GestureDetector(
@@ -215,7 +217,7 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
         itemCount: productmodels.length,
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           childAspectRatio: 2 / 2,
-          maxCrossAxisExtent: 400,
+          maxCrossAxisExtent: 800,
         ),
         itemBuilder: (context, index) => GestureDetector(
           onTap: () {

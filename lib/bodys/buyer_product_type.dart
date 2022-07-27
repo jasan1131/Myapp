@@ -18,7 +18,6 @@ class BuyerProductType extends StatefulWidget {
 class _BuyerProductTypeState extends State<BuyerProductType> {
   UserModel? userModel;
 
-
   @override
   void initState() {
     // TODO: implement initState
@@ -29,10 +28,12 @@ class _BuyerProductTypeState extends State<BuyerProductType> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(decoration: MyConstant().planBackground(),
+      body: Container(
+        decoration: MyConstant().gradientRadioBackground(),
         child: Padding(
           padding: const EdgeInsets.all(8),
-          child: Column(mainAxisAlignment: MainAxisAlignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               buildTypeVegatable(context),
               buildTypeMeet(context),
@@ -58,11 +59,19 @@ class _BuyerProductTypeState extends State<BuyerProductType> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.09,
+            height: MediaQuery.of(context).size.height * 0.15,
             width: MediaQuery.of(context).size.width * 0.75,
             child: Card(
-              child: Center(
-                child: ShowTitle(title: 'ผักผลไม้  '),
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ShowTitle(
+                      title: 'ผักผลไม้  ',
+                      textStyle: MyConstant().h2BackStyle(),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -84,11 +93,14 @@ class _BuyerProductTypeState extends State<BuyerProductType> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.09,
+            height: MediaQuery.of(context).size.height * 0.15,
             width: MediaQuery.of(context).size.width * 0.75,
             child: Card(
               child: Center(
-                child: ShowTitle(title: 'เนื้อสัตว์  '),
+                child: ShowTitle(
+                  title: 'เนื้อสัตว์  ',
+                  textStyle: MyConstant().h2BackStyle(),
+                ),
               ),
             ),
           ),
@@ -110,11 +122,14 @@ class _BuyerProductTypeState extends State<BuyerProductType> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.09,
+            height: MediaQuery.of(context).size.height * 0.15,
             width: MediaQuery.of(context).size.width * 0.75,
             child: Card(
               child: Center(
-                child: ShowTitle(title: 'ของแห้ง  '),
+                child: ShowTitle(
+                  title: 'ของแห้ง  ',
+                  textStyle: MyConstant().h2BackStyle(),
+                ),
               ),
             ),
           ),
@@ -136,11 +151,14 @@ class _BuyerProductTypeState extends State<BuyerProductType> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.09,
+            height: MediaQuery.of(context).size.height * 0.15,
             width: MediaQuery.of(context).size.width * 0.75,
             child: Card(
               child: Center(
-                child: ShowTitle(title: 'เครื่องปรุงรส  '),
+                child: ShowTitle(
+                  title: 'เครื่องปรุงรส  ',
+                  textStyle: MyConstant().h2BackStyle(),
+                ),
               ),
             ),
           ),

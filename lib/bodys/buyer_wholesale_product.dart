@@ -91,42 +91,45 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: OrientationBuilder(
-        builder: (context, orientation) {
-          if (orientation == Orientation.portrait) {
-            return load
-                ? ShowProgress()
-                : haveData!
-                    ? listProduct()
-                    : Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ShowTitle(
-                              title: 'NO DATA',
-                              textStyle: MyConstant().h1Style(),
-                            ),
-                          ],
-                        ),
-                      );
-          } else {
-            return load
-                ? ShowProgress()
-                : haveData!
-                    ? listProductHolizon()
-                    : Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ShowTitle(
-                              title: 'NO DATA',
-                              textStyle: MyConstant().h1Style(),
-                            ),
-                          ],
-                        ),
-                      );
-          }
-        },
+      body: Container(
+        decoration: MyConstant().gradientRadioBackground(),
+        child: OrientationBuilder(
+          builder: (context, orientation) {
+            if (orientation == Orientation.portrait) {
+              return load
+                  ? ShowProgress()
+                  : haveData!
+                      ? listProduct()
+                      : Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ShowTitle(
+                                title: 'NO DATA',
+                                textStyle: MyConstant().h1Style(),
+                              ),
+                            ],
+                          ),
+                        );
+            } else {
+              return load
+                  ? ShowProgress()
+                  : haveData!
+                      ? listProductHolizon()
+                      : Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ShowTitle(
+                                title: 'NO DATA',
+                                textStyle: MyConstant().h1Style(),
+                              ),
+                            ],
+                          ),
+                        );
+            }
+          },
+        ),
       ),
     );
   }
@@ -215,7 +218,7 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
         itemCount: productmodles.length,
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           childAspectRatio: 2 / 2,
-          maxCrossAxisExtent: 400,
+          maxCrossAxisExtent: 800,
         ),
         itemBuilder: (context, index) => GestureDetector(
           onTap: () {
@@ -469,10 +472,12 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
                         sum: sum,
                         distance: distancestring,
                         transport: transport.toString());
-                        await SQLiteHelpper().insertValueSQLite(sqLiteModel).then((value) {
-                          amountInt = 1;
-                          Navigator.pop(context);
-                        });
+                    await SQLiteHelpper()
+                        .insertValueSQLite(sqLiteModel)
+                        .then((value) {
+                      amountInt = 1;
+                      Navigator.pop(context);
+                    });
                   },
                   child: ShowTitle(
                     title: 'Add',
