@@ -175,7 +175,10 @@ class _ShowOrderRiderState extends State<ShowOrderRider> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text('ยอดรวมสินค้า :'),
+                ShowTitle(
+                  title: 'ยอดรวมสินค้า : ',
+                  textStyle: MyConstant().h2Style(),
+                )
               ],
             ),
           ),
@@ -186,7 +189,10 @@ class _ShowOrderRiderState extends State<ShowOrderRider> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(totalProductTnts[index].toString()),
+                  ShowTitle(
+                    title: totalProductTnts[index].toString(),
+                    textStyle: MyConstant().h2Style(),
+                  )
                 ],
               ),
             ),

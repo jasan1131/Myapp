@@ -79,46 +79,48 @@ class _ShowOrderShippedByRiderState extends State<ShowOrderShippedByRider> {
                   placeholder: (context, url) => ShowProgress(),
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        ShowTitle(
-                          title: 'ชื่อ ${userModels[index].name}',
-                          textStyle: MyConstant().h1BackStyle(),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 16),
-                          child: ShowTitle(
-                            title: 'นามสกุล ${userModels[index].seconname}',
+              Card(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          ShowTitle(
+                            title: 'ชื่อ ${userModels[index].name}',
                             textStyle: MyConstant().h1BackStyle(),
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.only(left: 16),
+                            child: ShowTitle(
+                              title: 'นามสกุล ${userModels[index].seconname}',
+                              textStyle: MyConstant().h1BackStyle(),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ShowTitle(
-                      title: 'ที่อยู่ : ${userModels[index].address}',
-                      textStyle: MyConstant().h2BackStyle(),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ShowTitle(
+                        title: 'ที่อยู่ : ${userModels[index].address}',
+                        textStyle: MyConstant().h2BackStyle(),
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ShowTitle(
-                      title: 'เบอรืโทรศัพท์ : ${userModels[index].phone}',
-                      textStyle: MyConstant().h2BackStyle(),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ShowTitle(
+                        title: 'เบอรืโทรศัพท์ : ${userModels[index].phone}',
+                        textStyle: MyConstant().h2BackStyle(),
+                      ),
                     ),
-                  ),
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(vertical: 16),
-                  //   child: showmap(),
-                  // ),
-                ],
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(vertical: 16),
+                    //   child: showmap(),
+                    // ),
+                  ],
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),

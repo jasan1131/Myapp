@@ -3,28 +3,27 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/models/order_model.dart';
-import 'package:flutter_myappication_1/status/show_status_seller_order.dart';
-import 'package:flutter_myappication_1/status/show_status_finish.dart';
-import 'package:flutter_myappication_1/status/show_status_await_order.dart';
-import 'package:flutter_myappication_1/status/show_status_rider_order.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:steps_indicator/steps_indicator.dart';
 
-class ShowOrderStatus extends StatefulWidget {
-  const ShowOrderStatus({Key? key}) : super(key: key);
+class ShowStatusSellerOrder extends StatefulWidget {
+  final OrderModel orderModel;
+  const ShowStatusSellerOrder({Key? key, required this.orderModel})
+      : super(key: key);
 
   @override
-  State<ShowOrderStatus> createState() => _ShowOrderStatusState();
+  State<ShowStatusSellerOrder> createState() => _ShowStatusSellerOrderState();
 }
 
-class _ShowOrderStatusState extends State<ShowOrderStatus> {
+class _ShowStatusSellerOrderState extends State<ShowStatusSellerOrder> {
   OrderModel? orderModel;
   String? idBuyer;
-  bool statusOrder = true;
+  String? id;
+  String? status;
   bool? haveData;
+  bool statusOrder = true;
   List<OrderModel> orderModels = [];
   List<List<String>> listOrderProducts = [];
   List<List<String>> listOrderPrices = [];
@@ -32,12 +31,12 @@ class _ShowOrderStatusState extends State<ShowOrderStatus> {
   List<List<String>> listOrderSums = [];
   List<int> totalProductTnts = [];
   List<int> statusInts = [];
-  int status = 0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    orderModel = widget.orderModel;
     findBuyer();
   }
 
@@ -48,26 +47,27 @@ class _ShowOrderStatusState extends State<ShowOrderStatus> {
       ));
 
   Future<Null> findBuyer() async {
+    id = orderModel!.id;
     SharedPreferences preferences = await SharedPreferences.getInstance();
     idBuyer = preferences.getString('id');
-    // print('idBuyer = $idBuyer');
+    status = 'sellerConfirmOrder';
+    print('id = $id, idBuyer = $idBuyer');
     readOrderFromIdBuyer();
   }
 
   Future<Null> readOrderFromIdBuyer() async {
-    if (idBuyer != null) {
+    if (status != null) {
       String url =
-          '${MyConstant.domain}/shopping/getOrderWhereUser.php?isAdd=true&idBuyer=$idBuyer';
+          '${MyConstant.domain}/shopping/getOrderWhereUserStatus.php?isAdd=true&id=$id&idBuyer=$idBuyer&status=$status';
 
       await Dio().get(url).then((value) {
         if (value.toString() == 'null') {
           setState(() {
-            statusOrder = false;
             haveData = false;
+            statusOrder = false;
           });
         } else {
-          var result = json.decode(value.data);
-          for (var map in result) {
+          for (var map in json.decode(value.data)) {
             OrderModel model = OrderModel.fromJson(map);
             List<String> orderProducts = changeArrey(model.nameProduct!);
             List<String> orderPrices = changeArrey(model.priceProduct!);
@@ -80,23 +80,7 @@ class _ShowOrderStatusState extends State<ShowOrderStatus> {
               total = total + int.parse(string.trim());
               // total = transport + total;
             }
-            print('total = $total');
-
-            switch (model.status) {
-              case 'awaitOrder':
-                status = 0;
-                break;
-              case 'sellerConfirmOrder':
-                status = 1;
-                break;
-              case 'riderConfirmOrder':
-                status = 2;
-                break;
-              case 'Finish':
-                status = 3;
-                break;
-              default:
-            }
+            // print('total = $total');
 
             setState(() {
               haveData = true;
@@ -108,12 +92,12 @@ class _ShowOrderStatusState extends State<ShowOrderStatus> {
               listOrderAmunts.add(orderAmounts);
               listOrderSums.add(orderSums);
               totalProductTnts.add(total);
-              statusInts.add(status);
               // print('orderProducts = $orderProducts');
             });
           }
         }
       });
+      // print('response = $response');
     }
   }
 
@@ -133,6 +117,9 @@ class _ShowOrderStatusState extends State<ShowOrderStatus> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(centerTitle: true,
+        title: Text('รายการสินค้าที่สั่ง'),
+      ),
       body: statusOrder
           ? ShowProgress()
           : haveData!
@@ -162,86 +149,19 @@ class _ShowOrderStatusState extends State<ShowOrderStatus> {
                   ),
                 ),
               ),
-              MyConstant().mySizeBox(),
-              buildStepIndicator(statusInts[index]),
-              MyConstant().mySizeBox(),
+              // MyConstant().mySizeBox(),
+              // buildStepIndicator(statusInts[index]),
+              // MyConstant().mySizeBox(),
             ],
           ),
         ),
       );
 
-  Widget buildStepIndicator(int index) {
-    return Column(
-      children: [
-        StepsIndicator(
-          selectedStepColorIn: MyConstant.light,
-          unselectedStepColorIn: Colors.white,
-          selectedStepColorOut: Colors.black,
-          unselectedStepColorOut: Colors.black,
-          doneStepColor: Colors.black,
-          doneLineColor: Colors.black,
-          undoneLineColor: Colors.black,
-          lineLength: 100,
-          selectedStep: index,
-          nbSteps: 4,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 6, right: 6),
-          child: Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    print('id = ${orderModels[index].id}');
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ShowStatusAwaitOrder(
-                              orderModel: orderModels[index]),
-                        ));
-                  },
-                  icon: Icon(Icons.filter_1_outlined),
-                ),
-                IconButton(
-                  onPressed: () {
-                    print('id = ${orderModels[index].id}');
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ShowStatusSellerOrder(
-                              orderModel: orderModels[index]),
-                        ));
-                  },
-                  icon: Icon(Icons.filter_2_outlined),
-                ),
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ShowStatusRiderOrder(),
-                        ));
-                  },
-                  icon: Icon(Icons.filter_3_outlined),
-                ),
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ShowStatusFinish(),
-                        ));
-                  },
-                  icon: Icon(Icons.filter_4_outlined),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget buildStepIndicator(int index) {
+  //   return Column(
+  //     children: [],
+  //   );
+  // }
 
   Widget buildShowTotal(int index) => Padding(
         padding: const EdgeInsets.all(4),

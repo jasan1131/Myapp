@@ -11,6 +11,7 @@ import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ShowConfirmOrderByRider extends StatefulWidget {
   final OrderModel orderModel;
@@ -32,6 +33,8 @@ class _ShowConfirmOrderByRiderState extends State<ShowConfirmOrderByRider> {
   double? lat1, lng1, lat2, lng2;
   CameraPosition? position;
   String? id;
+  String? idRider;
+  String? nameRider;
   GoogleMapController? mapController;
 
   @override
@@ -141,7 +144,10 @@ class _ShowConfirmOrderByRiderState extends State<ShowConfirmOrderByRider> {
               ),
               Container(
                 width: MediaQuery.of(context).size.width * 0.75,
-                child: ElevatedButton(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(MyConstant.light)),
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(MyConstant.light)),
                     onPressed: () {
                       confirmOrder(index);
                     },
@@ -159,9 +165,12 @@ class _ShowConfirmOrderByRiderState extends State<ShowConfirmOrderByRider> {
 
   Future confirmOrder(index) async {
     id = orderModel!.id;
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    idRider = preferences.getString('id');
+    nameRider = userModels[index].name;
     String status = 'riderConfirmOrder';
     String url =
-        '${MyConstant.domain}/shopping/editStatusWhereId.php?isAdd=true&id=$id&status=$status';
+        '${MyConstant.domain}/shopping/editStatusWhereId.php?isAdd=true&id=$id&idRider=$idRider&nameRider=$nameRider&status=$status';
     await Dio().get(url).then((value) {
       Navigator.pushAndRemoveUntil(
           context,
@@ -189,20 +198,11 @@ class _ShowConfirmOrderByRiderState extends State<ShowConfirmOrderByRider> {
       );
     }
 
-    // Marker shopMarker() {
-    //   return Marker(
-    //     markerId: MarkerId('shopMarker'),
-    //     position: LatLng(lat2!, lng2!),
-    //     icon: BitmapDescriptor.defaultMarkerWithHue(60.0),
-    //     infoWindow: InfoWindow(title: 'คุณอยู่ที่นี้'),
-    //   );
-    // }
-
     Set<Marker> mySet() {
       return <Marker>[userMarker()].toSet();
     }
 
-    void _onMapCreated(GoogleMapController controller){
+    void _onMapCreated(GoogleMapController controller) {
       mapController = controller;
     }
 
@@ -217,7 +217,7 @@ class _ShowConfirmOrderByRiderState extends State<ShowConfirmOrderByRider> {
       child: lat1 == null
           ? ShowProgress()
           : GoogleMap(
-            myLocationEnabled: true,
+              myLocationEnabled: true,
               initialCameraPosition: position!,
               mapType: MapType.normal,
               onMapCreated: _onMapCreated,

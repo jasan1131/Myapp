@@ -185,6 +185,7 @@ class _RiderMapsState extends State<RiderMaps> {
               zoomControlsEnabled: true,
               initialCameraPosition: position!,
               mapType: MapType.normal,
+              
               myLocationEnabled: true,
               onMapCreated: _onMapCreated,
               markers: mySet(),
