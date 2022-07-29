@@ -90,11 +90,11 @@ class _BuyerShowShopSellerState extends State<BuyerShowShopSeller> {
         ],
       ),
       body: listWidgets.length == 0 ? ShowProgress() : listWidgets[indexPage],
-      bottomNavigationBar: showBottomNAvigationBar(),
+      bottomNavigationBar: showBottomNavigationBar(),
     );
   }
 
-  Widget showBottomNAvigationBar() {
+  Widget showBottomNavigationBar() {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       backgroundColor: MyConstant.primary,

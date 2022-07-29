@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/models/order_model.dart';
+import 'package:flutter_myappication_1/states/show_status_buyer.dart';
 import 'package:flutter_myappication_1/status/show_status_seller_order.dart';
 import 'package:flutter_myappication_1/status/show_status_finish.dart';
 import 'package:flutter_myappication_1/status/show_status_await_order.dart';
@@ -158,13 +159,28 @@ class _ShowOrderStatusState extends State<ShowOrderStatus> {
                       buildHeadTitle(),
                       buildListViewOrderProduct(index),
                       buildShowTotal(index),
+                      MyConstant().mySizeBox(),
+                      buildStepIndicator(statusInts[index]),
+                      MyConstant().mySizeBox(),
                     ],
                   ),
                 ),
               ),
-              MyConstant().mySizeBox(),
-              buildStepIndicator(statusInts[index]),
-              MyConstant().mySizeBox(),
+              Container(width: MediaQuery.of(context).size.width * 0.9,
+                child: ElevatedButton(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(MyConstant.light)),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ShowStatusBuyer(orderModel: orderModels[index]),
+                        ));
+                  },
+                  child: ShowTitle(
+                    title: 'ดูสถานะของสินค้า',
+                    textStyle: MyConstant().h3BlackStyle(),
+                  ),
+                ),
+              )
             ],
           ),
         ),
@@ -182,7 +198,7 @@ class _ShowOrderStatusState extends State<ShowOrderStatus> {
           doneLineColor: Colors.black,
           undoneLineColor: Colors.black,
           lineLength: 100,
-          selectedStep: index,
+          selectedStep: status,
           nbSteps: 4,
         ),
         Padding(
@@ -191,50 +207,10 @@ class _ShowOrderStatusState extends State<ShowOrderStatus> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(
-                  onPressed: () {
-                    print('id = ${orderModels[index].id}');
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ShowStatusAwaitOrder(
-                              orderModel: orderModels[index]),
-                        ));
-                  },
-                  icon: Icon(Icons.filter_1_outlined),
-                ),
-                IconButton(
-                  onPressed: () {
-                    print('id = ${orderModels[index].id}');
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ShowStatusSellerOrder(
-                              orderModel: orderModels[index]),
-                        ));
-                  },
-                  icon: Icon(Icons.filter_2_outlined),
-                ),
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ShowStatusRiderOrder(),
-                        ));
-                  },
-                  icon: Icon(Icons.filter_3_outlined),
-                ),
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ShowStatusFinish(),
-                        ));
-                  },
-                  icon: Icon(Icons.filter_4_outlined),
-                ),
+                Icon(Icons.home),
+                Icon(Icons.home),
+                Icon(Icons.home),
+                Icon(Icons.home),
               ],
             ),
           ),
