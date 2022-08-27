@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_myappication_1/bodyrider/show_status_order_rider_confirm_buyer.dart';
 import 'package:flutter_myappication_1/models/order_model.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
@@ -69,7 +70,7 @@ class _ShowStatusRiderOrderState extends State<ShowStatusRiderOrder> {
         } else {
           var result = json.decode(value.data);
           for (var item in result) {
-            OrderModel model = OrderModel.fromJson(item);
+            OrderModel model = OrderModel.fromMap(item);
             List<String> orderProduct = changeArrey(model.nameProduct!);
             List<String> orderPrice = changeArrey(model.priceProduct!);
             List<String> orderAmount = changeArrey(model.amount!);
@@ -111,8 +112,16 @@ class _ShowStatusRiderOrderState extends State<ShowStatusRiderOrder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: statusOrder ? ShowProgress() : haveData! ? buildContent() : buildNonOrder(),
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: MyConstant.primary,
+        title: Text('รายการสินค้าที่สั่ง'),
+      ),
+      body: statusOrder
+          ? ShowProgress()
+          : haveData!
+              ? buildContent()
+              : buildNonOrder(),
     );
   }
 
@@ -137,19 +146,32 @@ class _ShowStatusRiderOrderState extends State<ShowStatusRiderOrder> {
                   ),
                 ),
               ),
-              // MyConstant().mySizeBox(),
-              // buildStepIndicator(statusInts[index]),
-              // MyConstant().mySizeBox(),
+              MyConstant().mySizeBox(),
+              buildShomStatusOrderByRider(index),
+              MyConstant().mySizeBox(),
             ],
           ),
         ),
       );
 
-  // Widget buildStepIndicator(int index) {
-  //   return Column(
-  //     children: [],
-  //   );
-  // }
+  Widget buildShomStatusOrderByRider(index) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.9,
+      child: ElevatedButton(
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(MyConstant.light)),
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    ShowStatusOrderRiderConfirmBuyer(orderModel: orderModel!),
+              ));
+        },
+        child: ShowTitle(title: 'ดูสถานะการจัดส่งสินค้า'),
+      ),
+    );
+  }
 
   Widget buildShowTotal(int index) => Padding(
         padding: const EdgeInsets.all(4),

@@ -1,27 +1,28 @@
+import 'package:dio/dio.dart';
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/models/product_model.dart';
-import 'package:flutter_myappication_1/states/edit_product.dart';
+import 'package:flutter_myappication_1/states/edit_product_sp.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_image.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ShowProductAdmin extends StatefulWidget {
-  const ShowProductAdmin({Key? key}) : super(key: key);
+class ShowProductSpecailAdmin extends StatefulWidget {
+  const ShowProductSpecailAdmin({Key? key}) : super(key: key);
 
   @override
-  State<ShowProductAdmin> createState() => _ShowProductAdminState();
+  State<ShowProductSpecailAdmin> createState() =>
+      _ShowProductSpecailAdminState();
 }
 
-class _ShowProductAdminState extends State<ShowProductAdmin> {
+class _ShowProductSpecailAdminState extends State<ShowProductSpecailAdmin> {
   bool load = true;
   bool? haveData;
-  List<ProductModel> productModels = [];
+  List<ProductModel> productmodel = [];
 
   @override
   void initState() {
@@ -30,15 +31,15 @@ class _ShowProductAdminState extends State<ShowProductAdmin> {
   }
 
   Future<Null> loadValueFromApi() async {
-    if (productModels.length != 0) {
-      productModels.clear();
+    if (productmodel.length != 0) {
+      productmodel.clear();
     } else {}
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String id = preferences.getString('id')!;
-    String apiGetProductWhereIdProduct =
-        '${MyConstant.domain}/shopping/getProductWhereIdProduct.php?isAdd=true&idproduct=$id';
-    await Dio().get(apiGetProductWhereIdProduct).then(
+    String idproduct = preferences.getString('id')!;
+    String apiGetProductSpWhereIdProductSp =
+        '${MyConstant.domain}/shopping/getProductWhereSpProduct.php';
+    await Dio().get(apiGetProductSpWhereIdProductSp).then(
       (value) {
         // print('### value ==> $value');
 
@@ -57,7 +58,7 @@ class _ShowProductAdminState extends State<ShowProductAdmin> {
             setState(() {
               load = false;
               haveData = true;
-              productModels.add(model);
+              productmodel.add(model);
             });
           }
         }
@@ -110,7 +111,7 @@ class _ShowProductAdminState extends State<ShowProductAdmin> {
 
   ListView buildListView(BoxConstraints constraints) {
     return ListView.builder(
-      itemCount: productModels.length,
+      itemCount: productmodel.length,
       itemBuilder: (context, index) => Card(
         shape: RoundedRectangleBorder(
             side: BorderSide(color: MyConstant.dark),
@@ -127,7 +128,7 @@ class _ShowProductAdminState extends State<ShowProductAdmin> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ShowTitle(
-                      title: productModels[index].nameproduct,
+                      title: productmodel[index].nameproduct,
                       textStyle: MyConstant().h2Style(),
                     ),
                     Container(
@@ -142,7 +143,7 @@ class _ShowProductAdminState extends State<ShowProductAdmin> {
                         child: CachedNetworkImage(
                           fit: BoxFit.fill,
                           imageUrl:
-                              createUrl(productModels[index].imagesproduct),
+                              createUrl(productmodel[index].imagesproduct),
                           placeholder: (context, url) => ShowProgress(),
                           errorWidget: (context, url, error) =>
                               ShowImage(path: MyConstant.imageeror),
@@ -160,17 +161,33 @@ class _ShowProductAdminState extends State<ShowProductAdmin> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ShowTitle(
-                    title: 'ราคา :${productModels[index].priceproduct} THB',
-                    textStyle: MyConstant().h2Style(),
+                  Row(
+                    children: [
+                      ShowTitle(
+                        title: 'ราคา :${productmodel[index].priceproduct}',
+                        textStyle: MyConstant().h3Style(),
+                      ),
+                      ShowTitle(
+                        title: '${productmodel[index].unitprice} THB',
+                        textStyle: MyConstant().h3Style(),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      ShowTitle(
+                        title: 'จำนวนสินค้า :${productmodel[index].numberproduct}',
+                        textStyle: MyConstant().h3Style(),
+                      ),
+                      ShowTitle(
+                        title: '${productmodel[index].unitproduct} THB',
+                        textStyle: MyConstant().h3Style(),
+                      ),
+                    ],
                   ),
                   ShowTitle(
-                    title: 'จำนวนสินค้า :${productModels[index].numberproduct}',
-                    textStyle: MyConstant().h3Style(),
-                  ),
-                  ShowTitle(
-                    title:
-                        'รายละเอียดสินค้า : ${productModels[index].detailproduct}',
+                    title: cutWord(
+                        'รายละเอียดสินค้า : ${productmodel[index].detailproduct}'),
                     textStyle: MyConstant().h3Style(),
                   ),
                   Row(
@@ -182,8 +199,8 @@ class _ShowProductAdminState extends State<ShowProductAdmin> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EditProdut(
-                                  productModel: productModels[index],
+                                builder: (context) => EditProductSpecial(
+                                  productModel: productmodel[index],
                                 ),
                               )).then((value) => loadValueFromApi());
                         },
@@ -196,7 +213,7 @@ class _ShowProductAdminState extends State<ShowProductAdmin> {
                       IconButton(
                         onPressed: () {
                           print('## You Click Delete from index = $index');
-                          confirmDialogDelete(productModels[index]);
+                          confirmDialogDelete(productmodel[index]);
                         },
                         icon: Icon(
                           Icons.delete_outline,
@@ -253,5 +270,14 @@ class _ShowProductAdminState extends State<ShowProductAdmin> {
         ],
       ),
     );
+  }
+
+  String cutWord(String string) {
+    String result = string;
+    if (result.length >= 50) {
+      result = result.substring(0, 50);
+      result = '$result ... ';
+    }
+    return result;
   }
 }

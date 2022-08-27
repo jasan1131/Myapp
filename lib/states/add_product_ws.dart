@@ -11,7 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddProductWholeSale extends StatefulWidget {
-  const AddProductWholeSale({ Key? key }) : super(key: key);
+  const AddProductWholeSale({Key? key}) : super(key: key);
 
   @override
   State<AddProductWholeSale> createState() => _AddProductWholeSaleState();
@@ -26,7 +26,9 @@ class _AddProductWholeSaleState extends State<AddProductWholeSale> {
 
   TextEditingController NameProductController = TextEditingController();
   TextEditingController NumberProductController = TextEditingController();
+  TextEditingController UnitProductController = TextEditingController();
   TextEditingController PriceProductController = TextEditingController();
+  TextEditingController UnitPriceProductController = TextEditingController();
   TextEditingController DetailProductController = TextEditingController();
 
   List<String> paths = [];
@@ -73,7 +75,11 @@ class _AddProductWholeSaleState extends State<AddProductWholeSale> {
                     buildProductName(constraints),
                     buildTitle('ชนิดของสินค้า'),
                     buildProductVegetables(size),
-                    buildProductMeet(size),
+                    buildProductFruit(size),
+                    buildProductMeetPork(size),
+                    buildProductMeetBeef(size),
+                    buildProductMeetChicken(size),
+                    buildProductSeaFood(size),
                     buildProductDryGoods(size),
                     buildProductCondiments(size),
                     buildProductNumber(constraints),
@@ -99,7 +105,7 @@ class _AddProductWholeSaleState extends State<AddProductWholeSale> {
         onPressed: () {
           processAddProduct();
         },
-        child: Text('Add Product'),
+        child: Text('เพิ่มสินค้า'),
       ),
     );
   }
@@ -152,7 +158,10 @@ class _AddProductWholeSaleState extends State<AddProductWholeSale> {
             }
           });
         }
-      } 
+      } else { 
+        MyDialog()
+            .normalDialog(context, 'รูปภาพไม่ครบ', 'กรุณาเลือกรูปภาพให้ครบ');
+      }
     }
   }
 
@@ -178,11 +187,11 @@ class _AddProductWholeSaleState extends State<AddProductWholeSale> {
         title: ListTile(
           leading: ShowImage(path: MyConstant.product),
           title: ShowTitle(
-            title: 'Source Image ${index + 1}?',
+            title: 'เลือกรูปภาพที่ ${index + 1}',
             textStyle: MyConstant().h2Style(),
           ),
           subtitle: ShowTitle(
-              title: 'Please Tap on Camera or Gallery',
+              title: 'กรุณากดที่ กล้องถ่ายรูป หรือ แกลอลี่',
               textStyle: MyConstant().h3Style()),
         ),
         actions: [
@@ -194,14 +203,14 @@ class _AddProductWholeSaleState extends State<AddProductWholeSale> {
                   Navigator.pop(context);
                   processImagePicker(ImageSource.camera, index);
                 },
-                child: Text('Camera'),
+                child: Text('กล้องถ่ายรูป'),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                   processImagePicker(ImageSource.gallery, index);
                 },
-                child: Text('Gallery'),
+                child: Text('แกลลอลี่'),
               ),
             ],
           ),
@@ -284,6 +293,70 @@ class _AddProductWholeSaleState extends State<AddProductWholeSale> {
     );
   }
 
+  Widget buildProductUnitProduct(BoxConstraints constraints) {
+    return Container(
+      width: constraints.maxWidth * 0.75,
+      margin: EdgeInsets.only(top: 16),
+      child: TextFormField(
+        controller: UnitProductController,
+        decoration: InputDecoration(
+          hintText: 'ชื่อสินค้า :',
+          hintStyle: MyConstant().h3Style(),
+          prefixIcon: Icon(
+            Icons.production_quantity_limits_outlined,
+            color: MyConstant.dark,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: MyConstant.dark,
+            ),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: MyConstant.light),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.red),
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildProductUnitPrice(BoxConstraints constraints) {
+    return Container(
+      width: constraints.maxWidth * 0.75,
+      margin: EdgeInsets.only(top: 16),
+      child: TextFormField(
+        controller: UnitPriceProductController,
+        decoration: InputDecoration(
+          hintText: 'หน่วยสินค้า :',
+          hintStyle: MyConstant().h3Style(),
+          prefixIcon: Icon(
+            Icons.production_quantity_limits_outlined,
+            color: MyConstant.dark,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: MyConstant.dark,
+            ),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: MyConstant.light),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.red),
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget buildProductName(BoxConstraints constraints) {
     return Container(
       width: constraints.maxWidth * 0.75,
@@ -291,7 +364,7 @@ class _AddProductWholeSaleState extends State<AddProductWholeSale> {
       child: TextFormField(
         controller: NameProductController,
         decoration: InputDecoration(
-          hintText: 'ชื่อสินค้า :',
+          hintText: 'หน่วยสินค้า :',
           hintStyle: MyConstant().h3Style(),
           prefixIcon: Icon(
             Icons.production_quantity_limits_outlined,
@@ -320,7 +393,8 @@ class _AddProductWholeSaleState extends State<AddProductWholeSale> {
     return Container(
       width: constraints.maxWidth * 0.75,
       margin: EdgeInsets.only(top: 16),
-      child: TextFormField(keyboardType: TextInputType.phone,
+      child: TextFormField(
+        keyboardType: TextInputType.phone,
         controller: NumberProductController,
         decoration: InputDecoration(
           hintText: 'จำนวนสินค้า :',
@@ -434,7 +508,7 @@ class _AddProductWholeSaleState extends State<AddProductWholeSale> {
               );
             },
             title: ShowTitle(
-              title: 'ผักผลไม้',
+              title: 'ผัก',
               textStyle: MyConstant().h3Style(),
             ),
           ),
@@ -443,14 +517,14 @@ class _AddProductWholeSaleState extends State<AddProductWholeSale> {
     );
   }
 
-  Row buildProductMeet(double size) {
+  Row buildProductFruit(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
           width: size * 0.6,
           child: RadioListTile(
-            value: 'meet',
+            value: 'fruit',
             groupValue: typeproduct,
             onChanged: (value) {
               setState(
@@ -460,7 +534,111 @@ class _AddProductWholeSaleState extends State<AddProductWholeSale> {
               );
             },
             title: ShowTitle(
-              title: 'เนื้อสัตว์',
+              title: 'ผลไม้',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductMeetPork(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'pork',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'เนื้อหมู',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductMeetBeef(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'beef',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'เนื้อวัว',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductMeetChicken(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'chicken',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'เนื้อไก่',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductSeaFood(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'seafood',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'อาหารทะเล',
               textStyle: MyConstant().h3Style(),
             ),
           ),
@@ -476,7 +654,7 @@ class _AddProductWholeSaleState extends State<AddProductWholeSale> {
         Container(
           width: size * 0.6,
           child: RadioListTile(
-            value: 'dryGoods',
+            value: 'driedFoods',
             groupValue: typeproduct,
             onChanged: (value) {
               setState(

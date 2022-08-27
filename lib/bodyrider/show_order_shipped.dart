@@ -2,9 +2,12 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_myappication_1/bodys/show_order_shipped_by_rider.dart';
+import 'package:flutter_myappication_1/bodyrider/show_order_shipped_by_rider.dart';
 import 'package:flutter_myappication_1/models/order_model.dart';
+import 'package:flutter_myappication_1/models/splite_model.dart';
+import 'package:flutter_myappication_1/states/buyer_sevice.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
+import 'package:flutter_myappication_1/utility/my_dialog.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 
@@ -27,6 +30,7 @@ class _ShowOrderShippedState extends State<ShowOrderShipped> {
   List<int> totalProductTnts = [];
   String? idSeller;
   String? id;
+  late int total;
 
   @override
   void initState() {
@@ -46,7 +50,7 @@ class _ShowOrderShippedState extends State<ShowOrderShipped> {
         });
       } else {
         for (var item in json.decode(value.data)) {
-          OrderModel model = OrderModel.fromJson(item);
+          OrderModel model = OrderModel.fromMap(item);
           // print('id = ${model.id}');
           List<String> orderProducts = changeArrey(model.nameProduct!);
           List<String> orderPrices = changeArrey(model.priceProduct!);
@@ -198,7 +202,8 @@ class _ShowOrderShippedState extends State<ShowOrderShipped> {
   }
 
   Widget bildListViewOrder(int index) {
-    return Container(padding: EdgeInsets.all(4),
+    return Container(
+      padding: EdgeInsets.all(4),
       child: ListView.builder(
         itemCount: listOrderProducts[index].length,
         shrinkWrap: true,

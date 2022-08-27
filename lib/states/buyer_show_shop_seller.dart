@@ -62,7 +62,7 @@ class _BuyerShowShopSellerState extends State<BuyerShowShopSeller> {
     return BottomNavigationBarItem(
       backgroundColor: MyConstant.dark,
       icon: Icon(Icons.sell_outlined),
-      label: 'สินค้าราคาพิเศษ',
+      label: 'ราคาพิเศษ',
     );
   }
 
@@ -70,7 +70,7 @@ class _BuyerShowShopSellerState extends State<BuyerShowShopSeller> {
     return BottomNavigationBarItem(
       backgroundColor: MyConstant.dark,
       icon: Icon(Icons.workspace_premium_outlined),
-      label: 'สินค้าราคาส่ง',
+      label: 'ราคาส่ง',
     );
   }
 

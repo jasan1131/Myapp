@@ -4,7 +4,7 @@ class MyConstant {
   // Genernal
   static String appName = 'Shopping MAll';
   static String domain =
-      'https://ef00-2001-fb1-1d-28ed-dcda-dc36-eac5-d34c.ap.ngrok.io';
+      'https://47cc-2001-fb1-1e-1bcf-bca0-bdba-41cb-7e1d.ap.ngrok.io';
 
   static String urlPromptpay = 'https://promptpay.io/0970272217.png';
 
@@ -17,15 +17,14 @@ class MyConstant {
   static String rounteAddProduct = '/addProduct';
   static String rounteAddProductSpecial = '/addProductSpecial';
   static String rounteAddProductWholeSale = '/addProductWholeSale';
-
   static String rounteEditProfileAdmin = '/editProfileAdmin';
-
   static String rounteShowCart = '/showcart';
   static String rounteAddWallet = '/addwallet';
   static String rounteConfirmAddWallet = '/confirmaddwallet';
   static String rounteMyMoney = '/mymoney';
   static String rounteConfirmOrder = '/confirmorder';
   static String rountePDPA = '/pdpa';
+
   // Image
   static String image1 = 'images/image1.png';
   static String image2 = 'images/image2.png';
@@ -36,6 +35,27 @@ class MyConstant {
   static String product = 'images/product.png';
   static String logofood = 'images/logofood.png';
   static String bill = 'images/bill.png';
+
+  static String food1 = 'images/food1.png';
+  static String food2 = 'images/food2.jpg';
+  static String food3 = 'images/food3.jpg';
+  static String food4 = 'images/food4.jpg';
+  static String food5 = 'images/food5.jpg';
+  static String food6 = 'images/food6.jpg';
+  static String food7 = 'images/food7.jpg';
+  static String food8 = 'images/food8.jpg';
+  static String food9 = 'images/food9.png';
+  static String food10 = 'images/food10.jpg';
+  static String food11 = 'images/food11.jpg';
+  static String food12 = 'images/food12.jpg';
+  static String food13 = 'images/food13.jpg';
+  static String food14 = 'images/food14.png';
+  static String food15 = 'images/food15.jpg';
+  static String food16 = 'images/food16.jpg';
+  static String food17 = 'images/food17.jpg';
+  static String food18 = 'images/food18.jpg';
+  static String food19 = 'images/food19.jpg';
+  static String food20 = 'images/food20.png';
   // color
   static Color primary = Color(0xff64b5f6);
   static Color dark = Color(0xff2286c3);
@@ -84,7 +104,7 @@ class MyConstant {
         color: Colors.white,
         fontWeight: FontWeight.w800,
       );
-      TextStyle h1BackStyle() => TextStyle(
+  TextStyle h1BackStyle() => TextStyle(
         fontSize: 24,
         color: Colors.black,
         fontWeight: FontWeight.w800,

@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/models/order_model.dart';
-import 'package:flutter_myappication_1/states/show_status_buyer.dart';
-import 'package:flutter_myappication_1/status/show_status_seller_order.dart';
+import 'package:flutter_myappication_1/states/show_status_buyer_await_order.dart';
+import 'package:flutter_myappication_1/states/show_status_buyer_finish.dart';
+import 'package:flutter_myappication_1/states/show_status_buyer_rider_order.dart';
+import 'package:flutter_myappication_1/states/show_status_buyer_seller_order.dart';
 import 'package:flutter_myappication_1/status/show_status_finish.dart';
-import 'package:flutter_myappication_1/status/show_status_await_order.dart';
 import 'package:flutter_myappication_1/status/show_status_rider_order.dart';
+import 'package:flutter_myappication_1/status/show_status_seller_order.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
@@ -69,7 +71,7 @@ class _ShowOrderStatusState extends State<ShowOrderStatus> {
         } else {
           var result = json.decode(value.data);
           for (var map in result) {
-            OrderModel model = OrderModel.fromJson(map);
+            OrderModel model = OrderModel.fromMap(map);
             List<String> orderProducts = changeArrey(model.nameProduct!);
             List<String> orderPrices = changeArrey(model.priceProduct!);
             List<String> orderAmounts = changeArrey(model.amount!);
@@ -93,7 +95,7 @@ class _ShowOrderStatusState extends State<ShowOrderStatus> {
               case 'riderConfirmOrder':
                 status = 2;
                 break;
-              case 'Finish':
+              case 'FinishOrder':
                 status = 3;
                 break;
               default:
@@ -151,7 +153,7 @@ class _ShowOrderStatusState extends State<ShowOrderStatus> {
             children: [
               Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
                   child: Column(
                     children: [
                       MyConstant().mySizeBox(),
@@ -162,29 +164,85 @@ class _ShowOrderStatusState extends State<ShowOrderStatus> {
                       MyConstant().mySizeBox(),
                       buildStepIndicator(statusInts[index]),
                       MyConstant().mySizeBox(),
+                      buildIcon(index),
                     ],
                   ),
                 ),
               ),
-              Container(width: MediaQuery.of(context).size.width * 0.9,
-                child: ElevatedButton(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(MyConstant.light)),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ShowStatusBuyer(orderModel: orderModels[index]),
-                        ));
-                  },
-                  child: ShowTitle(
-                    title: 'ดูสถานะของสินค้า',
-                    textStyle: MyConstant().h3BlackStyle(),
-                  ),
-                ),
-              )
+              // Container(
+              //   width: MediaQuery.of(context).size.width * 0.9,
+              //   child: ElevatedButton(
+              //     style: ButtonStyle(
+              //         backgroundColor:
+              //             MaterialStateProperty.all(MyConstant.light)),
+              //     onPressed: () {
+              //       Navigator.push(
+              //           context,
+              //           MaterialPageRoute(
+              //             builder: (context) =>
+              //                 ShowStatusBuyer(orderModel: orderModels[index]),
+              //           ));
+              //     },
+              //     child: ShowTitle(
+              //       title: 'ดูสถานะของสินค้า',
+              //       textStyle: MyConstant().h3BlackStyle(),
+              //     ),
+              //   ),
+              // )
             ],
           ),
         ),
       );
+
+  Widget buildIcon(index) {
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          IconButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    ShowStatusBuyerAwaitOrder(orderModel: orderModels[index]),
+              ),
+            ),
+            icon: Icon(Icons.inventory_sharp),
+          ),
+          IconButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    ShowStatusBuyerSellerOrder(orderModel: orderModels[index]),
+              ),
+            ),
+            icon: Icon(Icons.inventory_2_outlined),
+          ),
+          IconButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    ShowStatusBuyerRiderOrder(orderModel: orderModels[index]),
+              ),
+            ),
+            icon: Icon(Icons.local_shipping_outlined),
+          ),
+          IconButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    ShowStatusBuyerFinish(orderModel: orderModels[index]),
+              ),
+            ),
+            icon: Icon(Icons.check_circle_outline),
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget buildStepIndicator(int index) {
     return Column(
@@ -198,22 +256,8 @@ class _ShowOrderStatusState extends State<ShowOrderStatus> {
           doneLineColor: Colors.black,
           undoneLineColor: Colors.black,
           lineLength: 100,
-          selectedStep: status,
+          selectedStep: index,
           nbSteps: 4,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 6, right: 6),
-          child: Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Icon(Icons.home),
-                Icon(Icons.home),
-                Icon(Icons.home),
-                Icon(Icons.home),
-              ],
-            ),
-          ),
         ),
       ],
     );

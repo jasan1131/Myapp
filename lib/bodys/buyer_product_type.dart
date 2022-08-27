@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/type/type_condiment.dart';
 import 'package:flutter_myappication_1/type/type_dried_food.dart';
+import 'package:flutter_myappication_1/type/type_fruit.dart';
 import 'package:flutter_myappication_1/type/type_meet.dart';
 import 'package:flutter_myappication_1/type/type_vegetable.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
@@ -36,6 +37,7 @@ class _BuyerProductTypeState extends State<BuyerProductType> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               buildTypeVegatable(context),
+              buildTypeFruit(context),
               buildTypeMeet(context),
               buildTypeDriedFood(context),
               buildTypeCondiment(context),
@@ -67,7 +69,41 @@ class _BuyerProductTypeState extends State<BuyerProductType> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ShowTitle(
-                      title: 'ผักผลไม้  ',
+                      title: 'ผัก ',
+                      textStyle: MyConstant().h2BackStyle(),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+   Widget buildTypeFruit(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TypeFruit(userModel: userModel!),
+            ));
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height * 0.15,
+            width: MediaQuery.of(context).size.width * 0.75,
+            child: Card(
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ShowTitle(
+                      title: 'ผลไม้  ',
                       textStyle: MyConstant().h2BackStyle(),
                     ),
                   ],
@@ -86,7 +122,7 @@ class _BuyerProductTypeState extends State<BuyerProductType> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => TypeMeet(userModel: userModel!),
+              builder: (context) => TypeMeet(userModel: userModel!,),
             ));
       },
       child: Row(

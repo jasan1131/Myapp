@@ -7,18 +7,18 @@ import 'package:flutter_myappication_1/status/show_status_seller_order.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 
-class ShowStatusBuyer extends StatefulWidget {
+class ShowStatusBuyerFinish extends StatefulWidget {
   final OrderModel orderModel;
-  const ShowStatusBuyer({Key? key, required this.orderModel}) : super(key: key);
+  const ShowStatusBuyerFinish({ Key? key, required this.orderModel}) : super(key: key);
 
   @override
-  State<ShowStatusBuyer> createState() => _ShowStatusBuyerState();
+  State<ShowStatusBuyerFinish> createState() => _ShowStatusBuyerFinishState();
 }
 
-class _ShowStatusBuyerState extends State<ShowStatusBuyer> {
-  OrderModel? orderModel;
+class _ShowStatusBuyerFinishState extends State<ShowStatusBuyerFinish> {
+   OrderModel? orderModel;
   List<Widget> listWidget = [];
-  int indexPage = 0;
+  int indexPage = 3;
 
   @override
   void initState() {
@@ -27,39 +27,39 @@ class _ShowStatusBuyerState extends State<ShowStatusBuyer> {
     orderModel = widget.orderModel;
     listWidget.add(ShowStatusAwaitOrder(orderModel: orderModel!));
     listWidget.add(ShowStatusSellerOrder(orderModel: orderModel!));
-    listWidget.add(ShowStatusRiderOrder(orderModel: orderModel!,));
-    listWidget.add(ShowStatusFinish());
+    listWidget.add(ShowStatusRiderOrder(orderModel: orderModel!));
+    listWidget.add(ShowStatusFinish(orderModel: orderModel!));
   }
 
   BottomNavigationBarItem showStatusAwaitOrder() {
     return BottomNavigationBarItem(
       backgroundColor: MyConstant.dark,
-      icon: Icon(Icons.info_outline),
-      label: 'เกี่ยวกับร้าน',
+      icon: Icon(Icons.inventory_sharp),
+      label: 'รายการสินค้าที่สั่ง',
     );
   }
 
   BottomNavigationBarItem showStatusSellerOrder() {
     return BottomNavigationBarItem(
       backgroundColor: MyConstant.dark,
-      icon: Icon(Icons.info_outline),
-      label: 'เกี่ยวกับร้าน',
+      icon: Icon(Icons.inventory_2_outlined),
+      label: 'สินค้าที่ต้องจัดส่ง',
     );
   }
 
   BottomNavigationBarItem showStatusRiderOrder() {
     return BottomNavigationBarItem(
       backgroundColor: MyConstant.dark,
-      icon: Icon(Icons.info_outline),
-      label: 'เกี่ยวกับร้าน',
+      icon: Icon(Icons.local_shipping_outlined),
+      label: 'สินค้าที่ต้องได้รับ',
     );
   }
 
   BottomNavigationBarItem showStatusFinish() {
     return BottomNavigationBarItem(
       backgroundColor: MyConstant.dark,
-      icon: Icon(Icons.info_outline),
-      label: 'เกี่ยวกับร้าน',
+      icon: Icon(Icons.check_circle_outline),
+      label: 'ยันยันสินค้าที่ได้รับ',
     );
   }
 

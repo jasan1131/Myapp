@@ -1,28 +1,27 @@
-import 'package:dio/dio.dart';
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/models/product_model.dart';
-import 'package:flutter_myappication_1/states/edit_product_ws.dart';
+import 'package:flutter_myappication_1/states/edit_product.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_image.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ShowProductWholeSaleAdmin extends StatefulWidget {
-  const ShowProductWholeSaleAdmin({Key? key}) : super(key: key);
+class ShowProductAdmin extends StatefulWidget {
+  const ShowProductAdmin({Key? key}) : super(key: key);
 
   @override
-  State<ShowProductWholeSaleAdmin> createState() =>
-      _ShowProductWholeSaleAdminState();
+  State<ShowProductAdmin> createState() => _ShowProductAdminState();
 }
 
-class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
+class _ShowProductAdminState extends State<ShowProductAdmin> {
   bool load = true;
   bool? haveData;
-  List<ProductModel> productmodel = [];
+  List<ProductModel> productModels = [];
 
   @override
   void initState() {
@@ -31,15 +30,15 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
   }
 
   Future<Null> loadValueFromApi() async {
-    if (productmodel.length != 0) {
-      productmodel.clear();
+    if (productModels.length != 0) {
+      productModels.clear();
     } else {}
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String idproduct = preferences.getString('id')!;
-    String apiGetProductSpWhereIdProductSp =
-        '${MyConstant.domain}/shopping/getProductWhereWsProduct.php';
-    await Dio().get(apiGetProductSpWhereIdProductSp).then(
+    String id = preferences.getString('id')!;
+    String apiGetProductWhereIdProduct =
+        '${MyConstant.domain}/shopping/getProductWhereIdProduct.php?isAdd=true&idproduct=$id';
+    await Dio().get(apiGetProductWhereIdProduct).then(
       (value) {
         // print('### value ==> $value');
 
@@ -58,7 +57,7 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
             setState(() {
               load = false;
               haveData = true;
-              productmodel.add(model);
+              productModels.add(model);
             });
           }
         }
@@ -83,7 +82,7 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
                           title: 'ไม่มีสินค้า',
                           textStyle: MyConstant().h1Style()),
                       ShowTitle(
-                          title: 'กรุราเพิ่มสินค้า',
+                          title: 'กรุณาเพิ่มสินค้า',
                           textStyle: MyConstant().h2Style()),
                     ],
                   ),
@@ -94,12 +93,9 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
         child: FloatingActionButton(
           backgroundColor: MyConstant.dark,
           onPressed: () =>
-              Navigator.pushNamed(context, MyConstant.rounteAddProductWholeSale)
+              Navigator.pushNamed(context, MyConstant.rounteAddProduct)
                   .then((value) => loadValueFromApi()),
-          child: ShowTitle(
-            title: 'เพิ่มสินค้า',
-            textStyle: MyConstant().h3WhiteStyle(),
-          ),
+          child: Text('เพิ่มสินค้า'),
         ),
       ),
     );
@@ -114,7 +110,7 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
 
   ListView buildListView(BoxConstraints constraints) {
     return ListView.builder(
-      itemCount: productmodel.length,
+      itemCount: productModels.length,
       itemBuilder: (context, index) => Card(
         shape: RoundedRectangleBorder(
             side: BorderSide(color: MyConstant.dark),
@@ -124,14 +120,14 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
             Container(
               padding: EdgeInsets.all(4),
               width: constraints.maxWidth * 0.5 - 4,
-              height: constraints.maxWidth * 0.5,
+              height: constraints.maxWidth * 0.6,
               child: Container(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ShowTitle(
-                      title: productmodel[index].nameproduct,
+                      title: productModels[index].nameproduct,
                       textStyle: MyConstant().h2Style(),
                     ),
                     Container(
@@ -145,8 +141,8 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
                         padding: const EdgeInsets.all(8.0),
                         child: CachedNetworkImage(
                           fit: BoxFit.fill,
-                          imageUrl: createUrl(
-                              productmodel[index].imagesproduct),
+                          imageUrl:
+                              createUrl(productModels[index].imagesproduct),
                           placeholder: (context, url) => ShowProgress(),
                           errorWidget: (context, url, error) =>
                               ShowImage(path: MyConstant.imageeror),
@@ -164,19 +160,33 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ShowTitle(
-                    title:
-                        'ราคา :${productmodel[index].priceproduct} THB',
-                    textStyle: MyConstant().h2Style(),
+                  Row(
+                    children: [
+                      ShowTitle(
+                        title: 'ราคา :${productModels[index].priceproduct}',
+                        textStyle: MyConstant().h3Style(),
+                      ),
+                      ShowTitle(
+                        title: '${productModels[index].unitprice} THB',
+                        textStyle: MyConstant().h3Style(),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      ShowTitle(
+                        title: 'จำนวนสินค้า :${productModels[index].numberproduct}',
+                        textStyle: MyConstant().h3Style(),
+                      ),
+                      ShowTitle(
+                        title: '${productModels[index].unitproduct} THB',
+                        textStyle: MyConstant().h3Style(),
+                      ),
+                    ],
                   ),
                   ShowTitle(
-                    title:
-                        'จำนวนสินค้า :${productmodel[index].numberproduct}',
-                    textStyle: MyConstant().h3Style(),
-                  ),
-                  ShowTitle(
-                    title:
-                        'รายละเอียดสินค้า : ${productmodel[index].detailproduct}',
+                    title: cutWord(
+                        'รายละเอียดสินค้า : ${productModels[index].detailproduct}'),
                     textStyle: MyConstant().h3Style(),
                   ),
                   Row(
@@ -184,13 +194,12 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
                     children: [
                       IconButton(
                         onPressed: () {
-                          print('## YOu Click Edit');
+                          // print('## YOu Click Edit');
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EditProductWholeSale(
-                                  productModel:
-                                      productmodel[index],
+                                builder: (context) => EditProdut(
+                                  productModel: productModels[index],
                                 ),
                               )).then((value) => loadValueFromApi());
                         },
@@ -203,7 +212,7 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
                       IconButton(
                         onPressed: () {
                           print('## You Click Delete from index = $index');
-                          confirmDialogDelete(productmodel[index]);
+                          confirmDialogDelete(productModels[index]);
                         },
                         icon: Icon(
                           Icons.delete_outline,
@@ -222,8 +231,7 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
     );
   }
 
-  Future<Null> confirmDialogDelete(
-      ProductModel productModel) async {
+  Future<Null> confirmDialogDelete(ProductModel productModel) async {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -246,7 +254,7 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
             onPressed: () async {
               print('## Confirm Delete at id ==> ${productModel.id}');
               String apiDeleteProductWhereIDProduct =
-                  '${MyConstant.domain}/shopping/deleteProductWSWhereId.php?isAdd=true&Id=${productModel.id}';
+                  '${MyConstant.domain}/shopping/deleteProductWhereId.php?isAdd=true&id=${productModel.id}';
               await Dio().get(apiDeleteProductWhereIDProduct).then((value) {
                 Navigator.pop(context);
                 loadValueFromApi();
@@ -261,5 +269,14 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
         ],
       ),
     );
+  }
+
+  String cutWord(String string) {
+    String result = string;
+    if (result.length >= 50) {
+      result = result.substring(0, 50);
+      result = '$result ... ';
+    }
+    return result;
   }
 }

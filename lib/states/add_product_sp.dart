@@ -26,7 +26,9 @@ class _AddProductSpecialState extends State<AddProductSpecial> {
 
   TextEditingController NameProductController = TextEditingController();
   TextEditingController NumberProductController = TextEditingController();
+  TextEditingController UnitProductController = TextEditingController();
   TextEditingController PriceProductController = TextEditingController();
+  TextEditingController UnitPriceProductController = TextEditingController();
   TextEditingController DetailProductController = TextEditingController();
 
   List<String> paths = [];
@@ -73,11 +75,17 @@ class _AddProductSpecialState extends State<AddProductSpecial> {
                     buildProductName(constraints),
                     buildTitle('ชนิดของสินค้า'),
                     buildProductVegetables(size),
-                    buildProductMeet(size),
+                    buildProductFruit(size),
+                    buildProductMeetPork(size),
+                    buildProductMeetBeef(size),
+                    buildProductMeetChicken(size),
+                    buildProductSeaFood(size),
                     buildProductDryGoods(size),
                     buildProductCondiments(size),
                     buildProductNumber(constraints),
+                    buildProductUnitProduct(constraints),
                     buildProductPrice(constraints),
+                    buildProductUnitPrice(constraints),
                     buildProductDetail(constraints),
                     buildImage(constraints),
                     addProductButtom(constraints),
@@ -99,7 +107,7 @@ class _AddProductSpecialState extends State<AddProductSpecial> {
         onPressed: () {
           processAddProduct();
         },
-        child: Text('Add Product'),
+        child: Text('เพิ่มสินค้า'),
       ),
     );
   }
@@ -142,8 +150,6 @@ class _AddProductSpecialState extends State<AddProductSpecial> {
               String priceproduct = PriceProductController.text;
               String detailproduct = DetailProductController.text;
               String imagesproduct = paths.toString();
-              
-              
 
               String path =
                   '${MyConstant.domain}/shopping/insertProduct.php?isAdd=true&idproduct=$idproduct&category=$category&nameproduct=$nameproduct&typeproduct=$typeproduct&numberproduct=$numberproduct&priceproduct=$priceproduct&detailproduct=$detailproduct&imagesproduct=$imagesproduct';
@@ -154,6 +160,9 @@ class _AddProductSpecialState extends State<AddProductSpecial> {
             }
           });
         }
+      } else {
+        MyDialog()
+            .normalDialog(context, 'รูปภาพไม่ครบ', 'กรุณาเลือกรูปภาพให้ครบ');
       }
     }
   }
@@ -180,11 +189,11 @@ class _AddProductSpecialState extends State<AddProductSpecial> {
         title: ListTile(
           leading: ShowImage(path: MyConstant.product),
           title: ShowTitle(
-            title: 'Source Image ${index + 1}?',
+            title: 'เลือกรูปภาพที่ ${index + 1}',
             textStyle: MyConstant().h2Style(),
           ),
           subtitle: ShowTitle(
-              title: 'Please Tap on Camera or Gallery',
+              title: 'กรุณากดที่ กล้องถ่ายรูป หรือ แกลอลี่',
               textStyle: MyConstant().h3Style()),
         ),
         actions: [
@@ -196,14 +205,14 @@ class _AddProductSpecialState extends State<AddProductSpecial> {
                   Navigator.pop(context);
                   processImagePicker(ImageSource.camera, index);
                 },
-                child: Text('Camera'),
+                child: Text('กล้องถ่ายรูป'),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                   processImagePicker(ImageSource.gallery, index);
                 },
-                child: Text('Gallery'),
+                child: Text('แกลลอลี่'),
               ),
             ],
           ),
@@ -283,6 +292,70 @@ class _AddProductSpecialState extends State<AddProductSpecial> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget buildProductUnitProduct(BoxConstraints constraints) {
+    return Container(
+      width: constraints.maxWidth * 0.75,
+      margin: EdgeInsets.only(top: 16),
+      child: TextFormField(
+        controller: UnitProductController,
+        decoration: InputDecoration(
+          hintText: 'หน่วยสินค้า :',
+          hintStyle: MyConstant().h3Style(),
+          prefixIcon: Icon(
+            Icons.production_quantity_limits_outlined,
+            color: MyConstant.dark,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: MyConstant.dark,
+            ),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: MyConstant.light),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.red),
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildProductUnitPrice(BoxConstraints constraints) {
+    return Container(
+      width: constraints.maxWidth * 0.75,
+      margin: EdgeInsets.only(top: 16),
+      child: TextFormField(
+        controller: UnitPriceProductController,
+        decoration: InputDecoration(
+          hintText: 'หน่วยสินค้า :',
+          hintStyle: MyConstant().h3Style(),
+          prefixIcon: Icon(
+            Icons.production_quantity_limits_outlined,
+            color: MyConstant.dark,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: MyConstant.dark,
+            ),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: MyConstant.light),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.red),
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+      ),
     );
   }
 
@@ -437,7 +510,7 @@ class _AddProductSpecialState extends State<AddProductSpecial> {
               );
             },
             title: ShowTitle(
-              title: 'ผักผลไม้',
+              title: 'ผัก',
               textStyle: MyConstant().h3Style(),
             ),
           ),
@@ -446,14 +519,14 @@ class _AddProductSpecialState extends State<AddProductSpecial> {
     );
   }
 
-  Row buildProductMeet(double size) {
+  Row buildProductFruit(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
           width: size * 0.6,
           child: RadioListTile(
-            value: 'meet',
+            value: 'fruit',
             groupValue: typeproduct,
             onChanged: (value) {
               setState(
@@ -463,7 +536,111 @@ class _AddProductSpecialState extends State<AddProductSpecial> {
               );
             },
             title: ShowTitle(
-              title: 'เนื้อสัตว์',
+              title: 'ผลไม้',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductMeetPork(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'pork',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'เนื้อหมู',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductMeetBeef(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'beef',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'เนื้อวัว',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductMeetChicken(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'chicken',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'เนื้อไก่',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductSeaFood(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'seafood',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'อาหารทะเล',
               textStyle: MyConstant().h3Style(),
             ),
           ),
@@ -479,7 +656,7 @@ class _AddProductSpecialState extends State<AddProductSpecial> {
         Container(
           width: size * 0.6,
           child: RadioListTile(
-            value: 'dryGoods',
+            value: 'driedFoods',
             groupValue: typeproduct,
             onChanged: (value) {
               setState(

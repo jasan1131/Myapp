@@ -170,10 +170,10 @@ class _ShowAboutSellerState extends State<ShowAboutSeller> {
 
   Container showmap() {
     if (lat1 != null) {
-      LatLng latLng1 = LatLng(lat1!, lng1!);
+      LatLng latLng2 = LatLng(lat2!, lng2!);
       position = CameraPosition(
-        target: latLng1,
-        zoom: 13,
+        target: latLng2,
+        zoom: 18,
       );
     }
     Marker userMarker() {

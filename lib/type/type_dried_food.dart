@@ -24,7 +24,6 @@ class TypeDriedGoods extends StatefulWidget {
 }
 
 class _TypeDriedGoodsState extends State<TypeDriedGoods> {
-
   UserModel? userModel;
   bool load = true;
   bool? haveData;
@@ -86,10 +85,15 @@ class _TypeDriedGoodsState extends State<TypeDriedGoods> {
       },
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: MyConstant.primary,
+        title: Text('ประเภทของแห้ง'),
+      ),
       body: OrientationBuilder(
         builder: (context, orientation) {
           if (orientation == Orientation.portrait) {
@@ -181,15 +185,32 @@ class _TypeDriedGoodsState extends State<TypeDriedGoods> {
                             title: productmodels[index].nameproduct,
                             textStyle: MyConstant().h2Style(),
                           ),
-                          ShowTitle(
-                            title:
-                                'จำนวนสินค้า : ${productmodels[index].numberproduct}',
-                            textStyle: MyConstant().h3Style(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              ShowTitle(
+                                title:
+                                    'จำนวนสินค้า : ${productmodels[index].numberproduct}',
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                              ShowTitle(
+                                title: productmodels[index].unitproduct,
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                            ],
                           ),
-                          ShowTitle(
-                            title:
-                                'ราคา : ${productmodels[index].priceproduct} บาท',
-                            textStyle: MyConstant().h3Style(),
+                          Row(
+                            children: [
+                              ShowTitle(
+                                title:
+                                    'ราคา : ${productmodels[index].priceproduct} บาท /',
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                              ShowTitle(
+                                title: productmodels[index].unitprice,
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                            ],
                           ),
                           ShowTitle(
                             title: cutWord(
@@ -501,8 +522,8 @@ class _TypeDriedGoodsState extends State<TypeDriedGoods> {
 
   String cutWord(String string) {
     String result = string;
-    if (result.length >= 100) {
-      result = result.substring(0, 100);
+    if (result.length >= 50) {
+      result = result.substring(0, 50);
       result = '$result ... ';
     }
     return result;

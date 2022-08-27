@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_myappication_1/bodys/rider_map.dart';
+import 'package:flutter_myappication_1/bodyrider/rider_map.dart';
 import 'package:flutter_myappication_1/models/order_model.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
+import 'package:flutter_myappication_1/states/rider_service.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
@@ -122,23 +123,12 @@ class _ShowOrderShippedByRiderState extends State<ShowOrderShippedByRider> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.75,
-                  child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(MyConstant.light)),
-                      onPressed: () {
-                        confirmOrder(index);
-                      },
-                      child: ShowTitle(
-                        title: 'ยันยันการส่งสินค้า',
-                        textStyle: MyConstant().h3BlackStyle(),
-                      )),
-                ),
-              ),
+              ElevatedButton(
+                onPressed: () {
+                  confirmOrder(index);
+                },
+                child: Text('data'),
+              )
             ],
           ),
         ),
@@ -167,5 +157,18 @@ class _ShowOrderShippedByRiderState extends State<ShowOrderShippedByRider> {
     );
   }
 
-  Future confirmOrder(index) async {}
+  Future confirmOrder(index) async {
+    id = orderModel!.id;
+    String status = 'FinishOrder';
+    String url =
+        '${MyConstant.domain}/shopping/editStatusWhereId.php?isAdd=true&id=$id&status=$status';
+    await Dio().get(url).then((value) {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RiderService(),
+          ),
+          (route) => false);
+    });
+  }
 }

@@ -21,12 +21,14 @@ class EditProductSpecial extends StatefulWidget {
 }
 
 class _EditProductSpecialState extends State<EditProductSpecial> {
-  String? typeproDuct;
+  String? typeproduct;
   ProductModel? productModel;
 
   TextEditingController NameController = TextEditingController();
   TextEditingController NumberController = TextEditingController();
+  TextEditingController UnitProductController = TextEditingController();
   TextEditingController PriceController = TextEditingController();
+  TextEditingController UnitPriceController = TextEditingController();
   TextEditingController DetailController = TextEditingController();
 
   List<String> pathImages = [];
@@ -44,7 +46,9 @@ class _EditProductSpecialState extends State<EditProductSpecial> {
     convertStringToArry();
     NameController.text = productModel!.nameproduct;
     NumberController.text = productModel!.numberproduct;
+    UnitProductController.text = productModel!.unitproduct;
     PriceController.text = productModel!.priceproduct;
+    UnitPriceController.text = productModel!.unitprice;
     DetailController.text = productModel!.detailproduct;
   }
 
@@ -93,11 +97,17 @@ class _EditProductSpecialState extends State<EditProductSpecial> {
                     buildName(constraints),
                     buildTitle('Type Product :'),
                     buildProductVegetables(size),
-                    buildProductMeet(size),
+                    buildProductFruit(size),
+                    buildProductMeetPork(size),
+                    buildProductMeetBeef(size),
+                    buildProductMeetChicken(size),
+                    buildProductSeaFood(size),
                     buildProductDryGoods(size),
                     buildProductCondiments(size),
                     buildNumber(constraints),
+                    buildUnitProduct(constraints),
                     buildPrice(constraints),
+                    buildUnitPrice(constraints),
                     buildDetail(constraints),
                     buildTitle('Image Product :'),
                     buildImage(constraints, 0),
@@ -182,6 +192,44 @@ class _EditProductSpecialState extends State<EditProductSpecial> {
     );
   }
 
+  Row buildUnitProduct(BoxConstraints constraints) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.fromLTRB(0, 0, 0, 16),
+          width: constraints.maxWidth * 0.75,
+          child: TextFormField(
+            controller: UnitProductController,
+            decoration: InputDecoration(
+              labelText: 'Name :',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildUnitPrice(BoxConstraints constraints) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.fromLTRB(0, 0, 0, 16),
+          width: constraints.maxWidth * 0.75,
+          child: TextFormField(
+            controller: UnitPriceController,
+            decoration: InputDecoration(
+              labelText: 'Name :',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Row buildName(BoxConstraints constraints) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -191,7 +239,7 @@ class _EditProductSpecialState extends State<EditProductSpecial> {
           child: TextFormField(
             controller: NameController,
             decoration: InputDecoration(
-              labelText: 'ชื่อ :',
+              labelText: 'Name :',
               border: OutlineInputBorder(),
             ),
           ),
@@ -208,16 +256,16 @@ class _EditProductSpecialState extends State<EditProductSpecial> {
           width: size * 0.6,
           child: RadioListTile(
             value: 'vegetables',
-            groupValue: typeproDuct,
+            groupValue: typeproduct,
             onChanged: (value) {
               setState(
                 () {
-                  typeproDuct = value as String?;
+                  typeproduct = value as String?;
                 },
               );
             },
             title: ShowTitle(
-              title: 'ผักผลไม้',
+              title: 'ผัก',
               textStyle: MyConstant().h3Style(),
             ),
           ),
@@ -226,24 +274,128 @@ class _EditProductSpecialState extends State<EditProductSpecial> {
     );
   }
 
-  Row buildProductMeet(double size) {
+  Row buildProductFruit(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
           width: size * 0.6,
           child: RadioListTile(
-            value: 'meet',
-            groupValue: typeproDuct,
+            value: 'fruit',
+            groupValue: typeproduct,
             onChanged: (value) {
               setState(
                 () {
-                  typeproDuct = value as String?;
+                  typeproduct = value as String?;
                 },
               );
             },
             title: ShowTitle(
-              title: 'เนื้อสัตว์',
+              title: 'ผลไม้',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductMeetPork(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'pork',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'เนื้อหมู',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductMeetBeef(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'beef',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'เนื้อวัว',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductMeetChicken(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'chicken',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'เนื้อไก่',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductSeaFood(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'seafood',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'อาหารทะเล',
               textStyle: MyConstant().h3Style(),
             ),
           ),
@@ -259,12 +411,12 @@ class _EditProductSpecialState extends State<EditProductSpecial> {
         Container(
           width: size * 0.6,
           child: RadioListTile(
-            value: 'dryGoods',
-            groupValue: typeproDuct,
+            value: 'driedFoods',
+            groupValue: typeproduct,
             onChanged: (value) {
               setState(
                 () {
-                  typeproDuct = value as String?;
+                  typeproduct = value as String?;
                 },
               );
             },
@@ -285,12 +437,12 @@ class _EditProductSpecialState extends State<EditProductSpecial> {
         Container(
           width: size * 0.6,
           child: RadioListTile(
-            value: 'Condiments',
-            groupValue: typeproDuct,
+            value: 'condiments',
+            groupValue: typeproduct,
             onChanged: (value) {
               setState(
                 () {
-                  typeproDuct = value as String?;
+                  typeproduct = value as String?;
                 },
               );
             },
@@ -315,7 +467,7 @@ class _EditProductSpecialState extends State<EditProductSpecial> {
             keyboardType: TextInputType.phone,
             controller: NumberController,
             decoration: InputDecoration(
-              labelText: 'จำนวน :',
+              labelText: 'Number :',
               border: OutlineInputBorder(),
             ),
           ),
@@ -335,7 +487,7 @@ class _EditProductSpecialState extends State<EditProductSpecial> {
             keyboardType: TextInputType.phone,
             controller: PriceController,
             decoration: InputDecoration(
-              labelText: 'ราคา :',
+              labelText: 'Price :',
               border: OutlineInputBorder(),
             ),
           ),
@@ -381,12 +533,14 @@ class _EditProductSpecialState extends State<EditProductSpecial> {
     if (formKey.currentState!.validate()) {
       MyDialog().showProgressDialog(context);
 
-      String nameproDuct = NameController.text;
-      String numberproDuct = NumberController.text;
-      String priceproDuct = PriceController.text;
-      String detailproDuct = DetailController.text;
-      String iD = productModel!.id;
-      String imageproDuct;
+      String nameproduct = NameController.text;
+      String numberproduct = NumberController.text;
+      String unitproduct = UnitProductController.text;
+      String priceproduct = PriceController.text;
+      String unitprice = UnitPriceController.text;
+      String detailproduct = DetailController.text;
+      String id = productModel!.id;
+      String imagesproduct;
       if (statusImage) {
         // upload Image and Refresh arrey pathImage
         int index = 0;
@@ -408,15 +562,15 @@ class _EditProductSpecialState extends State<EditProductSpecial> {
           index++;
         }
 
-        imageproDuct = pathImages.toString();
+        imagesproduct = pathImages.toString();
         Navigator.pop(context);
       } else {
-        imageproDuct = pathImages.toString();
+        imagesproduct = pathImages.toString();
         Navigator.pop(context);
       }
 
       String apiEditProduct =
-          '${MyConstant.domain}/shopping/editProductSpWhereId.php?isAdd=true&iD=$iD&nameproDuct=$nameproDuct&typeproDuct=$typeproDuct&numberproDuct=$numberproDuct&priceproDuct=$priceproDuct&detailproDuct=$detailproDuct&imageproDuct=$imageproDuct';
+          '${MyConstant.domain}/shopping/editProductWhereId.php?isAdd=true&id=$id&nameproduct=$nameproduct&typeproduct=$typeproduct&numberproduct=$numberproduct&unitproduct=$unitproduct&priceproduct=$priceproduct&unitprice=$unitprice&detailproduct=$detailproduct&imagesproduct=$imagesproduct';
       await Dio().get(apiEditProduct).then((value) => Navigator.pop(context));
     }
   }

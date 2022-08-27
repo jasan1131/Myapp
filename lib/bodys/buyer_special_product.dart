@@ -28,7 +28,7 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
   UserModel? userModel;
   bool load = true;
   bool? haveData;
-  List<ProductModel> productmoduls = [];
+  List<ProductModel> productmodels = [];
   List<List<String>> listImages = [];
   int indexImage = 0;
   int amountInt = 1;
@@ -81,7 +81,7 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
           setState(() {
             load = false;
             haveData = true;
-            productmoduls.add(productModel);
+            productmodels.add(productModel);
           });
         }
       },
@@ -91,53 +91,51 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: MyConstant().gradientRadioBackground(),
-        child: OrientationBuilder(
-          builder: (context, orientation) {
-            if (orientation == Orientation.portrait) {
-              return load
-                  ? ShowProgress()
-                  : haveData!
-                      ? listProduct()
-                      : Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ShowTitle(
-                                title: 'NO DATA',
-                                textStyle: MyConstant().h1Style(),
-                              ),
-                            ],
-                          ),
-                        );
-            } else {
-              return load
-                  ? ShowProgress()
-                  : haveData!
-                      ? listProductHolizon()
-                      : Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ShowTitle(
-                                title: 'NO DATA',
-                                textStyle: MyConstant().h1Style(),
-                              ),
-                            ],
-                          ),
-                        );
-            }
-          },
-        ),
+      body: OrientationBuilder(
+        builder: (context, orientation) {
+          if (orientation == Orientation.portrait) {
+            return load
+                ? ShowProgress()
+                : haveData!
+                    ? listProduct()
+                    : Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ShowTitle(
+                              title: 'NO DATA',
+                              textStyle: MyConstant().h1Style(),
+                            ),
+                          ],
+                        ),
+                      );
+          } else {
+            return load
+                ? ShowProgress()
+                : haveData!
+                    ? listProductHolizon()
+                    : Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ShowTitle(
+                              title: 'NO DATA',
+                              textStyle: MyConstant().h1Style(),
+                            ),
+                          ],
+                        ),
+                      );
+          }
+        },
       ),
     );
   }
 
   Container listProduct() {
     return Container(
+      decoration: MyConstant().planBackground(),
       child: GridView.builder(
-        itemCount: productmoduls.length,
+        itemCount: productmodels.length,
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           childAspectRatio: 2 / 4,
           maxCrossAxisExtent: 260,
@@ -146,7 +144,7 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
           onTap: () {
             // print('### YOu Click Index ===>> $index');
             ShowAlertDialog(
-              productmoduls[index],
+              productmodels[index],
               listImages[index],
             );
           },
@@ -156,7 +154,7 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
               borderRadius: BorderRadius.circular(16),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(4.0),
               child: Column(
                 children: [
                   Container(
@@ -167,7 +165,7 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
                       child: CachedNetworkImage(
                         fit: BoxFit.fill,
                         imageUrl:
-                            findUrlImage(productmoduls[index].imagesproduct),
+                            findUrlImage(productmodels[index].imagesproduct),
                         placeholder: (context, url) => ShowProgress(),
                         errorWidget: (context, url, error) =>
                             ShowImage(path: MyConstant.imageeror),
@@ -181,22 +179,38 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ShowTitle(
-                            title: productmoduls[index].nameproduct,
+                            title: productmodels[index].nameproduct,
                             textStyle: MyConstant().h2Style(),
                           ),
-                          ShowTitle(
-                            title:
-                                'จำนวนสินค้า : ${productmoduls[index].numberproduct}',
-                            textStyle: MyConstant().h3Style(),
+                          Row(
+                            children: [
+                              ShowTitle(
+                                title:
+                                    'จำนวนสินค้า : ${productmodels[index].numberproduct} ',
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                              ShowTitle(
+                                title: productmodels[index].unitproduct,
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                            ],
                           ),
-                          ShowTitle(
-                            title:
-                                'ราคา : ${productmoduls[index].priceproduct} บาท',
-                            textStyle: MyConstant().h3Style(),
+                          Row(
+                            children: [
+                              ShowTitle(
+                                title:
+                                    'ราคา : ${productmodels[index].priceproduct} บาท /',
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                              ShowTitle(
+                                title: productmodels[index].unitprice,
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                            ],
                           ),
                           ShowTitle(
                             title: cutWord(
-                                'รายระเอียดสินค้า : ${productmoduls[index].detailproduct}'),
+                                'รายระเอียดสินค้า : ${productmodels[index].detailproduct}'),
                             textStyle: MyConstant().h3Style(),
                           ),
                         ],
@@ -215,16 +229,16 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
   Container listProductHolizon() {
     return Container(
       child: GridView.builder(
-        itemCount: productmoduls.length,
+        itemCount: productmodels.length,
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           childAspectRatio: 2 / 2,
-          maxCrossAxisExtent: 800,
+          maxCrossAxisExtent: 500,
         ),
         itemBuilder: (context, index) => GestureDetector(
           onTap: () {
             // print('### YOu Click Index ===>> $index');
             ShowAlertDialog(
-              productmoduls[index],
+              productmodels[index],
               listImages[index],
             );
           },
@@ -246,7 +260,7 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
                       child: CachedNetworkImage(
                         fit: BoxFit.fill,
                         imageUrl:
-                            findUrlImage(productmoduls[index].imagesproduct),
+                            findUrlImage(productmodels[index].imagesproduct),
                         placeholder: (context, url) => ShowProgress(),
                         errorWidget: (context, url, error) =>
                             ShowImage(path: MyConstant.imageeror),
@@ -260,17 +274,38 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ShowTitle(
-                            title: productmoduls[index].nameproduct,
+                            title: productmodels[index].nameproduct,
                             textStyle: MyConstant().h2Style(),
                           ),
-                          ShowTitle(
-                            title:
-                                'ราคา : ${productmoduls[index].priceproduct} บาท',
-                            textStyle: MyConstant().h3Style(),
+                          Row(
+                            children: [
+                              ShowTitle(
+                                title:
+                                    'จำนวนสินค้า : ${productmodels[index].numberproduct} ',
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                              ShowTitle(
+                                title: productmodels[index].unitproduct,
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              ShowTitle(
+                                title:
+                                    'ราคา : ${productmodels[index].priceproduct} บาท /',
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                              ShowTitle(
+                                title: productmodels[index].unitprice,
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                            ],
                           ),
                           ShowTitle(
                             title: cutWord(
-                                'รายระเอียดสินค้า : ${productmoduls[index].detailproduct}'),
+                                'รายระเอียดสินค้า : ${productmodels[index].detailproduct}'),
                             textStyle: MyConstant().h3Style(),
                           ),
                         ],
@@ -300,7 +335,7 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
   }
 
   Future<Null> ShowAlertDialog(
-      ProductModel productModel, List<String> images) async {
+      ProductModel productmodel, List<String> images) async {
     showDialog(
       context: context,
       builder: (context) => StatefulBuilder(
@@ -308,11 +343,11 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
           title: ListTile(
             leading: ShowImage(path: MyConstant.image1),
             title: ShowTitle(
-              title: productModel.nameproduct,
+              title: productmodel.nameproduct,
               textStyle: MyConstant().h2Style(),
             ),
             subtitle: ShowTitle(
-              title: 'ราคา ${productModel.priceproduct} บาท',
+              title: 'ราคา ${productmodel.priceproduct} บาท',
               textStyle: MyConstant().h3Style(),
             ),
           ),
@@ -392,7 +427,7 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
                       Container(
                         width: 200,
                         child: ShowTitle(
-                          title: productModel.detailproduct,
+                          title: productmodel.detailproduct,
                           textStyle: MyConstant().h3Style(),
                         ),
                       ),
@@ -443,9 +478,9 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
                   onPressed: () async {
                     String idSeller = userModel!.id;
                     String nameSeller = userModel!.name;
-                    String idProduct = productModel.id;
-                    String nameProduct = productModel.nameproduct;
-                    String priceProduct = productModel.priceproduct;
+                    String idProduct = productmodel.id;
+                    String nameProduct = productmodel.nameproduct;
+                    String priceProduct = productmodel.priceproduct;
                     String amount = amountInt.toString();
                     int sunInt = int.parse(priceProduct) * amountInt;
                     String sum = sunInt.toString();
@@ -487,7 +522,6 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
                 ),
                 TextButton(
                   onPressed: () {
-                    amountInt = 1;
                     Navigator.pop(context);
                   },
                   child: ShowTitle(
@@ -505,10 +539,12 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
 
   String cutWord(String string) {
     String result = string;
-    if (result.length > 100) {
-      result = result.substring(0, 100);
+    if (result.length >= 50) {
+      result = result.substring(0, 50);
       result = '$result ... ';
     }
     return result;
   }
 }
+
+

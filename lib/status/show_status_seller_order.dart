@@ -68,7 +68,7 @@ class _ShowStatusSellerOrderState extends State<ShowStatusSellerOrder> {
           });
         } else {
           for (var map in json.decode(value.data)) {
-            OrderModel model = OrderModel.fromJson(map);
+            OrderModel model = OrderModel.fromMap(map);
             List<String> orderProducts = changeArrey(model.nameProduct!);
             List<String> orderPrices = changeArrey(model.priceProduct!);
             List<String> orderAmounts = changeArrey(model.amount!);
@@ -117,7 +117,9 @@ class _ShowStatusSellerOrderState extends State<ShowStatusSellerOrder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(centerTitle: true,
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: MyConstant.primary,
         title: Text('รายการสินค้าที่สั่ง'),
       ),
       body: statusOrder

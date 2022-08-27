@@ -26,7 +26,9 @@ class _AddProductState extends State<AddProduct> {
 
   TextEditingController NameProductController = TextEditingController();
   TextEditingController NumberProductController = TextEditingController();
+  TextEditingController UnitProductController = TextEditingController();
   TextEditingController PriceProductController = TextEditingController();
+  TextEditingController UnitPriceProductController = TextEditingController();
   TextEditingController DetailProductController = TextEditingController();
 
   List<String> paths = [];
@@ -39,8 +41,8 @@ class _AddProductState extends State<AddProduct> {
   }
 
   void initialFile() {
-    for (var i = 0; i < 4; i++) {
-      files.add(file);
+    for (var i = 0; i < 4 ; i++) {
+      files.add(null);
     }
   }
 
@@ -70,18 +72,20 @@ class _AddProductState extends State<AddProduct> {
                 key: formKey,
                 child: Column(
                   children: [
-                    buildTitle('หมวดหมู่สินค้า'),
-                    buildCategoryProduct(size),
-                    buildCategoryProductSp(size),
-                    buildCategoryProductWs(size),
                     buildProductName(constraints),
                     buildTitle('ประเภทของสินค้า'),
                     buildProductVegetables(size),
-                    buildProductMeet(size),
+                    buildProductFruit(size),
+                    buildProductMeetPork(size),
+                    buildProductMeetBeef(size),
+                    buildProductMeetChicken(size),
+                    buildProductSeaFood(size),
                     buildProductDryGoods(size),
                     buildProductCondiments(size),
                     buildProductNumber(constraints),
+                    buildProductUnitProduct(constraints),
                     buildProductPrice(constraints),
+                    buildProductUnitPrice(constraints),
                     buildProductDetail(constraints),
                     buildImage(constraints),
                     addProductButtom(constraints),
@@ -103,7 +107,7 @@ class _AddProductState extends State<AddProduct> {
         onPressed: () {
           processAddProduct();
         },
-        child: Text('Add Product'),
+        child: Text('เพิ่มสินค้า'),
       ),
     );
   }
@@ -140,6 +144,7 @@ class _AddProductState extends State<AddProduct> {
                   await SharedPreferences.getInstance();
 
               String idproduct = preference.getString('id')!;
+              String category = 'product';
               String nameproduct = NameProductController.text;
               String numberproduct = NumberProductController.text;
               String priceproduct = PriceProductController.text;
@@ -177,18 +182,18 @@ class _AddProductState extends State<AddProduct> {
   }
 
   Future<Null> chooseSourceImageDialog(int index) async {
-    print('Click From index ==>> $index');
+    // print('Click From index ==>> $index');
     showDialog(
       context: context,
       builder: (contex) => AlertDialog(
         title: ListTile(
           leading: ShowImage(path: MyConstant.product),
           title: ShowTitle(
-            title: 'Source Image ${index + 1}?',
+            title: 'เลือกรูปภาพที่ ${index + 1}',
             textStyle: MyConstant().h2Style(),
           ),
           subtitle: ShowTitle(
-              title: 'Please Tap on Camera or Gallery',
+              title: 'กรุณากดที่ กล้องถ่ายรูป หรือ แกลอลี่',
               textStyle: MyConstant().h3Style()),
         ),
         actions: [
@@ -200,14 +205,14 @@ class _AddProductState extends State<AddProduct> {
                   Navigator.pop(context);
                   processImagePicker(ImageSource.camera, index);
                 },
-                child: Text('Camera'),
+                child: Text('กล้องถ่ายรูป'),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                   processImagePicker(ImageSource.gallery, index);
                 },
-                child: Text('Gallery'),
+                child: Text('แกลลอลี่'),
               ),
             ],
           ),
@@ -290,81 +295,145 @@ class _AddProductState extends State<AddProduct> {
     );
   }
 
-  Row buildCategoryProduct(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          width: size * 0.6,
-          child: RadioListTile(
-            value: 'product',
-            groupValue: category,
-            onChanged: (value) {
-              setState(
-                () {
-                  category = value as String?;
-                },
-              );
-            },
-            title: ShowTitle(
-              title: 'สินค้าทั่วไป',
-              textStyle: MyConstant().h3Style(),
+  // Row buildCategoryProduct(double size) {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.center,
+  //     children: [
+  //       Container(
+  //         width: size * 0.6,
+  //         child: RadioListTile(
+  //           value: 'product',
+  //           groupValue: category,
+  //           onChanged: (value) {
+  //             setState(
+  //               () {
+  //                 category = value as String?;
+  //               },
+  //             );
+  //           },
+  //           title: ShowTitle(
+  //             title: 'สินค้าทั่วไป',
+  //             textStyle: MyConstant().h3Style(),
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
+
+  // Row buildCategoryProductSp(double size) {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.center,
+  //     children: [
+  //       Container(
+  //         width: size * 0.6,
+  //         child: RadioListTile(
+  //           value: 'productspecial',
+  //           groupValue: category,
+  //           onChanged: (value) {
+  //             setState(
+  //               () {
+  //                 category = value as String?;
+  //               },
+  //             );
+  //           },
+  //           title: ShowTitle(
+  //             title: 'สินค้าราคาพิเศษ',
+  //             textStyle: MyConstant().h3Style(),
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
+
+  // Row buildCategoryProductWs(double size) {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.center,
+  //     children: [
+  //       Container(
+  //         width: size * 0.6,
+  //         child: RadioListTile(
+  //           value: 'productwholesale',
+  //           groupValue: category,
+  //           onChanged: (value) {
+  //             setState(
+  //               () {
+  //                 category = value as String?;
+  //               },
+  //             );
+  //           },
+  //           title: ShowTitle(
+  //             title: 'สินค้าราคาส่ง',
+  //             textStyle: MyConstant().h3Style(),
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
+
+  Widget buildProductUnitProduct(BoxConstraints constraints) {
+    return Container(
+      width: constraints.maxWidth * 0.75,
+      margin: EdgeInsets.only(top: 16),
+      child: TextFormField(
+        controller: UnitProductController,
+        decoration: InputDecoration(
+          hintText: 'หน่วยสินค้า :',
+          hintStyle: MyConstant().h3Style(),
+          prefixIcon: Icon(
+            Icons.production_quantity_limits_outlined,
+            color: MyConstant.dark,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: MyConstant.dark,
             ),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: MyConstant.light),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.red),
+            borderRadius: BorderRadius.circular(15),
           ),
         ),
-      ],
+      ),
     );
   }
 
-  Row buildCategoryProductSp(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          width: size * 0.6,
-          child: RadioListTile(
-            value: 'productspecial',
-            groupValue: category,
-            onChanged: (value) {
-              setState(
-                () {
-                  category = value as String?;
-                },
-              );
-            },
-            title: ShowTitle(
-              title: 'สินค้าราคาพิเศษ',
-              textStyle: MyConstant().h3Style(),
+  Widget buildProductUnitPrice(BoxConstraints constraints) {
+    return Container(
+      width: constraints.maxWidth * 0.75,
+      margin: EdgeInsets.only(top: 16),
+      child: TextFormField(
+        controller: UnitPriceProductController,
+        decoration: InputDecoration(
+          hintText: 'หน่วยสินค้า :',
+          hintStyle: MyConstant().h3Style(),
+          prefixIcon: Icon(
+            Icons.production_quantity_limits_outlined,
+            color: MyConstant.dark,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: MyConstant.dark,
             ),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: MyConstant.light),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.red),
+            borderRadius: BorderRadius.circular(15),
           ),
         ),
-      ],
-    );
-  }
-
-  Row buildCategoryProductWs(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          width: size * 0.6,
-          child: RadioListTile(
-            value: 'productwholesale',
-            groupValue: category,
-            onChanged: (value) {
-              setState(
-                () {
-                  category = value as String?;
-                },
-              );
-            },
-            title: ShowTitle(
-              title: 'สินค้าราคาส่ง',
-              textStyle: MyConstant().h3Style(),
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 
@@ -519,7 +588,7 @@ class _AddProductState extends State<AddProduct> {
               );
             },
             title: ShowTitle(
-              title: 'ผักผลไม้',
+              title: 'ผัก',
               textStyle: MyConstant().h3Style(),
             ),
           ),
@@ -528,14 +597,14 @@ class _AddProductState extends State<AddProduct> {
     );
   }
 
-  Row buildProductMeet(double size) {
+  Row buildProductFruit(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
           width: size * 0.6,
           child: RadioListTile(
-            value: 'meet',
+            value: 'fruit',
             groupValue: typeproduct,
             onChanged: (value) {
               setState(
@@ -545,7 +614,111 @@ class _AddProductState extends State<AddProduct> {
               );
             },
             title: ShowTitle(
-              title: 'เนื้อสัตว์',
+              title: 'ผลไม้',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductMeetPork(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'pork',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'เนื้อหมู',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductMeetBeef(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'beef',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'เนื้อวัว',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductMeetChicken(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'chicken',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'เนื้อไก่',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductSeaFood(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'seafood',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'อาหารทะเล',
               textStyle: MyConstant().h3Style(),
             ),
           ),

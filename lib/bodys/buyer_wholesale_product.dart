@@ -28,7 +28,7 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
   UserModel? userModel;
   bool load = true;
   bool? haveData;
-  List<ProductModel> productmodles = [];
+  List<ProductModel> productmodels = [];
   List<List<String>> listImages = [];
   int indexImage = 0;
   int amountInt = 1;
@@ -81,7 +81,7 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
           setState(() {
             load = false;
             haveData = true;
-            productmodles.add(productModel);
+            productmodels.add(productModel);
           });
         }
       },
@@ -91,53 +91,51 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: MyConstant().gradientRadioBackground(),
-        child: OrientationBuilder(
-          builder: (context, orientation) {
-            if (orientation == Orientation.portrait) {
-              return load
-                  ? ShowProgress()
-                  : haveData!
-                      ? listProduct()
-                      : Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ShowTitle(
-                                title: 'NO DATA',
-                                textStyle: MyConstant().h1Style(),
-                              ),
-                            ],
-                          ),
-                        );
-            } else {
-              return load
-                  ? ShowProgress()
-                  : haveData!
-                      ? listProductHolizon()
-                      : Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ShowTitle(
-                                title: 'NO DATA',
-                                textStyle: MyConstant().h1Style(),
-                              ),
-                            ],
-                          ),
-                        );
-            }
-          },
-        ),
+      body: OrientationBuilder(
+        builder: (context, orientation) {
+          if (orientation == Orientation.portrait) {
+            return load
+                ? ShowProgress()
+                : haveData!
+                    ? listProduct()
+                    : Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ShowTitle(
+                              title: 'NO DATA',
+                              textStyle: MyConstant().h1Style(),
+                            ),
+                          ],
+                        ),
+                      );
+          } else {
+            return load
+                ? ShowProgress()
+                : haveData!
+                    ? listProductHolizon()
+                    : Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ShowTitle(
+                              title: 'NO DATA',
+                              textStyle: MyConstant().h1Style(),
+                            ),
+                          ],
+                        ),
+                      );
+          }
+        },
       ),
     );
   }
 
   Container listProduct() {
     return Container(
+      decoration: MyConstant().planBackground(),
       child: GridView.builder(
-        itemCount: productmodles.length,
+        itemCount: productmodels.length,
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           childAspectRatio: 2 / 4,
           maxCrossAxisExtent: 260,
@@ -146,7 +144,7 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
           onTap: () {
             // print('### YOu Click Index ===>> $index');
             ShowAlertDialog(
-              productmodles[index],
+              productmodels[index],
               listImages[index],
             );
           },
@@ -156,7 +154,7 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
               borderRadius: BorderRadius.circular(16),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(4.0),
               child: Column(
                 children: [
                   Container(
@@ -167,7 +165,7 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
                       child: CachedNetworkImage(
                         fit: BoxFit.fill,
                         imageUrl:
-                            findUrlImage(productmodles[index].imagesproduct),
+                            findUrlImage(productmodels[index].imagesproduct),
                         placeholder: (context, url) => ShowProgress(),
                         errorWidget: (context, url, error) =>
                             ShowImage(path: MyConstant.imageeror),
@@ -181,22 +179,38 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ShowTitle(
-                            title: productmodles[index].nameproduct,
+                            title: productmodels[index].nameproduct,
                             textStyle: MyConstant().h2Style(),
                           ),
-                          ShowTitle(
-                            title:
-                                'จำนวนสินค้า : ${productmodles[index].numberproduct}',
-                            textStyle: MyConstant().h3Style(),
+                          Row(
+                            children: [
+                              ShowTitle(
+                                title:
+                                    'จำนวนสินค้า : ${productmodels[index].numberproduct} ',
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                              ShowTitle(
+                                title: productmodels[index].unitproduct,
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                            ],
                           ),
-                          ShowTitle(
-                            title:
-                                'ราคา : ${productmodles[index].priceproduct} บาท',
-                            textStyle: MyConstant().h3Style(),
+                          Row(
+                            children: [
+                              ShowTitle(
+                                title:
+                                    'ราคา : ${productmodels[index].priceproduct} บาท /',
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                              ShowTitle(
+                                title: productmodels[index].unitprice,
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                            ],
                           ),
                           ShowTitle(
                             title: cutWord(
-                                'รายระเอียดสินค้า : ${productmodles[index].detailproduct}'),
+                                'รายระเอียดสินค้า : ${productmodels[index].detailproduct}'),
                             textStyle: MyConstant().h3Style(),
                           ),
                         ],
@@ -215,16 +229,16 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
   Container listProductHolizon() {
     return Container(
       child: GridView.builder(
-        itemCount: productmodles.length,
+        itemCount: productmodels.length,
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           childAspectRatio: 2 / 2,
-          maxCrossAxisExtent: 800,
+          maxCrossAxisExtent: 500,
         ),
         itemBuilder: (context, index) => GestureDetector(
           onTap: () {
             // print('### YOu Click Index ===>> $index');
             ShowAlertDialog(
-              productmodles[index],
+              productmodels[index],
               listImages[index],
             );
           },
@@ -246,7 +260,7 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
                       child: CachedNetworkImage(
                         fit: BoxFit.fill,
                         imageUrl:
-                            findUrlImage(productmodles[index].imagesproduct),
+                            findUrlImage(productmodels[index].imagesproduct),
                         placeholder: (context, url) => ShowProgress(),
                         errorWidget: (context, url, error) =>
                             ShowImage(path: MyConstant.imageeror),
@@ -260,17 +274,38 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ShowTitle(
-                            title: productmodles[index].nameproduct,
+                            title: productmodels[index].nameproduct,
                             textStyle: MyConstant().h2Style(),
                           ),
-                          ShowTitle(
-                            title:
-                                'ราคา : ${productmodles[index].priceproduct} บาท',
-                            textStyle: MyConstant().h3Style(),
+                          Row(
+                            children: [
+                              ShowTitle(
+                                title:
+                                    'จำนวนสินค้า : ${productmodels[index].numberproduct} ',
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                              ShowTitle(
+                                title: productmodels[index].unitproduct,
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              ShowTitle(
+                                title:
+                                    'ราคา : ${productmodels[index].priceproduct} บาท /',
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                              ShowTitle(
+                                title: productmodels[index].unitprice,
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                            ],
                           ),
                           ShowTitle(
                             title: cutWord(
-                                'รายระเอียดสินค้า : ${productmodles[index].detailproduct}'),
+                                'รายระเอียดสินค้า : ${productmodels[index].detailproduct}'),
                             textStyle: MyConstant().h3Style(),
                           ),
                         ],
@@ -300,7 +335,7 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
   }
 
   Future<Null> ShowAlertDialog(
-      ProductModel productModel, List<String> images) async {
+      ProductModel productmodel, List<String> images) async {
     showDialog(
       context: context,
       builder: (context) => StatefulBuilder(
@@ -308,11 +343,11 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
           title: ListTile(
             leading: ShowImage(path: MyConstant.image1),
             title: ShowTitle(
-              title: productModel.nameproduct,
+              title: productmodel.nameproduct,
               textStyle: MyConstant().h2Style(),
             ),
             subtitle: ShowTitle(
-              title: 'ราคา ${productModel.priceproduct} บาท',
+              title: 'ราคา ${productmodel.priceproduct} บาท',
               textStyle: MyConstant().h3Style(),
             ),
           ),
@@ -392,7 +427,7 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
                       Container(
                         width: 200,
                         child: ShowTitle(
-                          title: productModel.detailproduct,
+                          title: productmodel.detailproduct,
                           textStyle: MyConstant().h3Style(),
                         ),
                       ),
@@ -443,9 +478,9 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
                   onPressed: () async {
                     String idSeller = userModel!.id;
                     String nameSeller = userModel!.name;
-                    String idProduct = productModel.id;
-                    String nameProduct = productModel.nameproduct;
-                    String priceProduct = productModel.priceproduct;
+                    String idProduct = productmodel.id;
+                    String nameProduct = productmodel.nameproduct;
+                    String priceProduct = productmodel.priceproduct;
                     String amount = amountInt.toString();
                     int sunInt = int.parse(priceProduct) * amountInt;
                     String sum = sunInt.toString();
@@ -462,6 +497,7 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
                     int transport = MyAPI().calculateTransport(distance);
                     print(
                         'idproduct = $idProduct, namproduct = $nameProduct, priceproduct = $priceProduct, amount = $amount, sum = $sum, distance = $distancestring, transport = $transport');
+
                     SQLiteModel sqLiteModel = SQLiteModel(
                         idSeller: idSeller,
                         nameSeller: nameSeller,
@@ -486,7 +522,6 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
                 ),
                 TextButton(
                   onPressed: () {
-                    amountInt = 1;
                     Navigator.pop(context);
                   },
                   child: ShowTitle(
@@ -504,10 +539,11 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
 
   String cutWord(String string) {
     String result = string;
-    if (result.length > 100) {
-      result = result.substring(0, 100);
+    if (result.length >= 50) {
+      result = result.substring(0, 50);
       result = '$result ... ';
     }
     return result;
   }
 }
+

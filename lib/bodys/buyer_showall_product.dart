@@ -90,55 +90,53 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: MyConstant().gradientRadioBackground(),
-        child: OrientationBuilder(
-          builder: (context, orientation) {
-            if (orientation == Orientation.portrait) {
-              return load
-                  ? ShowProgress()
-                  : haveData!
-                      ? listProduct()
-                      : Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ShowTitle(
-                                title: 'NO DATA',
-                                textStyle: MyConstant().h1Style(),
-                              ),
-                            ],
-                          ),
-                        );
-            } else {
-              return load
-                  ? ShowProgress()
-                  : haveData!
-                      ? listProductHolizon()
-                      : Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ShowTitle(
-                                title: 'NO DATA',
-                                textStyle: MyConstant().h1Style(),
-                              ),
-                            ],
-                          ),
-                        );
-            }
-          },
-        ),
+      body: OrientationBuilder(
+        builder: (context, orientation) {
+          if (orientation == Orientation.portrait) {
+            return load
+                ? ShowProgress()
+                : haveData!
+                    ? listProduct()
+                    : Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ShowTitle(
+                              title: 'NO DATA',
+                              textStyle: MyConstant().h1Style(),
+                            ),
+                          ],
+                        ),
+                      );
+          } else {
+            return load
+                ? ShowProgress()
+                : haveData!
+                    ? listProductHolizon()
+                    : Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ShowTitle(
+                              title: 'NO DATA',
+                              textStyle: MyConstant().h1Style(),
+                            ),
+                          ],
+                        ),
+                      );
+          }
+        },
       ),
     );
   }
 
   Container listProduct() {
     return Container(
+      decoration: MyConstant().planBackground(),
       child: GridView.builder(
         itemCount: productmodels.length,
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          childAspectRatio: 2 / 3,
+          childAspectRatio: 2 / 4,
           maxCrossAxisExtent: 260,
         ),
         itemBuilder: (context, index) => GestureDetector(
@@ -155,7 +153,7 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
               borderRadius: BorderRadius.circular(16),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(4.0),
               child: Column(
                 children: [
                   Container(
@@ -183,15 +181,31 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
                             title: productmodels[index].nameproduct,
                             textStyle: MyConstant().h2Style(),
                           ),
-                          ShowTitle(
-                            title:
-                                'จำนวนสินค้า : ${productmodels[index].numberproduct}',
-                            textStyle: MyConstant().h3Style(),
+                          Row(
+                            children: [
+                              ShowTitle(
+                                title:
+                                    'จำนวนสินค้า : ${productmodels[index].numberproduct} ',
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                              ShowTitle(
+                                title: productmodels[index].unitproduct,
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                            ],
                           ),
-                          ShowTitle(
-                            title:
-                                'ราคา : ${productmodels[index].priceproduct} บาท',
-                            textStyle: MyConstant().h3Style(),
+                          Row(
+                            children: [
+                              ShowTitle(
+                                title:
+                                    'ราคา : ${productmodels[index].priceproduct} บาท /',
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                              ShowTitle(
+                                title: productmodels[index].unitprice,
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                            ],
                           ),
                           ShowTitle(
                             title: cutWord(
@@ -217,7 +231,7 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
         itemCount: productmodels.length,
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           childAspectRatio: 2 / 2,
-          maxCrossAxisExtent: 800,
+          maxCrossAxisExtent: 500,
         ),
         itemBuilder: (context, index) => GestureDetector(
           onTap: () {
@@ -262,10 +276,31 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
                             title: productmodels[index].nameproduct,
                             textStyle: MyConstant().h2Style(),
                           ),
-                          ShowTitle(
-                            title:
-                                'ราคา : ${productmodels[index].priceproduct} บาท',
-                            textStyle: MyConstant().h3Style(),
+                          Row(
+                            children: [
+                              ShowTitle(
+                                title:
+                                    'จำนวนสินค้า : ${productmodels[index].numberproduct} ',
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                              ShowTitle(
+                                title: productmodels[index].unitproduct,
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              ShowTitle(
+                                title:
+                                    'ราคา : ${productmodels[index].priceproduct} บาท /',
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                              ShowTitle(
+                                title: productmodels[index].unitprice,
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                            ],
                           ),
                           ShowTitle(
                             title: cutWord(
@@ -503,8 +538,8 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
 
   String cutWord(String string) {
     String result = string;
-    if (result.length >= 100) {
-      result = result.substring(0, 100);
+    if (result.length >= 50) {
+      result = result.substring(0, 50);
       result = '$result ... ';
     }
     return result;

@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_myappication_1/bodys/show_buyer_manage.dart';
 import 'package:flutter_myappication_1/bodys/show_menu_food.dart';
 import 'package:flutter_myappication_1/bodys/show_order_history.dart';
 import 'package:flutter_myappication_1/bodys/show_order_status.dart';
@@ -143,7 +144,7 @@ class _BuyerServiceState extends State<BuyerService> {
   ListTile showOrderStatus() {
     return ListTile(
       leading: Icon(
-        Icons.inbox,
+        Icons.inventory_2_outlined,
         size: 35,
         color: MyConstant.dark,
       ),
@@ -182,29 +183,49 @@ class _BuyerServiceState extends State<BuyerService> {
     );
   }
 
-  UserAccountsDrawerHeader buildHeard() => UserAccountsDrawerHeader(
-        decoration: BoxDecoration(
-          gradient: RadialGradient(
-            radius: 1,
-            center: Alignment(-0.8, -0.2),
-            colors: [Colors.white, MyConstant.dark],
+  UserAccountsDrawerHeader buildHeard() {
+    return UserAccountsDrawerHeader(
+      otherAccountsPictures: [
+        IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ShowManageBuyer(userModel: userModel!),
+              ),
+            );
+          },
+          icon: Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: Icon(Icons.settings_outlined),
           ),
+          iconSize: 36,
+          color: MyConstant.light,
+        )
+      ],
+      decoration: BoxDecoration(
+        gradient: RadialGradient(
+          radius: 1,
+          center: Alignment(-0.8, -0.2),
+          colors: [Colors.white, MyConstant.dark],
         ),
-        currentAccountPicture: userModel == null
-            ? ShowImage(path: MyConstant.avatar)
-            : userModel!.avatar.isEmpty
-                ? ShowImage(path: MyConstant.avatar)
-                : CircleAvatar(
-                    backgroundImage: CachedNetworkImageProvider(
-                        '${MyConstant.domain}${userModel!.avatar}'),
-                  ),
-        accountName: ShowTitle(
-          title: userModel == null ? '' : userModel!.name,
-          textStyle: MyConstant().h2Style(),
-        ),
-        accountEmail: ShowTitle(
-          title: userModel == null ? '' : userModel!.user,
-          textStyle: MyConstant().h3Style(),
-        ),
-      );
+      ),
+      currentAccountPicture: userModel == null
+          ? ShowImage(path: MyConstant.avatar)
+          : userModel!.avatar.isEmpty
+              ? ShowImage(path: MyConstant.avatar)
+              : CircleAvatar(
+                  backgroundImage: CachedNetworkImageProvider(
+                      '${MyConstant.domain}${userModel!.avatar}'),
+                ),
+      accountName: ShowTitle(
+        title: userModel == null ? '' : userModel!.name,
+        textStyle: MyConstant().h2Style(),
+      ),
+      accountEmail: ShowTitle(
+        title: userModel == null ? '' : userModel!.user,
+        textStyle: MyConstant().h3Style(),
+      ),
+    );
+  }
 }

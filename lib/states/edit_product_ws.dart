@@ -20,12 +20,14 @@ class EditProductWholeSale extends StatefulWidget {
 }
 
 class _EditProductWholeSaleState extends State<EditProductWholeSale> {
-  String? typeProduct;
+  String? typeproduct;
   ProductModel? productModel;
 
   TextEditingController NameController = TextEditingController();
   TextEditingController NumberController = TextEditingController();
+  TextEditingController UnitProductController = TextEditingController();
   TextEditingController PriceController = TextEditingController();
+  TextEditingController UnitPriceController = TextEditingController();
   TextEditingController DetailController = TextEditingController();
 
   List<String> pathImages = [];
@@ -33,7 +35,6 @@ class _EditProductWholeSaleState extends State<EditProductWholeSale> {
   bool statusImage = false; // false => Not Change Image
 
   final formKey = GlobalKey<FormState>();
-
 
   @override
   void initState() {
@@ -44,7 +45,9 @@ class _EditProductWholeSaleState extends State<EditProductWholeSale> {
     convertStringToArry();
     NameController.text = productModel!.nameproduct;
     NumberController.text = productModel!.numberproduct;
+    UnitProductController.text = productModel!.unitproduct;
     PriceController.text = productModel!.priceproduct;
+    UnitPriceController.text = productModel!.unitprice;
     DetailController.text = productModel!.detailproduct;
   }
 
@@ -93,9 +96,17 @@ class _EditProductWholeSaleState extends State<EditProductWholeSale> {
                     buildName(constraints),
                     buildTitle('Type Product :'),
                     buildProductVegetables(size),
-                    buildProductMeet(size),
+                    buildProductFruit(size),
+                    buildProductMeetPork(size),
+                    buildProductMeetBeef(size),
+                    buildProductMeetChicken(size),
+                    buildProductSeaFood(size),
+                    buildProductDryGoods(size),
+                    buildProductCondiments(size),
                     buildNumber(constraints),
+                    buildUnitProduct(constraints),
                     buildPrice(constraints),
+                    buildUnitPrice(constraints),
                     buildDetail(constraints),
                     buildTitle('Image Product :'),
                     buildImage(constraints, 0),
@@ -180,6 +191,44 @@ class _EditProductWholeSaleState extends State<EditProductWholeSale> {
     );
   }
 
+  Row buildUnitProduct(BoxConstraints constraints) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.fromLTRB(0, 0, 0, 16),
+          width: constraints.maxWidth * 0.75,
+          child: TextFormField(
+            controller: UnitProductController,
+            decoration: InputDecoration(
+              labelText: 'Name :',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildUnitPrice(BoxConstraints constraints) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.fromLTRB(0, 0, 0, 16),
+          width: constraints.maxWidth * 0.75,
+          child: TextFormField(
+            controller: UnitPriceController,
+            decoration: InputDecoration(
+              labelText: 'Name :',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Row buildName(BoxConstraints constraints) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -198,7 +247,7 @@ class _EditProductWholeSaleState extends State<EditProductWholeSale> {
     );
   }
 
-Row buildProductVegetables(double size) {
+  Row buildProductVegetables(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -206,16 +255,16 @@ Row buildProductVegetables(double size) {
           width: size * 0.6,
           child: RadioListTile(
             value: 'vegetables',
-            groupValue: typeProduct,
+            groupValue: typeproduct,
             onChanged: (value) {
               setState(
                 () {
-                  typeProduct = value as String?;
+                  typeproduct = value as String?;
                 },
               );
             },
             title: ShowTitle(
-              title: 'ผักผลไม้',
+              title: 'ผัก',
               textStyle: MyConstant().h3Style(),
             ),
           ),
@@ -224,24 +273,180 @@ Row buildProductVegetables(double size) {
     );
   }
 
-  Row buildProductMeet(double size) {
+  Row buildProductFruit(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
           width: size * 0.6,
           child: RadioListTile(
-            value: 'meet',
-            groupValue: typeProduct,
+            value: 'fruit',
+            groupValue: typeproduct,
             onChanged: (value) {
               setState(
                 () {
-                  typeProduct = value as String?;
+                  typeproduct = value as String?;
                 },
               );
             },
             title: ShowTitle(
-              title: 'เนื้อสัตว์',
+              title: 'ผลไม้',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductMeetPork(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'pork',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'เนื้อหมู',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductMeetBeef(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'beef',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'เนื้อวัว',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductMeetChicken(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'chicken',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'เนื้อไก่',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductSeaFood(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'seafood',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'อาหารทะเล',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductDryGoods(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'driedFoods',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'ของแห้ง',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildProductCondiments(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.6,
+          child: RadioListTile(
+            value: 'condiments',
+            groupValue: typeproduct,
+            onChanged: (value) {
+              setState(
+                () {
+                  typeproduct = value as String?;
+                },
+              );
+            },
+            title: ShowTitle(
+              title: 'เครื่องปรุงรส',
               textStyle: MyConstant().h3Style(),
             ),
           ),
@@ -254,9 +459,11 @@ Row buildProductVegetables(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Container(margin: EdgeInsets.symmetric(vertical: 16),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 16),
           width: constraints.maxWidth * 0.75,
-          child: TextFormField(keyboardType: TextInputType.phone,
+          child: TextFormField(
+            keyboardType: TextInputType.phone,
             controller: NumberController,
             decoration: InputDecoration(
               labelText: 'Number :',
@@ -325,12 +532,14 @@ Row buildProductVegetables(double size) {
     if (formKey.currentState!.validate()) {
       MyDialog().showProgressDialog(context);
 
-      String nameProduct = NameController.text;
-      String numberProduct = NumberController.text;
-      String priceProduct = PriceController.text;
-      String detailProduct = DetailController.text;
-      String Id = productModel!.id;
-      String imageProduct;
+      String nameproduct = NameController.text;
+      String numberproduct = NumberController.text;
+      String unitproduct = UnitProductController.text;
+      String priceproduct = PriceController.text;
+      String unitprice = UnitPriceController.text;
+      String detailproduct = DetailController.text;
+      String id = productModel!.id;
+      String imagesproduct;
       if (statusImage) {
         // upload Image and Refresh arrey pathImage
         int index = 0;
@@ -352,15 +561,15 @@ Row buildProductVegetables(double size) {
           index++;
         }
 
-        imageProduct = pathImages.toString();
+        imagesproduct = pathImages.toString();
         Navigator.pop(context);
       } else {
-        imageProduct = pathImages.toString();
+        imagesproduct = pathImages.toString();
         Navigator.pop(context);
       }
 
       String apiEditProduct =
-          '${MyConstant.domain}/shopping/editProductWSWhereId.php?isAdd=true&Id=$Id&nameProduct=$nameProduct&typeProduct=$typeProduct&numberProduct=$numberProduct&priceProduct=$priceProduct&detailProduct=$detailProduct&imageProduct=$imageProduct'; //ต้องแก้
+          '${MyConstant.domain}/shopping/editProductWhereId.php?isAdd=true&id=$id&nameproduct=$nameproduct&typeproduct=$typeproduct&numberproduct=$numberproduct&unitproduct=$unitproduct&priceproduct=$priceproduct&unitprice=$unitprice&detailproduct=$detailproduct&imagesproduct=$imagesproduct';
       await Dio().get(apiEditProduct).then((value) => Navigator.pop(context));
     }
   }

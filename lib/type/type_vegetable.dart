@@ -89,7 +89,11 @@ class _TypeVegatablesState extends State<TypeVegatables> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: MyConstant.primary,
+        title: Text('ประเภทผัก'),
+      ),
       body: OrientationBuilder(
         builder: (context, orientation) {
           if (orientation == Orientation.portrait) {
@@ -153,7 +157,7 @@ class _TypeVegatablesState extends State<TypeVegatables> {
               borderRadius: BorderRadius.circular(16),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(4.0),
               child: Column(
                 children: [
                   Container(
@@ -181,15 +185,31 @@ class _TypeVegatablesState extends State<TypeVegatables> {
                             title: productmodels[index].nameproduct,
                             textStyle: MyConstant().h2Style(),
                           ),
-                          ShowTitle(
-                            title:
-                                'จำนวนสินค้า : ${productmodels[index].numberproduct}',
-                            textStyle: MyConstant().h3Style(),
+                          Row(
+                            children: [
+                              ShowTitle(
+                                title:
+                                    'จำนวนสินค้า : ${productmodels[index].numberproduct} ',
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                              ShowTitle(
+                                title: productmodels[index].unitproduct,
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                            ],
                           ),
-                          ShowTitle(
-                            title:
-                                'ราคา : ${productmodels[index].priceproduct} บาท',
-                            textStyle: MyConstant().h3Style(),
+                          Row(
+                            children: [
+                              ShowTitle(
+                                title:
+                                    'ราคา : ${productmodels[index].priceproduct} บาท /',
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                              ShowTitle(
+                                title: productmodels[index].unitprice,
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                            ],
                           ),
                           ShowTitle(
                             title: cutWord(
@@ -215,7 +235,7 @@ class _TypeVegatablesState extends State<TypeVegatables> {
         itemCount: productmodels.length,
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           childAspectRatio: 2 / 2,
-          maxCrossAxisExtent: 400,
+          maxCrossAxisExtent: 500,
         ),
         itemBuilder: (context, index) => GestureDetector(
           onTap: () {
@@ -260,10 +280,31 @@ class _TypeVegatablesState extends State<TypeVegatables> {
                             title: productmodels[index].nameproduct,
                             textStyle: MyConstant().h2Style(),
                           ),
-                          ShowTitle(
-                            title:
-                                'ราคา : ${productmodels[index].priceproduct} บาท',
-                            textStyle: MyConstant().h3Style(),
+                          Row(
+                            children: [
+                              ShowTitle(
+                                title:
+                                    'จำนวนสินค้า : ${productmodels[index].numberproduct} ',
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                              ShowTitle(
+                                title: productmodels[index].unitproduct,
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              ShowTitle(
+                                title:
+                                    'ราคา : ${productmodels[index].priceproduct} บาท /',
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                              ShowTitle(
+                                title: productmodels[index].unitprice,
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                            ],
                           ),
                           ShowTitle(
                             title: cutWord(
@@ -501,8 +542,8 @@ class _TypeVegatablesState extends State<TypeVegatables> {
 
   String cutWord(String string) {
     String result = string;
-    if (result.length >= 100) {
-      result = result.substring(0, 100);
+    if (result.length >= 50) {
+      result = result.substring(0, 50);
       result = '$result ... ';
     }
     return result;

@@ -3,19 +3,19 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/models/order_model.dart';
+import 'package:flutter_myappication_1/states/admin.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 
-class ShowHistoryByOrderByUser extends StatefulWidget {
-  const ShowHistoryByOrderByUser({Key? key}) : super(key: key);
+class ShowOrderAdmin extends StatefulWidget {
+  const ShowOrderAdmin({Key? key}) : super(key: key);
 
   @override
-  State<ShowHistoryByOrderByUser> createState() =>
-      _ShowHistoryByOrderByUserState();
+  State<ShowOrderAdmin> createState() => _ShowOrderAdminState();
 }
 
-class _ShowHistoryByOrderByUserState extends State<ShowHistoryByOrderByUser> {
+class _ShowOrderAdminState extends State<ShowOrderAdmin> {
   bool statusOrder = true;
   bool? haveData;
   List<OrderModel> orderModels = [];
@@ -34,11 +34,8 @@ class _ShowHistoryByOrderByUserState extends State<ShowHistoryByOrderByUser> {
   }
 
   Future<Null> findIdSellerAndReadOrder() async {
-    if (orderModels.length != 0) {
-      orderModels.clear();
-    }
     String path =
-        '${MyConstant.domain}/shopping/getOrderWhereStatusSellerConfirmOrder.php';
+        '${MyConstant.domain}/shopping/getOrderWhereStatusAwaitOrder.php';
     await Dio().get(path).then((value) {
       if (value.toString() == 'null') {
         setState(() {
@@ -47,7 +44,7 @@ class _ShowHistoryByOrderByUserState extends State<ShowHistoryByOrderByUser> {
         });
       } else {
         for (var item in json.decode(value.data)) {
-          OrderModel model = OrderModel.fromJson(item);
+          OrderModel model = OrderModel.fromMap(item);
           // print('id = ${model.id}');
           List<String> orderProducts = changeArrey(model.nameProduct!);
           List<String> orderPrices = changeArrey(model.priceProduct!);
@@ -112,6 +109,7 @@ class _ShowHistoryByOrderByUserState extends State<ShowHistoryByOrderByUser> {
                             ),
                             buildTitle(),
                             bildListViewOrder(index),
+                            buildButton(index),
                           ],
                         ),
                       ),
@@ -132,6 +130,82 @@ class _ShowHistoryByOrderByUserState extends State<ShowHistoryByOrderByUser> {
                   ),
                 ),
     );
+  }
+
+  Row buildButton(index) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        ElevatedButton(
+            style: ButtonStyle(
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18),
+                  side: BorderSide(color: MyConstant.dark, width: 145),
+                ),
+              ),
+            ),
+            onPressed: () {},
+            child: Row(
+              children: [
+                Icon(
+                  Icons.cancel_outlined,
+                  color: Colors.red.shade700,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ShowTitle(
+                    title: 'ยกเลิกสินค้า',
+                    textStyle: MyConstant().h3WhiteStyle(),
+                  ),
+                ),
+              ],
+            )),
+        ElevatedButton(
+          style: ButtonStyle(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18),
+                side: BorderSide(color: MyConstant.dark, width: 145),
+              ),
+            ),
+          ),
+          onPressed: () async {
+            confirmOrder(index);
+          },
+          child: Row(
+            children: [
+              Icon(
+                Icons.radio_button_off,
+                color: Colors.green.shade400,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ShowTitle(
+                  title: 'ยืนยันสินค้า',
+                  textStyle: MyConstant().h3WhiteStyle(),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future confirmOrder(index) async {
+    id = orderModels[index].id;
+    String status = 'sellerConfirmOrder';
+    String url =
+        '${MyConstant.domain}/shopping/editStatusWhereId.php?isAdd=true&id=$id&status=$status';
+    await Dio().get(url).then((value) {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AdminServer(),
+          ),
+          (route) => false);
+    });
   }
 
   ListView bildListViewOrder(int index) {

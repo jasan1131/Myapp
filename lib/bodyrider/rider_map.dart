@@ -170,7 +170,7 @@ class _RiderMapsState extends State<RiderMaps> {
         markerId: MarkerId('userMarker'),
         position: LatLng(lat1!, lng1!),
         icon: BitmapDescriptor.defaultMarkerWithHue(150.0),
-        infoWindow: InfoWindow(title: 'คุณอยู่ที่นี้'),
+        infoWindow: InfoWindow(title: 'ลูกค้า'),
       );
     }
 
@@ -185,7 +185,6 @@ class _RiderMapsState extends State<RiderMaps> {
               zoomControlsEnabled: true,
               initialCameraPosition: position!,
               mapType: MapType.normal,
-              
               myLocationEnabled: true,
               onMapCreated: _onMapCreated,
               markers: mySet(),
