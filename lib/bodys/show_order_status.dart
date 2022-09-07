@@ -7,9 +7,6 @@ import 'package:flutter_myappication_1/states/show_status_buyer_await_order.dart
 import 'package:flutter_myappication_1/states/show_status_buyer_finish.dart';
 import 'package:flutter_myappication_1/states/show_status_buyer_rider_order.dart';
 import 'package:flutter_myappication_1/states/show_status_buyer_seller_order.dart';
-import 'package:flutter_myappication_1/status/show_status_finish.dart';
-import 'package:flutter_myappication_1/status/show_status_rider_order.dart';
-import 'package:flutter_myappication_1/status/show_status_seller_order.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
@@ -44,11 +41,12 @@ class _ShowOrderStatusState extends State<ShowOrderStatus> {
     findBuyer();
   }
 
-  Center buildNonOrder() => Center(
-          child: ShowTitle(
-        title: 'ไม่มีข้อมูลการสั่งซื้อ',
-        textStyle: MyConstant().h1Style(),
-      ));
+  Widget buildNonOrder() => Center(
+        child: ShowTitle(
+          title: 'ไม่มีข้อมูลการสั่งซื้อ',
+          textStyle: MyConstant().h1Style(),
+        ),
+      );
 
   Future<Null> findBuyer() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();

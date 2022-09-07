@@ -11,6 +11,7 @@ import 'package:flutter_myappication_1/bodys/show_order_history.dart';
 import 'package:flutter_myappication_1/bodys/show_order_status.dart';
 import 'package:flutter_myappication_1/bodys/show_shop_seller.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
+import 'package:flutter_myappication_1/states/show_setting_buyer.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_image.dart';
 import 'package:flutter_myappication_1/widgets/show_signout.dart';
@@ -27,7 +28,6 @@ class BuyerService extends StatefulWidget {
 class _BuyerServiceState extends State<BuyerService> {
   List<Widget> widgets = [
     ShowShopSeller(),
-    ShowMenuFood(),
     ShowOrderStatus(),
     ShowOrderHistory(),
   ];
@@ -86,7 +86,7 @@ class _BuyerServiceState extends State<BuyerService> {
               children: [
                 buildHeard(),
                 showShopSeller(),
-                showMenuFood(),
+                // showMenuFood(),
                 showOrderStatus(),
                 showOrderHistory()
               ],
@@ -120,26 +120,26 @@ class _BuyerServiceState extends State<BuyerService> {
     );
   }
 
-  ListTile showMenuFood() {
-    return ListTile(
-      leading: Icon(
-        Icons.restaurant_outlined,
-        size: 35,
-        color: MyConstant.dark,
-      ),
-      title: ShowTitle(
-        title: 'เมนูอาหาร',
-        textStyle: MyConstant().h2Style(),
-      ),
-      subtitle: ShowTitle(title: 'แนะนำเมนูอาหาร และ วิธีทำอาหาร'),
-      onTap: () {
-        setState(() {
-          indexWidget = 1;
-          Navigator.pop(context);
-        });
-      },
-    );
-  }
+  // ListTile showMenuFood() {
+  //   return ListTile(
+  //     leading: Icon(
+  //       Icons.restaurant_outlined,
+  //       size: 35,
+  //       color: MyConstant.dark,
+  //     ),
+  //     title: ShowTitle(
+  //       title: 'เมนูอาหาร',
+  //       textStyle: MyConstant().h2Style(),
+  //     ),
+  //     subtitle: ShowTitle(title: 'แนะนำเมนูอาหาร และ วิธีทำอาหาร'),
+  //     onTap: () {
+  //       setState(() {
+  //         indexWidget = 1;
+  //         Navigator.pop(context);
+  //       });
+  //     },
+  //   );
+  // }
 
   ListTile showOrderStatus() {
     return ListTile(
@@ -155,7 +155,7 @@ class _BuyerServiceState extends State<BuyerService> {
       subtitle: ShowTitle(title: 'แสดงสถานะการสั่งซื้อ'),
       onTap: () {
         setState(() {
-          indexWidget = 2;
+          indexWidget = 1;
           Navigator.pop(context);
         });
       },
@@ -176,7 +176,7 @@ class _BuyerServiceState extends State<BuyerService> {
       subtitle: ShowTitle(title: 'แสดงประวัติการสั่งซื้อ'),
       onTap: () {
         setState(() {
-          indexWidget = 3;
+          indexWidget = 2;
           Navigator.pop(context);
         });
       },
@@ -191,7 +191,7 @@ class _BuyerServiceState extends State<BuyerService> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ShowManageBuyer(userModel: userModel!),
+                builder: (context) => ShowSettingBuyer(userModel: userModel!),
               ),
             );
           },

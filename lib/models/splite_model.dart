@@ -7,6 +7,7 @@ class SQLiteModel {
   final String nameSeller;
   final String idProduct;
   final String nameProduct;
+  final String numberProduct;
   final String priceProduct;
   final String amount;
   final String sum;
@@ -18,6 +19,7 @@ class SQLiteModel {
     required this.nameSeller,
     required this.idProduct,
     required this.nameProduct,
+    required this.numberProduct,
     required this.priceProduct,
     required this.amount,
     required this.sum,
@@ -31,6 +33,7 @@ class SQLiteModel {
     String? nameSeller,
     String? idProduct,
     String? nameProduct,
+    String? numberProduct,
     String? priceProduct,
     String? amount,
     String? sum,
@@ -43,6 +46,7 @@ class SQLiteModel {
       nameSeller: nameSeller ?? this.nameSeller,
       idProduct: idProduct ?? this.idProduct,
       nameProduct: nameProduct ?? this.nameProduct,
+      numberProduct: numberProduct ?? this.numberProduct,
       priceProduct: priceProduct ?? this.priceProduct,
       amount: amount ?? this.amount,
       sum: sum ?? this.sum,
@@ -58,6 +62,7 @@ class SQLiteModel {
       'nameSeller': nameSeller,
       'idProduct': idProduct,
       'nameProduct': nameProduct,
+      'numberProduct': numberProduct,
       'priceProduct': priceProduct,
       'amount': amount,
       'sum': sum,
@@ -73,6 +78,7 @@ class SQLiteModel {
       nameSeller: map['nameSeller'] as String,
       idProduct: map['idProduct'] as String,
       nameProduct: map['nameProduct'] as String,
+      numberProduct: map['numberProduct'] as String,
       priceProduct: map['priceProduct'] as String,
       amount: map['amount'] as String,
       sum: map['sum'] as String,
@@ -87,7 +93,7 @@ class SQLiteModel {
 
   @override
   String toString() {
-    return 'SQLiteModel(id: $id, idSeller: $idSeller, nameSeller: $nameSeller, idProduct: $idProduct, nameProduct: $nameProduct, priceProduct: $priceProduct, amount: $amount, sum: $sum, distance: $distance, transport: $transport)';
+    return 'SQLiteModel(id: $id, idSeller: $idSeller, nameSeller: $nameSeller, idProduct: $idProduct, nameProduct: $nameProduct, numberProduct: $numberProduct, priceProduct: $priceProduct, amount: $amount, sum: $sum, distance: $distance, transport: $transport)';
   }
 
   @override
@@ -100,6 +106,7 @@ class SQLiteModel {
       other.nameSeller == nameSeller &&
       other.idProduct == idProduct &&
       other.nameProduct == nameProduct &&
+      other.numberProduct == numberProduct &&
       other.priceProduct == priceProduct &&
       other.amount == amount &&
       other.sum == sum &&
@@ -114,6 +121,7 @@ class SQLiteModel {
       nameSeller.hashCode ^
       idProduct.hashCode ^
       nameProduct.hashCode ^
+      numberProduct.hashCode ^
       priceProduct.hashCode ^
       amount.hashCode ^
       sum.hashCode ^

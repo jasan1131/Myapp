@@ -127,7 +127,7 @@ class _ShowOrderShippedByRiderState extends State<ShowOrderShippedByRider> {
                 onPressed: () {
                   confirmOrder(index);
                 },
-                child: Text('data'),
+                child: Text('ยืนยันการส่งสินค้า'),
               )
             ],
           ),

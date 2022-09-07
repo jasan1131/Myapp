@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/bodys/buyer_product_type.dart';
 import 'package:flutter_myappication_1/bodys/buyer_show_about_seller.dart';
-import 'package:flutter_myappication_1/bodys/buyer_showall_product.dart';
+import 'package:flutter_myappication_1/bodys/buyer_show_all_product.dart';
 import 'package:flutter_myappication_1/bodys/buyer_special_product.dart';
 import 'package:flutter_myappication_1/bodys/buyer_wholesale_product.dart';
+import 'package:flutter_myappication_1/bodys/show_menu_food.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
@@ -27,19 +28,11 @@ class _BuyerShowShopSellerState extends State<BuyerShowShopSeller> {
     // TODO: implement initState
     super.initState();
     userModel = widget.userModel;
-    listWidgets.add(ShowAboutSeller(userModel: userModel!));
     listWidgets.add(BuyerShowAllProduct(userModel: userModel!));
     listWidgets.add(BuyerProductType(userModel: userModel!));
     listWidgets.add(BuyerSpecialProduct(userModel: userModel!));
     listWidgets.add(BuyerWholeSaleProduct(userModel: userModel!));
-  }
-
-  BottomNavigationBarItem showAboutSeller() {
-    return BottomNavigationBarItem(
-      backgroundColor: MyConstant.dark,
-      icon: Icon(Icons.info_outline),
-      label: 'เกี่ยวกับร้าน',
-    );
+    listWidgets.add(ShowMenuFood(userModel: userModel!));
   }
 
   BottomNavigationBarItem showProduct() {
@@ -74,6 +67,14 @@ class _BuyerShowShopSellerState extends State<BuyerShowShopSeller> {
     );
   }
 
+  BottomNavigationBarItem showMenuFood() {
+    return BottomNavigationBarItem(
+      backgroundColor: MyConstant.dark,
+      icon: Icon(Icons.restaurant_outlined),
+      label: 'เมนูอาหาร',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,6 +83,15 @@ class _BuyerShowShopSellerState extends State<BuyerShowShopSeller> {
         centerTitle: true,
         title: Text(userModel!.name),
         actions: [
+          IconButton(
+              onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          ShowAboutSeller(userModel: userModel!),
+                    ),
+                  ),
+              icon: Icon(Icons.info_outline)),
           IconButton(
             onPressed: () =>
                 Navigator.pushNamed(context, MyConstant.rounteShowCart),
@@ -109,11 +119,11 @@ class _BuyerShowShopSellerState extends State<BuyerShowShopSeller> {
         });
       },
       items: <BottomNavigationBarItem>[
-        showAboutSeller(),
         showProduct(),
         showTypeProduct(),
         showSpecialProduct(),
         showWholeSaleProduct(),
+        showMenuFood(),
       ],
     );
   }

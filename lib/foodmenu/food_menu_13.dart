@@ -14,126 +14,127 @@ class _FoodMenu13State extends State<FoodMenu13> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: MyConstant.primary,
+        centerTitle: true,
+        title: Text('เมนูอาหาร'),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            ListTile(
-              title: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ShowTitle(
-                    title: 'ยำมาม่ารวมมิตร',
-                    textStyle: MyConstant().h1Style(),
-                  ),
-                ],
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ShowImage(path: MyConstant.food13),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      ShowTitle(
-                        title: 'วัตถุดิบในการทำ ยำมาม่ารวมมิตร',
-                        textStyle: MyConstant().h2Style(),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      ShowTitle(
-                        title: 'วิธีทำยำมาม่ารวมมิตร',
-                        textStyle: MyConstant().h2Style(),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.655,
-                        child: ShowTitle(
-                          title:
-                              '1.	ลวกเนื้อสัตว์ต่างๆ ทีละชนิดแล้วพักไว้ โดยเน้นลวกให้พอสุก เพื่อให้เนื้อกุ้ง หมึก และเนื้อหมูยังมีรสหวาน อีกทั้งเพื่อไม่ให้แข็งจนเกินไป จากนั้นเก็บน้ำจากการลวกเนื้อสัตว์ไว้',
-                          textStyle: MyConstant().h3Style(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.655,
-                        child: ShowTitle(
-                          title:
-                              '2.	ลวกเส้นมาม่า ระวังอย่าให้นิ่มเละเกินไป จากนั้นเทน้ำออก แล้วพักเส้นไว้ให้สะเด็ดน้ำ',
-                          textStyle: MyConstant().h3Style(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.655,
-                        child: ShowTitle(
-                          title:
-                              '3.	ขั้นตอนต่อไปให้เตรียมทำน้ำยา โดยนำเครื่องปรุงต่างๆ มาใส่รวมกันในชามผสม ได้แก่ น้ำมะนาว น้ำปลา น้ำตาล ผงปรุงรสมาม่า และพริก คนส่วนผสมน้ำยาให้เข้ากันดี ชิมรสตามชอบ',
-                          textStyle: MyConstant().h3Style(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.655,
-                        child: ShowTitle(
-                          title:
-                              '4.	ใส่ผักต่างๆ ลงไป ได้แก่ หัวหอมใหญ่ แครอทซอย มะเขือเทศ และขึ้นฉ่ายมาผสมให้เข้ากัน',
-                          textStyle: MyConstant().h3Style(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.655,
-                        child: ShowTitle(
-                          title:
-                              '5.	คลุกเคล้าส่วนผสมทั้งหมดให้เข้ากัน ใครชอบรสชาติแบบไหนก็ปรุงแต่งรสตามชอบอีกครั้งได้ค่ะ เพียงเท่านี้ก็เป็นอันเสร็จ ตักใส่จานพร้อมเสิร์ฟ',
-                          textStyle: MyConstant().h3Style(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            buildHead(),
+            buildImage(),
+            buildStaple(),
+            buildTitle(),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget buildTitle() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              ShowTitle(
+                title: 'วิธีทำผัดเปรี้ยวหวานหมู',
+                textStyle: MyConstant().h2Style(),
+              ),
+            ],
+          ),
+          ShowTitle(
+            title:
+                '1.	เจียวกระเทียมสับในน้ำมันพืชจนหอม ใส่เนื้อหมูลงไปผัดจนสุก',
+            textStyle: MyConstant().h3Style(),
+          ),
+          ShowTitle(
+            title:
+                '2.	ใส่สับปะรด แตงกวา หอมใหญ่ พริกฝรั่ง ต้นหอม และมะเขือเทศ ลงไปผัดจนสุก',
+            textStyle: MyConstant().h3Style(),
+          ),
+          ShowTitle(
+            title:
+                '3.	ปรุงรสด้วยซอสมะเขือเทศ น้ำตาลทราย และเกลือป่น ใส่น้ำเปล่าลงไปเล็กน้อย ผัดให้เข้ากัน ชิมรสตามชอบ พร้อมเสิร์ฟ',
+            textStyle: MyConstant().h3Style(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildStaple() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              ShowTitle(
+                title: 'วัตถุดิบในการทำ ผัดเปรี้ยวหวานหมู',
+                textStyle: MyConstant().h2Style(),
+              ),
+            ],
+          ),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '1.กระเทียม'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '2.เนื้อหมู'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '3.สับปะรด'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '4.แตงกวา'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '5.หอมใหญ่'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '6.มะเขือเทศ'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '7.ซอสมะเขือเทศ'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '8.น้ำตาลทราย'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '9.น้ำปลา'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '10.น้ำมันพืช'),
+        ),
+      ],
+    );
+  }
+
+  Widget buildImage() => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ShowImage(path: MyConstant.food13),
+      );
+
+  Widget buildHead() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ShowTitle(
+        title: 'ผัดเปรี้ยวหวานหมู',
+        textStyle: MyConstant().h1Style(),
       ),
     );
   }

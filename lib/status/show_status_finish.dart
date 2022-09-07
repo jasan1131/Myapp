@@ -207,7 +207,7 @@ class _ShowStatusFinishState extends State<ShowStatusFinish> {
     MyDialog().normalDialogNavigator(
       context,
       'ทำรายการเสร็จสิน',
-      'ส่งรายการสินค้าที่สั่งไปยังร้านค้าเรียบร้อยแล้ว ขอบคุณที่ใช้บริการ',
+      'ขอบคุณที่ใช้บริการ',
     );
   }
 

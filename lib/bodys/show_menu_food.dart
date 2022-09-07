@@ -19,18 +19,28 @@ import 'package:flutter_myappication_1/foodmenu/food_menu_6.dart';
 import 'package:flutter_myappication_1/foodmenu/food_menu_7.dart';
 import 'package:flutter_myappication_1/foodmenu/food_menu_8.dart';
 import 'package:flutter_myappication_1/foodmenu/food_menu_9.dart';
+import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_image.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 
 class ShowMenuFood extends StatefulWidget {
-  const ShowMenuFood({Key? key}) : super(key: key);
+  final UserModel userModel;
+  const ShowMenuFood({Key? key, required this.userModel}) : super(key: key);
 
   @override
   State<ShowMenuFood> createState() => _ShowMenuFoodState();
 }
 
 class _ShowMenuFoodState extends State<ShowMenuFood> {
+  UserModel? userModel;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    userModel = widget.userModel;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +79,7 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => FoodMenu1(),
+            builder: (context) => FoodMenu1(userModel: userModel!),
           ),
         );
       },
@@ -100,7 +110,9 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => FoodMenu2(),
+            builder: (context) => FoodMenu2(
+              userModel: userModel!,
+            ),
           ),
         );
       },
@@ -131,7 +143,7 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => FoodMenu3(),
+            builder: (context) => FoodMenu3(userModel: userModel!),
           ),
         );
       },
@@ -162,7 +174,7 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => FoodMenu4(),
+            builder: (context) => FoodMenu4(userModel: userModel!),
           ),
         );
       },
@@ -193,7 +205,7 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => FoodMenu5(),
+            builder: (context) => FoodMenu5(userModel: userModel!),
           ),
         );
       },
@@ -224,7 +236,7 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => FoodMenu6(),
+            builder: (context) => FoodMenu6(userModel: userModel!),
           ),
         );
       },
@@ -255,7 +267,7 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => FoodMenu7(),
+            builder: (context) => FoodMenu7(userModel: userModel!),
           ),
         );
       },
@@ -286,7 +298,7 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => FoodMenu8(),
+            builder: (context) => FoodMenu8(userModel: userModel!),
           ),
         );
       },
@@ -317,7 +329,7 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => FoodMenu9(),
+            builder: (context) => FoodMenu9(userModel: userModel!),
           ),
         );
       },
@@ -348,7 +360,7 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => FoodMenu10(),
+            builder: (context) => FoodMenu10(userModel: userModel!),
           ),
         );
       },
@@ -394,7 +406,7 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
                 width: MediaQuery.of(context).size.width * 0.25,
               ),
               ShowTitle(
-                title: 'ผัดไทย',
+                title: 'หมูผัดน้ำมันหอย',
                 textStyle: MyConstant().h3Style(),
               ),
             ],
@@ -456,7 +468,7 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
                 width: MediaQuery.of(context).size.width * 0.25,
               ),
               ShowTitle(
-                title: 'ยำมาม่ารวมมิตร',
+                title: 'ผัดเปรี้ยวหวานหมู',
                 textStyle: MyConstant().h3Style(),
               ),
             ],
@@ -518,7 +530,7 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
                 width: MediaQuery.of(context).size.width * 0.25,
               ),
               ShowTitle(
-                title: 'ยำวุ้นเส้นรวมมิตร',
+                title: 'ผัดกะหล่ำปลีหมูกรอบ',
                 textStyle: MyConstant().h3Style(),
               ),
             ],
@@ -611,7 +623,7 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
                 width: MediaQuery.of(context).size.width * 0.25,
               ),
               ShowTitle(
-                title: 'สันคอหมูย่าง',
+                title: 'แกงจืดไข่น้ำ',
                 textStyle: MyConstant().h3Style(),
               ),
             ],
@@ -642,7 +654,7 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
                 width: MediaQuery.of(context).size.width * 0.25,
               ),
               ShowTitle(
-                title: 'ปีกไก่ทอดโคล่า',
+                title: 'หอยลายผัดน้ำพริกเผา',
                 textStyle: MyConstant().h3Style(),
               ),
             ],

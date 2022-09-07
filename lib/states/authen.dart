@@ -21,7 +21,7 @@ class _AuthenState extends State<Authen> {
   final formKey = GlobalKey<FormState>();
   TextEditingController userController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-   
+
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
@@ -63,7 +63,10 @@ class _AuthenState extends State<Authen> {
         ),
         TextButton(
           onPressed: () => Navigator.pushNamed(context, MyConstant.rountePDPA),
-          child: ShowTitle(title: 'สมัครสมาชิก',textStyle: MyConstant().h3BlackStyle(),)
+          child: Text(
+            'สมัครสมาชิก',
+            style: TextStyle(decoration: TextDecoration.underline, color: Colors.black),
+          ),
         ),
       ],
     );
@@ -99,8 +102,8 @@ class _AuthenState extends State<Authen> {
     await Dio().get(apiCheckAuthen).then((value) async {
       print('## value for Api ==>> $value');
       if (value.toString() == 'null') {
-        MyDialog()
-            .normalDialog(context, 'ชื่อผู้ใช้ไม่ถูกต้อง !!!', 'ไม่มีชื่อ $user นี้อยู่ในระบบ');
+        MyDialog().normalDialog(context, 'ชื่อผู้ใช้ไม่ถูกต้อง !!!',
+            'ไม่มีชื่อ $user นี้อยู่ในระบบ');
       } else {
         for (var item in json.decode(value.data)) {
           UserModel model = UserModel.fromMap(item);

@@ -2,16 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/states/admin.dart';
+import 'package:flutter_myappication_1/states/authen.dart';
 import 'package:flutter_myappication_1/states/buyer_sevice.dart';
-import 'package:flutter_myappication_1/states/buyer_show_shop_seller.dart';
-import 'package:flutter_myappication_1/states/rider_service.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_image.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 import 'package:geolocator/geolocator.dart';
 
 class MyDialog {
-
   final Function()? funcAction;
 
   MyDialog({this.funcAction});
@@ -90,15 +88,50 @@ class MyDialog {
     );
   }
 
-  Future<Null> normalDialogNavigator(
+  Future<Null> normalDialogOk(
+      BuildContext context, String title, String message) async {
+    showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: Column(
+          children: [
+            Image.asset(
+              MyConstant.ok,
+              height: 150,
+            ),
+            ListTile(
+              title: ShowTitle(
+                title: title,
+                textStyle: MyConstant().h2Style(),
+              ),
+              subtitle: ShowTitle(
+                title: message,
+                textStyle: MyConstant().h3Style(),
+              ),
+            ),
+          ],
+        ),
+        children: [
+          TextButton(
+            onPressed: () => Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Authen(),
+                ),
+                (route) => false),
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<Null> normalDialog1(
       BuildContext context, String title, String message) async {
     showDialog(
       context: context,
       builder: (context) => SimpleDialog(
         title: ListTile(
-          leading: ShowImage(
-            path: MyConstant.imageeror,
-          ),
           title: ShowTitle(
             title: title,
             textStyle: MyConstant().h2Style(),
@@ -110,7 +143,45 @@ class MyDialog {
         ),
         children: [
           TextButton(
-            onPressed: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => BuyerService(),), (route) => false),
+            onPressed: () => Navigator.pop(context),
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<Null> normalDialogNavigator(
+      BuildContext context, String title, String message) async {
+    showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: Column(
+          children: [
+            Image.asset(
+              MyConstant.ok,
+              height: 150,
+            ),
+            ListTile(
+              title: ShowTitle(
+                title: title,
+                textStyle: MyConstant().h2Style(),
+              ),
+              subtitle: ShowTitle(
+                title: message,
+                textStyle: MyConstant().h3Style(),
+              ),
+            ),
+          ],
+        ),
+        children: [
+          TextButton(
+            onPressed: () => Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BuyerService(),
+                ),
+                (route) => false),
             child: Text('OK'),
           ),
         ],
@@ -124,9 +195,6 @@ class MyDialog {
       context: context,
       builder: (context) => SimpleDialog(
         title: ListTile(
-          leading: ShowImage(
-            path: MyConstant.imageeror,
-          ),
           title: ShowTitle(
             title: title,
             textStyle: MyConstant().h2Style(),
@@ -138,7 +206,12 @@ class MyDialog {
         ),
         children: [
           TextButton(
-            onPressed: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => AdminServer(),), (route) => false),
+            onPressed: () => Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AdminServer(),
+                ),
+                (route) => false),
             child: Text('OK'),
           ),
         ],
@@ -147,25 +220,27 @@ class MyDialog {
   }
 
   Future<Null> actionDialog(
-    BuildContext context,
-    String title,
-    String message
-  ) async {
+      BuildContext context, String title, String message) async {
     showDialog(
       context: context,
       builder: (context) => SimpleDialog(
-        title: ListTile(
-          leading: ShowImage(
-            path: MyConstant.imageeror,
-          ),
-          title: ShowTitle(
-            title: title,
-            textStyle: MyConstant().h2Style(),
-          ),
-          subtitle: ShowTitle(
-            title: message,
-            textStyle: MyConstant().h3Style(),
-          ),
+        title: Column(
+          children: [
+            Image.asset(
+              MyConstant.ok,
+              height: 150,
+            ),
+            ListTile(
+              title: ShowTitle(
+                title: title,
+                textStyle: MyConstant().h2Style(),
+              ),
+              subtitle: ShowTitle(
+                title: message,
+                textStyle: MyConstant().h3Style(),
+              ),
+            ),
+          ],
         ),
         children: [
           TextButton(

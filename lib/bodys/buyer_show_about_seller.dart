@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_myappication_1/widgets/show_title.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ShowAboutSeller extends StatefulWidget {
   final UserModel userModel;
@@ -89,6 +91,11 @@ class _ShowAboutSellerState extends State<ShowAboutSeller> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: MyConstant.primary,
+        centerTitle: true,
+        title: Text(userModel!.name),
+      ),
       body: userModel == null
           ? ShowProgress()
           : Container(
@@ -133,6 +140,135 @@ class _ShowAboutSellerState extends State<ShowAboutSeller> {
                             title: ShowTitle(
                               title: userModel!.phone,
                               textStyle: MyConstant().h3BlackStyle(),
+                            ),
+                          ),
+                          ListTile(
+                            leading: Icon(
+                              Icons.facebook_outlined,
+                              color: Colors.black,
+                            ),
+                            title: Text.rich(
+                              TextSpan(
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  decoration: TextDecoration.underline,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    style: TextStyle(),
+                                    text: 'jasan1131@gmail.com',
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () async {
+                                        String url =
+                                            'https://www.facebook.com/profile.php?id=100006300521203';
+                                        var urllaunchable =
+                                            await canLaunch(url);
+                                        if (urllaunchable) {
+                                          await launch(url);
+                                        } else {
+                                          print('URL can mot be launched');
+                                        }
+                                      },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          ListTile(
+                            leading: ImageIcon(
+                                AssetImage(
+                                  MyConstant.line,
+                                ),
+                                color: Colors.black),
+                            title: Text.rich(
+                              TextSpan(
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  decoration: TextDecoration.underline,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    style: TextStyle(),
+                                    text: 'jasan032',
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () async {
+                                        String url =
+                                            'https://l.facebook.com/l.php?u=https%3A%2F%2Fline.me%2FR%2Fti%2Fg%2FOzWP4EQuSU%3Ffbclid%3DIwAR26_yVDZff6Y9X-Uy9W-PpdGiGUYBetRlvKSQKRznKRTJKy7iw6UGrJnBA&h=AT1SNG3QgF5n4Z7KLYGC9ZSMkC_CyvcclV61FDAxdOOcZRRkH0wfO9AzI1-dHH2nyInjujajLk8s9gsrhh6R9Ggvoy-tREWfUQY_aIfjg1XAGqfkunKRyuX1oMFMnJVq38_r2DqWzu7eYfQ';
+                                        var urllaunchable =
+                                            await canLaunch(url);
+                                        if (urllaunchable) {
+                                          await launch(url);
+                                        } else {
+                                          print('URL can mot be launched');
+                                        }
+                                      },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          ListTile(
+                            leading: ImageIcon(
+                                AssetImage(
+                                  MyConstant.instagram,
+                                ),
+                                color: Colors.black),
+                            title: Text.rich(
+                              TextSpan(
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  decoration: TextDecoration.underline,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: 'jason thongchai',
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () async {
+                                        String url =
+                                            'https://www.instagram.com/jasonthongchai/';
+                                        var urllaunchable =
+                                            await canLaunch(url);
+                                        if (urllaunchable) {
+                                          await launch(url);
+                                        } else {
+                                          print('URL can mot be launched');
+                                        }
+                                      },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          ListTile(
+                            leading: ImageIcon(
+                                AssetImage(
+                                  MyConstant.twitter,
+                                ),
+                                color: Colors.black),
+                            title: Text.rich(
+                              TextSpan(
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  decoration: TextDecoration.underline,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: 'jasan Thongchai',
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () async {
+                                        String url =
+                                            'https://twitter.com/JasanPotter';
+                                        var urllaunchable =
+                                            await canLaunch(url);
+                                        if (urllaunchable) {
+                                          await launch(url);
+                                        } else {
+                                          print('URL can mot be launched');
+                                        }
+                                      },
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           ListTile(

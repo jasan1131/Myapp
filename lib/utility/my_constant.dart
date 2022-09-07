@@ -4,7 +4,7 @@ class MyConstant {
   // Genernal
   static String appName = 'Shopping MAll';
   static String domain =
-      'https://47cc-2001-fb1-1e-1bcf-bca0-bdba-41cb-7e1d.ap.ngrok.io';
+      'https://43b2-2001-fb1-1e-6b82-b056-f8bc-7bc5-c414.ap.ngrok.io';
 
   static String urlPromptpay = 'https://promptpay.io/0970272217.png';
 
@@ -56,6 +56,10 @@ class MyConstant {
   static String food18 = 'images/food18.jpg';
   static String food19 = 'images/food19.jpg';
   static String food20 = 'images/food20.png';
+  static String ok = 'images/ok.png';
+  static String line = 'images/line.png';
+  static String instagram = 'images/instagram.png';
+  static String twitter = 'images/twitter.png';
   // color
   static Color primary = Color(0xff64b5f6);
   static Color dark = Color(0xff2286c3);

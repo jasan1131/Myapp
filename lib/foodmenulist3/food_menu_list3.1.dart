@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_myappication_1/bodys/buyer_show_about_seller.dart';
 import 'package:flutter_myappication_1/models/product_model.dart';
 import 'package:flutter_myappication_1/models/splite_model.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
@@ -15,16 +16,15 @@ import 'package:flutter_myappication_1/widgets/show_title.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 
-class BuyerShowAllProduct extends StatefulWidget {
+class FoodMenuList3_1 extends StatefulWidget {
   final UserModel userModel;
-  const BuyerShowAllProduct({Key? key, required this.userModel})
-      : super(key: key);
+  const FoodMenuList3_1({ Key? key, required this.userModel}) : super(key: key);
 
   @override
-  State<BuyerShowAllProduct> createState() => _BuyerShowAllProductState();
+  State<FoodMenuList3_1> createState() => _FoodMenuList3_1State();
 }
 
-class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
+class _FoodMenuList3_1State extends State<FoodMenuList3_1> {
   UserModel? userModel;
   bool load = true;
   bool? haveData;
@@ -53,35 +53,36 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
   }
 
   Future<Null> readApiAllShop() async {
-    String urlAPI =
-        '${MyConstant.domain}/shopping/getProductWhereIdSeller.php?isAdd=true&idproduct=${userModel!.id}';
+    String urlAPI = '${MyConstant.domain}/shopping/getProductWhereNameProduct(น้ำมันมรกต).php';
     await Dio().get(urlAPI).then(
       (value) {
-        if (value.toString() == 'null') {
-          setState(() {
-            haveData = false;
-            load = false;
-          });
-        } else {
-          for (var item in json.decode(value.data)) {
-            ProductModel model = ProductModel.fromMap(item);
+        setState(() {
+          load = false;
+          haveData = false;
+        });
+        // print('### value ==>> $value');
+        var result = json.decode(value.data);
+        // print('### result ==>> $result');
+        for (var item in result) {
+          // print('### item ==>> $item');
+          ProductModel productModel = ProductModel.fromMap(item);
 
-            String string = model.imagesproduct;
-            string = string.substring(1, string.length - 1);
-            List<String> strings = string.split(',');
-            int i = 0;
-            for (var item in strings) {
-              strings[i] = item.trim();
-              i++;
-            }
-            listImages.add(strings);
-
-            setState(() {
-              haveData = true;
-              load = false;
-              productmodels.add(model);
-            });
+          String string = productModel.imagesproduct;
+          string = string.substring(1, string.length - 1);
+          List<String> strings = string.split(',');
+          int i = 0;
+          for (var item in strings) {
+            strings[i] = item.trim();
+            i++;
           }
+          listImages.add(strings);
+
+          // print('### name ==>> ${mOdel.name}');
+          setState(() {
+            load = false;
+            haveData = true;
+            productmodels.add(productModel);
+          });
         }
       },
     );
@@ -90,6 +91,27 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: MyConstant.primary,
+        centerTitle: true,
+        title: Text('น้ำมันมรกต'),
+        actions: [
+          IconButton(
+              onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          ShowAboutSeller(userModel: userModel!),
+                    ),
+                  ),
+              icon: Icon(Icons.info_outline)),
+          IconButton(
+            onPressed: () =>
+                Navigator.pushNamed(context, MyConstant.rounteShowCart),
+            icon: Icon(Icons.shopping_cart_outlined),
+          ),
+        ],
+      ),
       body: OrientationBuilder(
         builder: (context, orientation) {
           if (orientation == Orientation.portrait) {
@@ -137,7 +159,7 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
         itemCount: productmodels.length,
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           childAspectRatio: 2 / 4,
-          maxCrossAxisExtent: 260,
+          maxCrossAxisExtent: 360,
         ),
         itemBuilder: (context, index) => GestureDetector(
           onTap: () {
@@ -153,7 +175,7 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
               borderRadius: BorderRadius.circular(16),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
                   Container(
@@ -181,36 +203,50 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
                             title: productmodels[index].nameproduct,
                             textStyle: MyConstant().h2Style(),
                           ),
-                          Row(
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               ShowTitle(
-                                title:
-                                    'จำนวนสินค้า : ${productmodels[index].numberproduct} ',
+                                title: 'ราคา :',
                                 textStyle: MyConstant().h3Style(),
                               ),
                               ShowTitle(
-                                title: productmodels[index].unitproduct,
+                                title:
+                                    '${productmodels[index].priceproduct} บาท / ${productmodels[index].unitprice}',
                                 textStyle: MyConstant().h3Style(),
                               ),
                             ],
                           ),
-                          Row(
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               ShowTitle(
-                                title:
-                                    'ราคา : ${productmodels[index].priceproduct} บาท /',
+                                title: 'จำนวนสินค้า :',
                                 textStyle: MyConstant().h3Style(),
                               ),
                               ShowTitle(
-                                title: productmodels[index].unitprice,
+                                title:
+                                    '${productmodels[index].numberproduct} / ${productmodels[index].unitproduct}',
                                 textStyle: MyConstant().h3Style(),
                               ),
                             ],
                           ),
-                          ShowTitle(
-                            title: cutWord(
-                                'รายระเอียดสินค้า : ${productmodels[index].detailproduct}'),
-                            textStyle: MyConstant().h3Style(),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ShowTitle(
+                                title: 'รายระเอียดสินค้า :',
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                              ShowTitle(
+                                title:
+                                    cutWord(productmodels[index].detailproduct),
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -276,36 +312,50 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
                             title: productmodels[index].nameproduct,
                             textStyle: MyConstant().h2Style(),
                           ),
-                          Row(
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               ShowTitle(
-                                title:
-                                    'จำนวนสินค้า : ${productmodels[index].numberproduct} ',
+                                title: 'ราคา :',
                                 textStyle: MyConstant().h3Style(),
                               ),
                               ShowTitle(
-                                title: productmodels[index].unitproduct,
+                                title:
+                                    '${productmodels[index].priceproduct} บาท / ${productmodels[index].unitprice}',
                                 textStyle: MyConstant().h3Style(),
                               ),
                             ],
                           ),
-                          Row(
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               ShowTitle(
-                                title:
-                                    'ราคา : ${productmodels[index].priceproduct} บาท /',
+                                title: 'จำนวนสินค้า :',
                                 textStyle: MyConstant().h3Style(),
                               ),
                               ShowTitle(
-                                title: productmodels[index].unitprice,
+                                title:
+                                    '${productmodels[index].numberproduct} / ${productmodels[index].unitproduct}',
                                 textStyle: MyConstant().h3Style(),
                               ),
                             ],
                           ),
-                          ShowTitle(
-                            title: cutWord(
-                                'รายระเอียดสินค้า : ${productmodels[index].detailproduct}'),
-                            textStyle: MyConstant().h3Style(),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ShowTitle(
+                                title: 'รายระเอียดสินค้า :',
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                              ShowTitle(
+                                title:
+                                    cutWord(productmodels[index].detailproduct),
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -480,9 +530,12 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
                     String idProduct = productmodel.id;
                     String nameProduct = productmodel.nameproduct;
                     String priceProduct = productmodel.priceproduct;
+                    String number = productmodel.numberproduct;
+                    int minunInt = int.parse(number) - amountInt ;
+                    String numberProduct = minunInt.toString();
                     String amount = amountInt.toString();
-                    int sunInt = int.parse(priceProduct) * amountInt;
-                    String sum = sunInt.toString();
+                    int sumInt = int.parse(priceProduct) * amountInt;
+                    String sum = sumInt.toString();
 
                     lat2 = double.parse(userModel!.lat);
                     lng2 = double.parse(userModel!.lng);
@@ -495,13 +548,14 @@ class _BuyerShowAllProductState extends State<BuyerShowAllProduct> {
 
                     int transport = MyAPI().calculateTransport(distance);
                     print(
-                        'idproduct = $idProduct, namproduct = $nameProduct, priceproduct = $priceProduct, amount = $amount, sum = $sum, distance = $distancestring, transport = $transport');
+                        'idproduct = $idProduct, nameproduct = $nameProduct, numberproduct = $numberProduct, priceproduct = $priceProduct, amount = $amount, sum = $sum, distance = $distancestring, transport = $transport');
 
                     SQLiteModel sqLiteModel = SQLiteModel(
                         idSeller: idSeller,
                         nameSeller: nameSeller,
                         idProduct: idProduct,
                         nameProduct: nameProduct,
+                        numberProduct: numberProduct,
                         priceProduct: priceProduct,
                         amount: amount,
                         sum: sum,

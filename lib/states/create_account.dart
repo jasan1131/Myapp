@@ -338,6 +338,7 @@ class _CreateAccountState extends State<CreateAccount> {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: MyConstant.primary,
         centerTitle: true,
         actions: [
           buildCreateNewAccount(),
@@ -481,8 +482,11 @@ class _CreateAccountState extends State<CreateAccount> {
         '${MyConstant.domain}/shopping/insertUser.php?isAdd=true&avatar=$avatar&type=$type&name=$name&seconname=$seconname&user=$user&password=$password&address=$address&phone=$phone&lat=$lat&lng=$lng';
     await Dio().get(apiInsertUser).then((value) {
       if (value.toString() == 'true') {
-        Navigator.pushNamedAndRemoveUntil(
-            context, MyConstant.routeAuthen, (route) => false);
+        MyDialog().normalDialogOk(
+          context,
+          'สมัครสมาชิกเสร็จสิน',
+          '',
+        );
       } else {
         MyDialog().normalDialog(
             context, 'การสมัครสมาชิกล้มเหลว !!! ', 'กรุณาลองใหม่อีครั้ง');
@@ -532,19 +536,9 @@ class _CreateAccountState extends State<CreateAccount> {
     } catch (e) {}
   }
 
-  Row buildAvatarIcon(double size) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget buildAvatarIcon(double size) {
+    return Column(
       children: [
-        IconButton(
-          onPressed: () => chooseImage(ImageSource.camera),
-          icon: Icon(
-            Icons.add_a_photo_outlined,
-            size: 36,
-            color: MyConstant.light,
-          ),
-        ),
         Container(
           margin: EdgeInsets.symmetric(vertical: 16),
           width: size * 0.5,
@@ -554,13 +548,29 @@ class _CreateAccountState extends State<CreateAccount> {
                 )
               : Image.file(file!),
         ),
-        IconButton(
-          onPressed: () => chooseImage(ImageSource.gallery),
-          icon: Icon(
-            Icons.add_photo_alternate,
-            size: 36,
-            color: MyConstant.light,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(
+              onPressed: () => chooseImage(ImageSource.camera),
+              icon: Icon(
+                Icons.add_a_photo_outlined,
+                size: 56,
+                color: MyConstant.light,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 18),
+              child: IconButton(
+                onPressed: () => chooseImage(ImageSource.gallery),
+                icon: Icon(
+                  Icons.add_photo_alternate,
+                  size: 56,
+                  color: MyConstant.light,
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );

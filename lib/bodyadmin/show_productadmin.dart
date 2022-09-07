@@ -234,39 +234,41 @@ class _ShowProductAdminState extends State<ShowProductAdmin> {
   Future<Null> confirmDialogDelete(ProductModel productModel) async {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: ListTile(
-          leading: CachedNetworkImage(
-            imageUrl: createUrl(productModel.imagesproduct),
-            placeholder: (context, url) => ShowProgress(),
+      builder: (context) => SingleChildScrollView(
+        child: AlertDialog(
+          title: ListTile(
+            leading: CachedNetworkImage(
+              imageUrl: createUrl(productModel.imagesproduct),
+              placeholder: (context, url) => ShowProgress(),
+            ),
+            title: ShowTitle(
+              title: 'Delete ${productModel.nameproduct} ?',
+              textStyle: MyConstant().h2Style(),
+            ),
+            subtitle: ShowTitle(
+              title: productModel.detailproduct,
+              textStyle: MyConstant().h3Style(),
+            ),
           ),
-          title: ShowTitle(
-            title: 'Delete ${productModel.nameproduct} ?',
-            textStyle: MyConstant().h2Style(),
-          ),
-          subtitle: ShowTitle(
-            title: productModel.detailproduct,
-            textStyle: MyConstant().h3Style(),
-          ),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                print('## Confirm Delete at id ==> ${productModel.id}');
+                String apiDeleteProductWhereIDProduct =
+                    '${MyConstant.domain}/shopping/deleteProductWhereId.php?isAdd=true&id=${productModel.id}';
+                await Dio().get(apiDeleteProductWhereIDProduct).then((value) {
+                  Navigator.pop(context);
+                  loadValueFromApi();
+                });
+              },
+              child: Text('Delete'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel'),
+            ),
+          ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () async {
-              print('## Confirm Delete at id ==> ${productModel.id}');
-              String apiDeleteProductWhereIDProduct =
-                  '${MyConstant.domain}/shopping/deleteProductWhereId.php?isAdd=true&id=${productModel.id}';
-              await Dio().get(apiDeleteProductWhereIDProduct).then((value) {
-                Navigator.pop(context);
-                loadValueFromApi();
-              });
-            },
-            child: Text('Delete'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel'),
-          ),
-        ],
       ),
     );
   }

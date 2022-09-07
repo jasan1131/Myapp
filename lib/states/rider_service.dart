@@ -173,11 +173,11 @@ class _RiderServiceState extends State<RiderService> {
         Icons.filter_2_outlined,
       ),
       title: ShowTitle(
-        title: 'รายการสินค้าที่ลูกค้าสั่ง',
+        title: 'รายการสินค้าที่ต้องส่ง',
         textStyle: MyConstant().h2Style(),
       ),
       subtitle: ShowTitle(
-          title: 'แสดงรายละเอียดของสินค้าทีลูกค้าสั่ง',
+          title: 'แสดงรายละเอียดของสินค้าและที่อยู่ของลูกค้า',
           textStyle: MyConstant().h3Style()),
     );
   }

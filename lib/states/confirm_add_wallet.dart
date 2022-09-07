@@ -24,10 +24,8 @@ class _ConfirmAddWalletState extends State<ConfirmAddWallet> {
   String? dateTimeStr;
   File? file;
   bool load = true;
-  
-
   String? idbuyer;
-  String? userbuyer;
+  String? namebuyer;
 
   @override
   void initState() {
@@ -40,7 +38,7 @@ class _ConfirmAddWalletState extends State<ConfirmAddWallet> {
   Future<void> findIdBuyer() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     idbuyer = preferences.getString('id');
-    userbuyer = preferences.getString('user');
+    namebuyer = preferences.getString('name');
   }
 
   void finedCurrentTime() {
@@ -114,9 +112,9 @@ class _ConfirmAddWalletState extends State<ConfirmAddWallet> {
 
         // inset value to mySQL
         var pathslip = '/slip/nameslip';
-        var status = 'waitOrder';
+        var status = 'โอนเงิน';
         var urlAPIInsert =
-            '${MyConstant.domain}/shopping/insertSlip.php?isAdd=true&idbuyer=$idbuyer&userbuyer=$userbuyer&datepay=$dateTimeStr&pathslip=$pathslip&status=$status';
+            '${MyConstant.domain}/shopping/insertSlip.php?isAdd=true&idbuyer=$idbuyer&namebuyer=$namebuyer&datepay=$dateTimeStr&pathslip=$pathslip&status=$status';
         await Dio().get(urlAPIInsert).then(
               (value) => MyDialog(funcAction: success).actionDialog(
                 context,

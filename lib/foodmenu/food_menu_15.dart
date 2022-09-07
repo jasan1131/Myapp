@@ -14,111 +14,108 @@ class _FoodMenu15State extends State<FoodMenu15> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: MyConstant.primary,
+        centerTitle: true,
+        title: Text('เมนูอาหาร'),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            ListTile(
-              title: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ShowTitle(
-                    title: 'ยำวุ้นเส้นรวมมิตร',
-                    textStyle: MyConstant().h1Style(),
-                  ),
-                ],
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ShowImage(path: MyConstant.food15),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      ShowTitle(
-                        title: 'วัตถุดิบในการทำ ยำวุ้นเส้นรวมมิตร',
-                        textStyle: MyConstant().h2Style(),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      ShowTitle(
-                        title: 'วิธีทำยำวุ้นเส้นรวมมิตร',
-                        textStyle: MyConstant().h2Style(),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.655,
-                        child: ShowTitle(
-                          title:
-                              '1.	ทำน้ำยำ โดยผสมส่วนผสมน้ำยำทุกอย่างเข้าด้วยกัน ชิมรสตามชอบ พักไว้',
-                          textStyle: MyConstant().h3Style(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.655,
-                        child: ShowTitle(
-                          title:
-                              '2.	เทน้ำลงในหม้อ นำไปตั้งไฟให้ร้อน แล้วรวนหมูสับให้สุก เติมน้ำปลาลงไปเล็กน้อย คนให้เข้ากัน ยกลงจากเตาพักไว้',
-                          textStyle: MyConstant().h3Style(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.655,
-                        child: ShowTitle(
-                          title:
-                              '3.	ลวกวุ้นเส้น กุ้ง ปลาหมึก ปูอัด หมูยอ เห็ดหูหนูขาว และผักกระเฉดในน้ำเดือดพอสุก ตักทุกอย่างใส่อ่างผสม',
-                          textStyle: MyConstant().h3Style(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.655,
-                        child: ShowTitle(
-                          title:
-                              '4.	ใส่หมูรวนลงในอ่างผสม ตามด้วยน้ำยำเคล้าให้เข้ากัน แล้วใส่หอมเล็ก ต้นหอม และขึ้นฉ่ายเคล้าให้เข้ากันอีกครั้ง ตักใส่จานเสิร์ฟได้ทันที',
-                          textStyle: MyConstant().h3Style(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            buildHead(),
+            buildImage(),
+            buildStaple(),
+            buildTitle(),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget buildTitle() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ShowTitle(
+            title: 'วิธีทำผัดกะหล่ำปลีหมูกรอบ',
+            textStyle: MyConstant().h2Style(),
+          ),
+          ShowTitle(
+            title:
+                '1.	ตั้งกระทะใส่น้ำมันบนไฟปานกลาง ใส่กระเทียมผัดจนหอม ใส่หมู แครอทผัดให้เข้ากัน',
+            textStyle: MyConstant().h3Style(),
+          ),
+          ShowTitle(
+            title:
+                '2.	ใส่กะหล่ำปลีที่หั่นเตรียมไว้ เร่งเป็นไฟแรง เติมน้ำเล็กน้อย',
+            textStyle: MyConstant().h3Style(),
+          ),
+          ShowTitle(
+            title:
+                '3.	ปรุงรสให้กลมกล่อมด้วย “รสดี” รสหมู ผัดให้เข้ากันอีกครั้ง ปิดไฟ ตักใส่จาน พร้อมเสิร์ฟ',
+            textStyle: MyConstant().h3Style(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildStaple() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              ShowTitle(
+                title: 'วัตถุดิบในการทำ ผัดกะหล่ำปลีหมูกรอบ',
+                textStyle: MyConstant().h2Style(),
+              ),
+            ],
+          ),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '1.กะหล่ำปลี'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '2.รสดีหมู'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '3.แครอท'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '4.เนื้อหมู'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '5.กระเทียม'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '6.น้ำมันพืช'),
+        ),
+      ],
+    );
+  }
+
+  Widget buildImage() => Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: ShowImage(path: MyConstant.food15),
+  );
+
+  Widget buildHead() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ShowTitle(
+        title: 'ผัดกะหล่ำปลีหมูกรอบ',
+        textStyle: MyConstant().h1Style(),
       ),
     );
   }

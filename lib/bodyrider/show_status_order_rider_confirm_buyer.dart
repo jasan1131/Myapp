@@ -29,7 +29,8 @@ class _ShowStatusOrderRiderConfirmBuyerState
   OrderModel? orderModel;
   double? lat1, lng1, lat2, lng2;
   double distance = 0.0;
-  bool? loadData;
+  bool loadData = true;
+  bool? haveData;
   CameraPosition? position;
   GoogleMapController? mapController;
   PolylinePoints polylinePoints = PolylinePoints();
@@ -58,6 +59,7 @@ class _ShowStatusOrderRiderConfirmBuyerState
       await Dio().get(pathURL).then((value) async {
         setState(() {
           loadData = false;
+          haveData = false;
         });
         for (var item in json.decode(value.data)) {
           UserModel models = UserModel.fromMap(item);
@@ -66,7 +68,7 @@ class _ShowStatusOrderRiderConfirmBuyerState
           setState(() {
             lat1 = double.parse(models.lat);
             lng1 = double.parse(models.lng);
-            print('lat1 = $lat1, lng1 = $lng1');
+            // print('lat1 = $lat1, lng1 = $lng1');
           });
         }
       });
@@ -78,6 +80,7 @@ class _ShowStatusOrderRiderConfirmBuyerState
       await Dio().get(pathAPI).then((value) async {
         setState(() {
           loadData = false;
+          haveData = false;
         });
         for (var item in json.decode(value.data)) {
           UserModel model = UserModel.fromMap(item);
@@ -86,7 +89,7 @@ class _ShowStatusOrderRiderConfirmBuyerState
           setState(() {
             lat2 = double.parse(model.lat);
             lng2 = double.parse(model.lng);
-            print('lat2 = $lat2, lng2 = $lng2');
+            // print('lat2 = $lat2, lng2 = $lng2');
           });
           PolylineResult result =
               await polylinePoints.getRouteBetweenCoordinates(
@@ -102,7 +105,7 @@ class _ShowStatusOrderRiderConfirmBuyerState
               );
             });
           } else {
-            print(result.errorMessage);
+            // print(result.errorMessage);
           }
 
           double totalDistance = 0;
@@ -113,8 +116,10 @@ class _ShowStatusOrderRiderConfirmBuyerState
                 polylineCoordinates[i + 1].latitude,
                 polylineCoordinates[i + 1].longitude);
           }
-          print(totalDistance);
+          // print(totalDistance);
           setState(() {
+            haveData = true;
+            loadData = false;
             distance = totalDistance;
           });
           addPolyLine(polylineCoordinates);
@@ -159,27 +164,34 @@ class _ShowStatusOrderRiderConfirmBuyerState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Stack(
-        children: [
-          showmap(),
-          Positioned(
-              top: 10,
-              left: 125,
-              child: Card(
-                child: Container(
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: ShowTitle(
-                      title: 'Total Distance: ' +
-                          distance.toStringAsFixed(2) +
-                          ' km',
-                    ),
-                  ),
-                ),
-              )),
-        ],
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: MyConstant.primary,
       ),
+      body: loadData
+          ? ShowProgress()
+          : haveData!
+              ? Stack(
+                  children: [
+                    showmap(),
+                    Positioned(
+                        top: 10,
+                        left: 125,
+                        child: Card(
+                          child: Container(
+                            child: Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: ShowTitle(
+                                title: 'Total Distance: ' +
+                                    distance.toStringAsFixed(2) +
+                                    ' km',
+                              ),
+                            ),
+                          ),
+                        )),
+                  ],
+                )
+              : ShowProgress(),
     );
   }
 

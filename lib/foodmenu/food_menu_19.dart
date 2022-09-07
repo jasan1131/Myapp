@@ -14,96 +14,131 @@ class _FoodMenu19State extends State<FoodMenu19> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: MyConstant.primary,
+        centerTitle: true,
+        title: Text('เมนูอาหาร'),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            ListTile(
-              title: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ShowTitle(
-                    title: 'ปีกไก่ทอดโคล่า',
-                    textStyle: MyConstant().h1Style(),
-                  ),
-                ],
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ShowImage(path: MyConstant.food19),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      ShowTitle(
-                        title: 'วัตถุดิบในการทำ ปีกไก่ทอดโคล่า',
-                        textStyle: MyConstant().h2Style(),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      ShowTitle(
-                        title: 'วิธีทำปีกไก่ทอดโคล่า',
-                        textStyle: MyConstant().h2Style(),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.655,
-                        child: ShowTitle(
-                          title:
-                              '1. ล้างปีกไก่ให้สะอาด หมักด้วยซอสถั่วเหลืองและพริกไทยดำป่น คลุกเคล้าให้เข้ากัน ปิดฝากล่องใส่ตู้เย็น หมักไว้สักครู่ (พอซอสซึมเข้าเนื้อไก่ได้ที่ เนื้อไก่จะเปลี่ยนสีเล็กน้อย)',
-                          textStyle: MyConstant().h3Style(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.655,
-                        child: ShowTitle(
-                          title:
-                              '2. ใส่น้ำมันลงในกระทะ นำขึ้นตั้งไฟอ่อน ๆ ใส่ปีกไก่ที่หมักไว้ลงไปทอด พอได้ที่แล้วเอาไก่ขึ้นมาพักไว้ก่อน แล้วเทน้ำมันออก',
-                          textStyle: MyConstant().h3Style(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.655,
-                        child: ShowTitle(
-                          title:
-                              '3. เทน้ำอัดลมโคล่าลงไปแล้วตั้งไฟอ่อนไปเรื่อย ๆ ประมาณ 10 นาที โค้กก็จะเริ่มแห้ง กลายเป็นซอสเหนียว ๆ เหมือนเทอริยากิ จัดใส่จาน พร้อมเสิร์ฟ',
-                          textStyle: MyConstant().h3Style(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            buildHead(),
+            buildImage(),
+            buildStaple(),
+            buildTitle(),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget buildTitle() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ShowTitle(
+            title: 'วิธีทำหอยลายผัดน้ำพริกเผา',
+            textStyle: MyConstant().h2Style(),
+          ),
+          ShowTitle(
+            title:
+                '1. นำหอยลายมาล้างให้สะอาด จากนั้นนำหอยไปลวกในน้ำเดือดให้สุก แล้วนำขั้นมาพักให้สะเด็ดน้ำ',
+            textStyle: MyConstant().h3Style(),
+          ),
+          ShowTitle(
+            title:
+                '2. เด็ดใบโหระพาแล้วล้างให้สะอาด',
+            textStyle: MyConstant().h3Style(),
+          ),
+          ShowTitle(
+            title:
+                '3. ตั้งกระทะ ใส่น้ำมันและกระเทียมผัดให้พอได้กลิ่นหอม จากนั้นใส่น้ำพริกเผาผัดให้เข้ากัน',
+            textStyle: MyConstant().h3Style(),
+          ),
+          ShowTitle(
+            title:
+                '4. ใส่หอยลายลงไป จากนั้นผัดให้เข้ากัน',
+            textStyle: MyConstant().h3Style(),
+          ),
+          ShowTitle(
+            title:
+                '5. จากนั้นปรุงรสตามชอบ ด้วย น้ำตาลทราย ซีอิ้วขาว และน้ำมันหอย แล้วผัดให้เข้ากัน จากนั้นเติมน้ำเปล่า',
+            textStyle: MyConstant().h3Style(),
+          ),
+          ShowTitle(
+            title:
+                '6. ใส่พริกขี้หนูเพิ่มรสเผ็ด และใบโหระพา จากนั้นผัดต่ออักสักพัก แล้วตักใส่จาน พร้อมรับทาน',
+            textStyle: MyConstant().h3Style(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildStaple() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              ShowTitle(
+                title: 'วัตถุดิบในการทำ หอยลายผัดน้ำพริกเผา',
+                textStyle: MyConstant().h2Style(),
+              ),
+            ],
+          ),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '1.หอยลาย'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '2.กระเทียม'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '3.พริกเผา'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '4.น้ำตาลทราย'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '5.ซีอิ้วขาว'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '6.น้ำมันหอย'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '7.พริกขี้หนู'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '8.ใบโหระพา'),
+        ),
+      ],
+    );
+  }
+
+  Widget buildImage() => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ShowImage(path: MyConstant.food19),
+      );
+
+  Widget buildHead() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ShowTitle(
+        title: 'หอยลายผัดน้ำพริกเผา',
+        textStyle: MyConstant().h1Style(),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_myappication_1/models/product_model.dart';
 import 'package:flutter_myappication_1/models/splite_model.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
@@ -20,6 +21,7 @@ class ConfirmOrder extends StatefulWidget {
 }
 
 class _ConfirmOrderState extends State<ConfirmOrder> {
+  ProductModel? productModel;
   String? distance;
   String? idBuyer;
   UserModel? userModel;
@@ -41,7 +43,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
     }
 
     await SQLiteHelpper().readSQLite().then((value) {
-      print('### value on processReadSQlite ==>> $value');
+      // print('### value on processReadSQlite ==>> $value');
       setState(() {
         load = false;
         sqliteModels = value;
@@ -65,13 +67,13 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pushNamedAndRemoveUntil(
-                context, MyConstant.routeBuyerService, (route) => false);
-          },
-          icon: Icon(Icons.arrow_back),
-        ),
+        // leading: IconButton(
+        //   onPressed: () {
+        //     Navigator.pushNamedAndRemoveUntil(
+        //         context, MyConstant.routeBuyerService, (route) => false);
+        //   },
+        //   icon: Icon(Icons.arrow_back),
+        // ),
         centerTitle: true,
         title: Text('ยืนยันรายการสินค้า'),
       ),
@@ -163,7 +165,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
             onPressed: () {
               ordreThread();
             },
-            child: Text('Order'),
+            child: Text('ยืนยัน'),
           ),
         ),
       ],
@@ -355,11 +357,12 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
 
     // print('dateOrdre = $dateOrder, timeOrder = $timeOrder');
     // print('idSeller = $idSeller, nameSeller = $nameSeller, distance = $distance, transport = $transport');
-    print(
-        'idProduct = $idProduct, nameProduct = $nameProduct, idBuyer = $idBuyer, nameBuyer = $nameBuyer, priceProduct = $priceProduct, amount = $amount, sum = $sum, total = $totals');
+    // print(
+    //   'idProduct = $idProduct, nameProduct = $nameProduct, idBuyer = $idBuyer, nameBuyer = $nameBuyer, priceProduct = $priceProduct, amount = $amount, sum = $sum, total = $totals',
+    // );
 
     String url =
-        '${MyConstant.domain}/shopping/insertOrder.php?isAdd=true&idSeller=$idSeller&nameSeller=$nameSeller&idBuyer=$idBuyer&nameBuyer=$nameBuyer&distance=$distance&transport=$transport&dateOrder=$dateOrder&timeOrder=$timeOrder&idProduct=$idProduct&nameProduct=$nameProduct&priceProduct=$priceProduct&amount=$amount&sum=$sum&total=$total&status=awaitOrder';
+        '${MyConstant.domain}/shopping/insertOrder.php?isAdd=true&idSeller=$idSeller&nameSeller=$nameSeller&idBuyer=$idBuyer&nameBuyer=$nameBuyer&distance=$distance&transport=$transport&dateOrder=$dateOrder&timeOrder=$timeOrder&idProduct=$idProduct&nameProduct=$nameProduct&priceProduct=$priceProduct&amount=$amount&sum=$sum&total=$totals&status=awaitOrder';
     await Dio().get(url).then((value) {
       if (value.toString() == 'true') {
         clearAllSqlite();
@@ -377,8 +380,21 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
       'ส่งรายการสินค้าที่สั่งไปยังร้านค้าเรียบร้อยแล้ว ขอบคุณที่ใช้บริการ',
     );
     await SQLiteHelpper().emptySQLite().then((value) {
+      editNumberProduct();
       processReadSqlite();
     });
+  }
+
+  Future<Null> editNumberProduct() async {
+    // List<String> idProduct = [];
+    // List<String> numberProduct = [];
+    for (var model in sqliteModels) {
+      String path =
+          '${MyConstant.domain}/shopping/editOrderWhereIdBuyer.php?isAdd=true&id=${model.idProduct}&numberproduct=${model.numberProduct}';
+      await Dio().get(path).then((value) {
+        print('editFinish');
+      });
+    }
   }
 
   void success() {
@@ -390,11 +406,11 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
         '${MyConstant.domain}/shopping/getUserWhereId.php?isAdd=true&id=$idSeller';
     await Dio().get(urlFindToken).then((value) {
       var result = json.decode(value.data);
-      print('result ==> $result');
+      // print('result ==> $result');
       for (var json in result) {
         UserModel model = UserModel.fromMap(json);
         String tokenShop = model.token;
-        print('tokenShop ==>> $tokenShop');
+        // print('tokenShop ==>> $tokenShop');
 
         String title = 'มีสินค้าจากลูกค้า';
         String body = 'มีการสั่งสินค้าจากลูกค้า';

@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 class OrderModel {
- String? id;
+  String? id;
   String? idSeller;
   String? nameSeller;
   String? idRider;

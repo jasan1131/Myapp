@@ -14,178 +14,143 @@ class _FoodMenu18State extends State<FoodMenu18> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: MyConstant.primary,
+        centerTitle: true,
+        title: Text('เมนูอาหาร'),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            ListTile(
-              title: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ShowTitle(
-                    title: 'สันคอหมูย่าง',
-                    textStyle: MyConstant().h1Style(),
-                  ),
-                ],
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ShowImage(path: MyConstant.food18),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      ShowTitle(
-                        title: 'วัตถุดิบในการทำ สันคอหมูย่าง',
-                        textStyle: MyConstant().h2Style(),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      ShowTitle(
-                        title: 'วิธีทำ น้ำจิ้มแจ่ว',
-                        textStyle: MyConstant().h2Style(),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.655,
-                        child: ShowTitle(
-                          title: '1. น้ำปลา 2-3 ช้อนโต๊ะ',
-                          textStyle: MyConstant().h3Style(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.655,
-                        child: ShowTitle(
-                          title: '2. พริกป่น 2 ช้อนโต๊ะ',
-                          textStyle: MyConstant().h3Style(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.655,
-                        child: ShowTitle(
-                          title: '3. น้ำตาลทรายหรือน้ำตาลปี๊บ 1/2 ช้อนโต๊ะ',
-                          textStyle: MyConstant().h3Style(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.655,
-                        child: ShowTitle(
-                          title:
-                              '4. น้ำมะนาว 1/2 - 1 ช้อนโต๊ะ (เวลาเติมก็ชิมไปด้วย)',
-                          textStyle: MyConstant().h3Style(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.655,
-                        child: ShowTitle(
-                          title: '5. ข้าวคั่ว 1 ช้อนโต๊ะ (ถ้ามี)',
-                          textStyle: MyConstant().h3Style(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.655,
-                        child: ShowTitle(
-                          title:
-                              '6. ผักชี ต้นหอม หรือใบสะระแหน่ (สำหรับโรยเล็กน้อย)',
-                          textStyle: MyConstant().h3Style(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      ShowTitle(
-                        title: 'วิธีทำสันคอหมูย่าง',
-                        textStyle: MyConstant().h2Style(),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.655,
-                        child: ShowTitle(
-                          title:
-                              '1. คลุกเคล้าส่วนผสมทุกอย่างให้เข้ากัน จากนั้นก็เอาเข้าเตาอบแบบกริ๊ง ใช้เวลาอบประมาณ 17-20 นาที',
-                          textStyle: MyConstant().h3Style(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.655,
-                        child: ShowTitle(
-                          title:
-                              '2. ทำน้ำจิ้มแจ่วโดยผสมน้ำปลา พริกป่น น้ำตาลทรายหรือน้ำตาลปี๊บ น้ำมะนาว และข้าวคั่ว โรยต้นหอมเล็กน้อย พร้อมเสิร์ฟกับสันคอหมูย่าง',
-                          textStyle: MyConstant().h3Style(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            buildHead(),
+            buildImage(),
+            buildStaple(),
+            buildTitle(),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget buildTitle() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ShowTitle(
+            title: 'วิธีทำแกงจืดไข่น้ำ',
+            textStyle: MyConstant().h2Style(),
+          ),
+          ShowTitle(
+            title: '1. ใส่ซอสปรุงรสลงในหมูสับ คลุกเคล้าให้เข้ากันแล้วพักไว้',
+            textStyle: MyConstant().h3Style(),
+          ),
+          ShowTitle(
+            title: '2. ตอกไข่ใส่ชามผสม เดี๋ยวเราไปทอดไข่เจียวกันค่ะ',
+            textStyle: MyConstant().h3Style(),
+          ),
+          ShowTitle(
+            title: '3. ตีไข่แดงไข่ขาวให้เข้ากัน ไม่ต้องปรุงรสอะไรเลยค่ะ',
+            textStyle: MyConstant().h3Style(),
+          ),
+          ShowTitle(
+            title:
+                '4. ใส่น้ำมันลงไป ตั้งกระทะให้น้ำมันร้อน กลิ้งให้เคลือบด้านข้างด้วย ไข่จะได้ไม่ติดกระทะ ส่วนใครใช้กระทะเทฟล่อนก็ไม่ต้องใช้น้ำมันเยอะ',
+            textStyle: MyConstant().h3Style(),
+          ),
+          ShowTitle(
+            title: '5. น้ำมันร้อนดีแล้วก็ใส่ไข่ลงไปทอดให้เหลืองสวย',
+            textStyle: MyConstant().h3Style(),
+          ),
+          ShowTitle(
+            title: '6. กลับด้าน ทอดไข่ให้สุกทั้ง 2 ด้าน',
+            textStyle: MyConstant().h3Style(),
+          ),
+          ShowTitle(
+            title: '7. เมื่อสุกดีแล้วก็ปิดเตา ใช้ตะหลิวหั่นให้เป็นชิ้น ๆ',
+            textStyle: MyConstant().h3Style(),
+          ),
+          ShowTitle(
+            title:
+                '8. พักไว้ในจานที่รองด้วยกระดาษทิชชู่อเนกประสงค์เพื่อซับน้ำมัน อย่าใช้ทิชชู่ทั่วไปเน้อ เดี๋ยวจะกลายเป็นไข่เจียวทิชชู่ เพราะมันจะเกาะติดดึงออกยาก',
+            textStyle: MyConstant().h3Style(),
+          ),
+          ShowTitle(
+            title: '9. ปั้นหมูที่เราหมักไว้ใส่ลงไปในน้ำซุป ต้มให้หมูสุก',
+            textStyle: MyConstant().h3Style(),
+          ),
+          ShowTitle(
+            title: '10. รอให้น้ำเดือด และหมูสุกดีแล้ว ใส่ไข่เจียวลงไป',
+            textStyle: MyConstant().h3Style(),
+          ),
+          ShowTitle(
+            title: '11. โรยต้นหอมผักชี ปิดเตา',
+            textStyle: MyConstant().h3Style(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildStaple() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              ShowTitle(
+                title: 'วัตถุดิบในการทำ แกงจืดไข่น้ำ',
+                textStyle: MyConstant().h2Style(),
+              ),
+            ],
+          ),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '1.ไข่ไก่      '),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '2.น้ำมันพืช'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '3.เนื้อหมู'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '4.ซอสปรุงรส'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '5.ผักชี     '),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '6.ต้นหอม'),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: ShowTitle(title: '7.รสดีซุปก้อน'),
+        ),
+      ],
+    );
+  }
+
+  Widget buildImage() => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ShowImage(path: MyConstant.food18),
+      );
+
+  Widget buildHead() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ShowTitle(
+        title: 'แกงจืดไข่น้ำ',
+        textStyle: MyConstant().h1Style(),
       ),
     );
   }

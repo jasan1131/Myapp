@@ -31,18 +31,24 @@ class _BuyerProductTypeState extends State<BuyerProductType> {
     return Scaffold(
       body: Container(
         decoration: MyConstant().gradientRadioBackground(),
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              buildTypeVegatable(context),
-              buildTypeFruit(context),
-              buildTypeMeet(context),
-              buildTypeDriedFood(context),
-              buildTypeCondiment(context),
-            ],
-          ),
+        child: Column(
+          children: [
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    buildTypeVegatable(context),
+                    buildTypeFruit(context),
+                    buildTypeMeet(context),
+                    buildTypeDriedFood(context),
+                    buildTypeCondiment(context),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -82,7 +88,7 @@ class _BuyerProductTypeState extends State<BuyerProductType> {
     );
   }
 
-   Widget buildTypeFruit(BuildContext context) {
+  Widget buildTypeFruit(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -122,7 +128,9 @@ class _BuyerProductTypeState extends State<BuyerProductType> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => TypeMeet(userModel: userModel!,),
+              builder: (context) => TypeMeet(
+                userModel: userModel!,
+              ),
             ));
       },
       child: Row(

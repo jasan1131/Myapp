@@ -138,7 +138,7 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
         itemCount: productmodels.length,
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           childAspectRatio: 2 / 4,
-          maxCrossAxisExtent: 260,
+          maxCrossAxisExtent: 360,
         ),
         itemBuilder: (context, index) => GestureDetector(
           onTap: () {
@@ -154,7 +154,7 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
               borderRadius: BorderRadius.circular(16),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
                   Container(
@@ -182,36 +182,50 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
                             title: productmodels[index].nameproduct,
                             textStyle: MyConstant().h2Style(),
                           ),
-                          Row(
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               ShowTitle(
-                                title:
-                                    'จำนวนสินค้า : ${productmodels[index].numberproduct} ',
+                                title: 'ราคา :',
                                 textStyle: MyConstant().h3Style(),
                               ),
                               ShowTitle(
-                                title: productmodels[index].unitproduct,
+                                title:
+                                    '${productmodels[index].priceproduct} บาท / ${productmodels[index].unitprice}',
                                 textStyle: MyConstant().h3Style(),
                               ),
                             ],
                           ),
-                          Row(
+                          // Column(
+                          //   mainAxisAlignment: MainAxisAlignment.start,
+                          //   crossAxisAlignment: CrossAxisAlignment.start,
+                          //   children: [
+                          //     ShowTitle(
+                          //       title: 'จำนวนสินค้า :',
+                          //       textStyle: MyConstant().h3Style(),
+                          //     ),
+                          //     ShowTitle(
+                          //       title:
+                          //           '${productmodels[index].numberproduct} / ${productmodels[index].unitproduct}',
+                          //       textStyle: MyConstant().h3Style(),
+                          //     ),
+                          //   ],
+                          // ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               ShowTitle(
-                                title:
-                                    'ราคา : ${productmodels[index].priceproduct} บาท /',
+                                title: 'รายระเอียดสินค้า :',
                                 textStyle: MyConstant().h3Style(),
                               ),
                               ShowTitle(
-                                title: productmodels[index].unitprice,
+                                title:
+                                    cutWord(productmodels[index].detailproduct),
                                 textStyle: MyConstant().h3Style(),
                               ),
                             ],
-                          ),
-                          ShowTitle(
-                            title: cutWord(
-                                'รายระเอียดสินค้า : ${productmodels[index].detailproduct}'),
-                            textStyle: MyConstant().h3Style(),
                           ),
                         ],
                       ),
@@ -277,36 +291,50 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
                             title: productmodels[index].nameproduct,
                             textStyle: MyConstant().h2Style(),
                           ),
-                          Row(
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               ShowTitle(
-                                title:
-                                    'จำนวนสินค้า : ${productmodels[index].numberproduct} ',
+                                title: 'ราคา :',
                                 textStyle: MyConstant().h3Style(),
                               ),
                               ShowTitle(
-                                title: productmodels[index].unitproduct,
+                                title:
+                                    '${productmodels[index].priceproduct} บาท / ${productmodels[index].unitprice}',
                                 textStyle: MyConstant().h3Style(),
                               ),
                             ],
                           ),
-                          Row(
+                          // Column(
+                          //   mainAxisAlignment: MainAxisAlignment.start,
+                          //   crossAxisAlignment: CrossAxisAlignment.start,
+                          //   children: [
+                          //     ShowTitle(
+                          //       title: 'จำนวนสินค้า :',
+                          //       textStyle: MyConstant().h3Style(),
+                          //     ),
+                          //     ShowTitle(
+                          //       title:
+                          //           '${productmodels[index].numberproduct} / ${productmodels[index].unitproduct}',
+                          //       textStyle: MyConstant().h3Style(),
+                          //     ),
+                          //   ],
+                          // ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               ShowTitle(
-                                title:
-                                    'ราคา : ${productmodels[index].priceproduct} บาท /',
+                                title: 'รายระเอียดสินค้า :',
                                 textStyle: MyConstant().h3Style(),
                               ),
                               ShowTitle(
-                                title: productmodels[index].unitprice,
+                                title:
+                                    cutWord(productmodels[index].detailproduct),
                                 textStyle: MyConstant().h3Style(),
                               ),
                             ],
-                          ),
-                          ShowTitle(
-                            title: cutWord(
-                                'รายระเอียดสินค้า : ${productmodels[index].detailproduct}'),
-                            textStyle: MyConstant().h3Style(),
                           ),
                         ],
                       ),
@@ -481,9 +509,12 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
                     String idProduct = productmodel.id;
                     String nameProduct = productmodel.nameproduct;
                     String priceProduct = productmodel.priceproduct;
+                    String number = productmodel.numberproduct;
+                    int minunInt = int.parse(number) - amountInt ;
+                    String numberProduct = minunInt.toString();
                     String amount = amountInt.toString();
-                    int sunInt = int.parse(priceProduct) * amountInt;
-                    String sum = sunInt.toString();
+                    int sumInt = int.parse(priceProduct) * amountInt;
+                    String sum = sumInt.toString();
 
                     lat2 = double.parse(userModel!.lat);
                     lng2 = double.parse(userModel!.lng);
@@ -496,13 +527,14 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
 
                     int transport = MyAPI().calculateTransport(distance);
                     print(
-                        'idproduct = $idProduct, namproduct = $nameProduct, priceproduct = $priceProduct, amount = $amount, sum = $sum, distance = $distancestring, transport = $transport');
+                        'idproduct = $idProduct, nameproduct = $nameProduct, numberproduct = $numberProduct, priceproduct = $priceProduct, amount = $amount, sum = $sum, distance = $distancestring, transport = $transport');
 
                     SQLiteModel sqLiteModel = SQLiteModel(
                         idSeller: idSeller,
                         nameSeller: nameSeller,
                         idProduct: idProduct,
                         nameProduct: nameProduct,
+                        numberProduct: numberProduct,
                         priceProduct: priceProduct,
                         amount: amount,
                         sum: sum,
@@ -546,4 +578,3 @@ class _BuyerWholeSaleProductState extends State<BuyerWholeSaleProduct> {
     return result;
   }
 }
-

@@ -25,6 +25,7 @@ class _ShowManageBuyerState extends State<ShowManageBuyer> {
     // TODO: implement initState
     super.initState();
     userModel = widget.userModel;
+    refreshUserModel();
   }
 
   Future<Null> refreshUserModel() async {

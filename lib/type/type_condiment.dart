@@ -140,8 +140,8 @@ class _TypeCondimentsState extends State<TypeCondiments> {
       child: GridView.builder(
         itemCount: productmodels.length,
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          childAspectRatio: 2 / 4,
-          maxCrossAxisExtent: 260,
+          childAspectRatio: 2 / 5,
+          maxCrossAxisExtent: 360,
         ),
         itemBuilder: (context, index) => GestureDetector(
           onTap: () {
@@ -162,7 +162,7 @@ class _TypeCondimentsState extends State<TypeCondiments> {
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width * 0.4 - 8,
-                    height: MediaQuery.of(context).size.height * 0.22,
+                    height: MediaQuery.of(context).size.height * 0.28,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       child: CachedNetworkImage(
@@ -185,36 +185,46 @@ class _TypeCondimentsState extends State<TypeCondiments> {
                             title: productmodels[index].nameproduct,
                             textStyle: MyConstant().h2Style(),
                           ),
-                          Row(
+                          // Row(
+                          //   children: [
+                          //     ShowTitle(
+                          //       title:
+                          //           'จำนวนสินค้า : ${productmodels[index].numberproduct} ',
+                          //       textStyle: MyConstant().h3Style(),
+                          //     ),
+                          //     ShowTitle(
+                          //       title: productmodels[index].unitproduct,
+                          //       textStyle: MyConstant().h3Style(),
+                          //     ),
+                          //   ],
+                          // ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               ShowTitle(
-                                title:
-                                    'จำนวนสินค้า : ${productmodels[index].numberproduct} ',
+                                title: 'ราคา :',
                                 textStyle: MyConstant().h3Style(),
                               ),
                               ShowTitle(
-                                title: productmodels[index].unitproduct,
+                                title:
+                                    '${productmodels[index].priceproduct} บาท / ${productmodels[index].unitprice}',
                                 textStyle: MyConstant().h3Style(),
                               ),
                             ],
                           ),
-                          Row(
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               ShowTitle(
-                                title:
-                                    'ราคา : ${productmodels[index].priceproduct} บาท /',
+                                title: 'รายระเอียดสินค้า :',
                                 textStyle: MyConstant().h3Style(),
                               ),
                               ShowTitle(
-                                title: productmodels[index].unitprice,
+                                title:
+                                    cutWord(productmodels[index].detailproduct),
                                 textStyle: MyConstant().h3Style(),
                               ),
                             ],
-                          ),
-                          ShowTitle(
-                            title: cutWord(
-                                'รายระเอียดสินค้า : ${productmodels[index].detailproduct}'),
-                            textStyle: MyConstant().h3Style(),
                           ),
                         ],
                       ),
@@ -280,19 +290,19 @@ class _TypeCondimentsState extends State<TypeCondiments> {
                             title: productmodels[index].nameproduct,
                             textStyle: MyConstant().h2Style(),
                           ),
-                          Row(
-                            children: [
-                              ShowTitle(
-                                title:
-                                    'จำนวนสินค้า : ${productmodels[index].numberproduct} ',
-                                textStyle: MyConstant().h3Style(),
-                              ),
-                              ShowTitle(
-                                title: productmodels[index].unitproduct,
-                                textStyle: MyConstant().h3Style(),
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   children: [
+                          //     ShowTitle(
+                          //       title:
+                          //           'จำนวนสินค้า : ${productmodels[index].numberproduct} ',
+                          //       textStyle: MyConstant().h3Style(),
+                          //     ),
+                          //     ShowTitle(
+                          //       title: productmodels[index].unitproduct,
+                          //       textStyle: MyConstant().h3Style(),
+                          //     ),
+                          //   ],
+                          // ),
                           Row(
                             children: [
                               ShowTitle(
@@ -484,9 +494,12 @@ class _TypeCondimentsState extends State<TypeCondiments> {
                     String idProduct = productmodel.id;
                     String nameProduct = productmodel.nameproduct;
                     String priceProduct = productmodel.priceproduct;
+                    String number = productmodel.numberproduct;
+                    int minunInt = int.parse(number) - amountInt ;
+                    String numberProduct = minunInt.toString();
                     String amount = amountInt.toString();
-                    int sunInt = int.parse(priceProduct) * amountInt;
-                    String sum = sunInt.toString();
+                    int sumInt = int.parse(priceProduct) * amountInt;
+                    String sum = sumInt.toString();
 
                     lat2 = double.parse(userModel!.lat);
                     lng2 = double.parse(userModel!.lng);
@@ -499,13 +512,14 @@ class _TypeCondimentsState extends State<TypeCondiments> {
 
                     int transport = MyAPI().calculateTransport(distance);
                     print(
-                        'idproduct = $idProduct, namproduct = $nameProduct, priceproduct = $priceProduct, amount = $amount, sum = $sum, distance = $distancestring, transport = $transport');
+                        'idproduct = $idProduct, nameproduct = $nameProduct, numberproduct = $numberProduct, priceproduct = $priceProduct, amount = $amount, sum = $sum, distance = $distancestring, transport = $transport');
 
                     SQLiteModel sqLiteModel = SQLiteModel(
                         idSeller: idSeller,
                         nameSeller: nameSeller,
                         idProduct: idProduct,
                         nameProduct: nameProduct,
+                        numberProduct: numberProduct,
                         priceProduct: priceProduct,
                         amount: amount,
                         sum: sum,
@@ -542,8 +556,8 @@ class _TypeCondimentsState extends State<TypeCondiments> {
 
   String cutWord(String string) {
     String result = string;
-    if (result.length >= 50) {
-      result = result.substring(0, 50);
+    if (result.length >= 100) {
+      result = result.substring(0, 100);
       result = '$result ... ';
     }
     return result;

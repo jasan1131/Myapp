@@ -13,7 +13,10 @@ class _PDPAState extends State<PDPA> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: MyConstant.primary,
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -129,7 +132,8 @@ class _PDPAState extends State<PDPA> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8, bottom: 8, left: 20),
                   child: ElevatedButton(
-                    onPressed: () => Navigator.pushNamed(context, MyConstant.routeCreasteAccount),
+                    onPressed: () => Navigator.pushNamed(
+                        context, MyConstant.routeCreasteAccount),
                     child: ShowTitle(
                       title: 'ยินยอม',
                       textStyle: MyConstant().h3WhiteStyle(),
