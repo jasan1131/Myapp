@@ -2,10 +2,11 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_myappication_1/models/order_model.dart';
+import 'package:flutter_myappication_1/models/history_model.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ShowHistoryByOrderByUser extends StatefulWidget {
   const ShowHistoryByOrderByUser({Key? key}) : super(key: key);
@@ -18,11 +19,12 @@ class ShowHistoryByOrderByUser extends StatefulWidget {
 class _ShowHistoryByOrderByUserState extends State<ShowHistoryByOrderByUser> {
   bool statusOrder = true;
   bool? haveData;
-  List<OrderModel> orderModels = [];
-  List<List<String>> listOrderProducts = [];
-  List<List<String>> listOrderPrices = [];
-  List<List<String>> listOrderAmunts = [];
-  List<List<String>> listOrderSums = [];
+  HistoryModel? historyModel;
+  List<HistoryModel> historyModels = [];
+  List<List<String>> listNameProducts = [];
+  List<List<String>> listPriceProducts = [];
+  List<List<String>> listAmunts = [];
+  List<List<String>> listSums = [];
   String? idSeller;
   String? id;
 
@@ -30,41 +32,48 @@ class _ShowHistoryByOrderByUserState extends State<ShowHistoryByOrderByUser> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    findIdSellerAndReadOrder();
+    getHistoryOrder();
   }
 
-  Future<Null> findIdSellerAndReadOrder() async {
-    if (orderModels.length != 0) {
-      orderModels.clear();
-    }
-    String path =
-        '${MyConstant.domain}/shopping/getOrderWhereStatusSellerConfirmOrder.php';
-    await Dio().get(path).then((value) {
-      if (value.toString() == 'null') {
-        setState(() {
-          statusOrder = false;
-          haveData = false;
-        });
-      } else {
-        for (var item in json.decode(value.data)) {
-          OrderModel model = OrderModel.fromMap(item);
-          // print('id = ${model.id}');
-          List<String> orderProducts = changeArrey(model.nameProduct!);
-          List<String> orderPrices = changeArrey(model.priceProduct!);
-          List<String> orderAmounts = changeArrey(model.amount!);
-          List<String> orderSums = changeArrey(model.sum!);
+  Future getHistoryOrder() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    idSeller = preferences.getString('id');
+    readHistoryOrder();
+  }
+
+  Future readHistoryOrder() async {
+    if (idSeller != null) {
+      String path =
+          '${MyConstant.domain}/shopping/getHistoryOrderWhereIdSeller.php?isAdd=true&idSeller=$idSeller';
+      await Dio().get(path).then((value) {
+        if (value.toString() == 'null') {
           setState(() {
             statusOrder = false;
-            haveData = true;
-            orderModels.add(model);
-            listOrderProducts.add(orderProducts);
-            listOrderPrices.add(orderPrices);
-            listOrderAmunts.add(orderAmounts);
-            listOrderSums.add(orderSums);
+            haveData = false;
           });
+        } else {
+          var result = json.decode(value.data);
+          for (var map in result) {
+            HistoryModel history = HistoryModel.fromMap(map);
+            List<String> historyNameProducts = changeArrey(history.nameProduct);
+            List<String> historyPriceProducts =
+                changeArrey(history.priceProduct);
+            List<String> historyAmunts = changeArrey(history.amount);
+            List<String> historySums = changeArrey(history.sum);
+            setState(() {
+              statusOrder = false;
+              haveData = true;
+              historyModels.add(history);
+
+              listNameProducts.add(historyNameProducts);
+              listPriceProducts.add(historyPriceProducts);
+              listAmunts.add(historyAmunts);
+              listSums.add(historySums);
+            });
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   List<String> changeArrey(String string) {
@@ -80,105 +89,155 @@ class _ShowHistoryByOrderByUserState extends State<ShowHistoryByOrderByUser> {
     return list;
   }
 
+  Widget buildNonHistoryOrder() => Center(
+        child: ShowTitle(
+          title: 'ไม่มีข้อมูลการสั่งซื้อ',
+          textStyle: MyConstant().h1Style(),
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: statusOrder
           ? ShowProgress()
           : haveData!
-              ? ListView.builder(
-                  itemCount: orderModels.length,
-                  itemBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ShowTitle(
-                              title: orderModels[index].nameBuyer!,
-                              textStyle: MyConstant().h2Style(),
-                            ),
-                            Row(
-                              children: [
-                                ShowTitle(title: orderModels[index].dateOrder!),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 4),
-                                  child: ShowTitle(
-                                      title: orderModels[index].timeOrder!),
-                                ),
-                              ],
-                            ),
-                            buildTitle(),
-                            bildListViewOrder(index),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              : Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ShowTitle(
-                          title: 'ไม่มีสินค้า',
-                          textStyle: MyConstant().h1Style()),
-                      ShowTitle(
-                          title: 'ไม่มีการสั่งสินค้าจากลูกค้า',
-                          textStyle: MyConstant().h2Style()),
-                    ],
-                  ),
-                ),
+              ? buildListView()
+              : buildNonHistoryOrder(),
     );
   }
 
-  ListView bildListViewOrder(int index) {
+  ListView buildListView() {
     return ListView.builder(
-      itemCount: listOrderProducts[index].length,
-      shrinkWrap: true,
-      physics: ScrollPhysics(),
-      itemBuilder: (context, index2) => Row(
+      itemCount: historyModels.length,
+      itemBuilder: (context, index) => Column(
         children: [
-          Expanded(
-              flex: 3,
-              child: ShowTitle(title: listOrderProducts[index][index2])),
-          Expanded(
-              flex: 1, child: ShowTitle(title: listOrderPrices[index][index2])),
-          Expanded(
-              flex: 1, child: ShowTitle(title: listOrderAmunts[index][index2])),
-          Expanded(
-              flex: 1, child: ShowTitle(title: listOrderSums[index][index2])),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  buildName(index),
+                  buildDateTime(index),
+                  buildDistance(index),
+                  buildTransport(index),
+                  buildHeadTitle(),
+                  buildListViewHistoryProduct(index),
+                  buildTotal(index),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Container buildTitle() {
-    return Container(
-      padding: EdgeInsets.all(4),
-      decoration: BoxDecoration(color: MyConstant.light),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 3,
-            child: ShowTitle(title: 'ชื่อสินค้า'),
+  Row buildHeadTitle() {
+    return Row(
+      children: [
+        Expanded(
+          flex: 3,
+          child: ShowTitle(
+            title: 'รายการสินค้า',
+            textStyle: MyConstant().h2Style(),
           ),
-          Expanded(
-            flex: 1,
-            child: ShowTitle(title: 'จำนวน'),
+        ),
+        Expanded(
+          flex: 1,
+          child: ShowTitle(
+            title: 'จำนวน',
+            textStyle: MyConstant().h2Style(),
           ),
-          Expanded(
-            flex: 1,
-            child: ShowTitle(title: 'ราคา'),
+        ),
+        Expanded(
+          flex: 1,
+          child: ShowTitle(
+            title: 'ราคา',
+            textStyle: MyConstant().h2Style(),
           ),
-          Expanded(
-            flex: 1,
-            child: ShowTitle(title: 'ราคารวม'),
+        ),
+        Expanded(
+          flex: 1,
+          child: ShowTitle(
+            title: 'ผลรวม',
+            textStyle: MyConstant().h2Style(),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
+
+  Widget buildListViewHistoryProduct(int index) => Container(
+        child: ListView.builder(
+          shrinkWrap: true,
+          physics: ScrollPhysics(),
+          itemCount: listNameProducts[index].length,
+          itemBuilder: (context, index2) => Row(
+            children: [
+              Expanded(
+                flex: 3,
+                child: ShowTitle(
+                  title: listNameProducts[index][index2],
+                  textStyle: MyConstant().h2Style(),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: ShowTitle(
+                  title: listAmunts[index][index2],
+                  textStyle: MyConstant().h2Style(),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: ShowTitle(
+                  title: listPriceProducts[index][index2],
+                  textStyle: MyConstant().h2Style(),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: ShowTitle(
+                  title: listSums[index][index2],
+                  textStyle: MyConstant().h2Style(),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+
+  Widget buildTransport(int index) => ShowTitle(
+        title: 'ค่าจัดส่ง : ${historyModels[index].transport}',
+        textStyle: MyConstant().h2Style(),
+      );
+
+  Widget buildDistance(int index) => ShowTitle(
+        title: 'ระยะทาง : ${historyModels[index].distance}',
+        textStyle: MyConstant().h2Style(),
+      );
+
+  Widget buildDateTime(int index) {
+    return Row(
+      children: [
+        ShowTitle(
+          title:
+              'วันและเวลาในการสั่งซื้อ : ${historyModels[index].dateOrder} ${historyModels[index].timeOrder}',
+          textStyle: MyConstant().h2Style(),
+        ),
+      ],
+    );
+  }
+
+  Widget buildName(int index) => ShowTitle(
+        title: 'ชื่อ : ${historyModels[index].nameBuyer}',
+        textStyle: MyConstant().h1Style(),
+      );
+
+  Widget buildTotal(int index) => ShowTitle(
+        title: 'ยอดรวมสินค้า : ${historyModels[index].total}',
+        textStyle: MyConstant().h2Style(),
+      );
 }

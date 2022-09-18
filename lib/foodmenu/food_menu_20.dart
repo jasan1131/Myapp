@@ -1,16 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist20/food_menu_list20.1.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist20/food_menu_list20.10.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist20/food_menu_list20.11.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist20/food_menu_list20.12.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist20/food_menu_list20.2.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist20/food_menu_list20.3.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist20/food_menu_list20.4.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist20/food_menu_list20.5.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist20/food_menu_list20.6.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist20/food_menu_list20.7.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist20/food_menu_list20.8.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist20/food_menu_list20.9.dart';
+import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_image.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 
 class FoodMenu20 extends StatefulWidget {
-  const FoodMenu20({Key? key}) : super(key: key);
+  final UserModel userModel;
+  const FoodMenu20({Key? key, required this.userModel}) : super(key: key);
 
   @override
   State<FoodMenu20> createState() => _FoodMenu20State();
 }
 
 class _FoodMenu20State extends State<FoodMenu20> {
+  UserModel? userModel;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    userModel = widget.userModel;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,52 +111,124 @@ class _FoodMenu20State extends State<FoodMenu20> {
           ),
         ),
         TextButton(
-          onPressed: () {},
-          child: ShowTitle(title: '1.เห็ดฟาง'),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FoodMenuList20_1(userModel: userModel!),
+            ),
+          ),
+          child: ShowTitle(title: '1.เห็ดฟาง',
+            textStyle: TextStyle(decoration: TextDecoration.underline),),
         ),
         TextButton(
-          onPressed: () {},
-          child: ShowTitle(title: '2.แคร์รอต'),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FoodMenuList20_2(userModel: userModel!),
+            ),
+          ),
+          child: ShowTitle(title: '2.แครอต',
+            textStyle: TextStyle(decoration: TextDecoration.underline),),
         ),
         TextButton(
-          onPressed: () {},
-          child: ShowTitle(title: '3.บรอกโคลี่'),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FoodMenuList20_3(userModel: userModel!),
+            ),
+          ),
+          child: ShowTitle(title: '3.บรอกโคลี่',
+            textStyle: TextStyle(decoration: TextDecoration.underline),),
         ),
         TextButton(
-          onPressed: () {},
-          child: ShowTitle(title: '4.ถั่วหวาน'),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FoodMenuList20_4(userModel: userModel!),
+            ),
+          ),
+          child: ShowTitle(title: '4.ถั่วลันเตาจีน',
+            textStyle: TextStyle(decoration: TextDecoration.underline),),
         ),
         TextButton(
-          onPressed: () {},
-          child: ShowTitle(title: '5.คะน้าฮ่องกง'),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FoodMenuList20_5(userModel: userModel!),
+            ),
+          ),
+          child: ShowTitle(title: '5.คะน้า    ',
+            textStyle: TextStyle(decoration: TextDecoration.underline),),
         ),
         TextButton(
-          onPressed: () {},
-          child: ShowTitle(title: '6.ซอสหอยนางรม'),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FoodMenuList20_6(userModel: userModel!),
+            ),
+          ),
+          child: ShowTitle(title: '6.น้ำมันหอยตราแม่ครัว',
+            textStyle: TextStyle(decoration: TextDecoration.underline),),
         ),
         TextButton(
-          onPressed: () {},
-          child: ShowTitle(title: '7.กระเทียม'),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FoodMenuList20_7(userModel: userModel!),
+            ),
+          ),
+          child: ShowTitle(title: '7.กระเทียม',
+            textStyle: TextStyle(decoration: TextDecoration.underline),),
         ),
         TextButton(
-          onPressed: () {},
-          child: ShowTitle(title: '8.ซอสปรุงรส'),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FoodMenuList20_8(userModel: userModel!),
+            ),
+          ),
+          child: ShowTitle(title: '8.ซอสปรุงรสฝาเขียว',
+            textStyle: TextStyle(decoration: TextDecoration.underline),),
         ),
         TextButton(
-          onPressed: () {},
-          child: ShowTitle(title: '9.น้ำตาลทราย'),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FoodMenuList20_9(userModel: userModel!),
+            ),
+          ),
+          child: ShowTitle(title: '9.น้ำตาลทราย',
+            textStyle: TextStyle(decoration: TextDecoration.underline),),
         ),
         TextButton(
-          onPressed: () {},
-          child: ShowTitle(title: '10.น้ำมันพืช'),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FoodMenuList20_10(userModel: userModel!),
+            ),
+          ),
+          child: ShowTitle(title: '10.น้ำมันมรกต',
+            textStyle: TextStyle(decoration: TextDecoration.underline),),
         ),
         TextButton(
-          onPressed: () {},
-          child: ShowTitle(title: '11.น้ำปลา'),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FoodMenuList20_11(userModel: userModel!),
+            ),
+          ),
+          child: ShowTitle(title: '11.น้ำปลา',
+            textStyle: TextStyle(decoration: TextDecoration.underline),),
         ),
         TextButton(
-          onPressed: () {},
-          child: ShowTitle(title: '12.กุ้ง'),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FoodMenuList20_12(userModel: userModel!),
+            ),
+          ),
+          child: ShowTitle(title: '12.กุ้งขาว',
+            textStyle: TextStyle(decoration: TextDecoration.underline),),
         ),
       ],
     );

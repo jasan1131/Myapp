@@ -51,6 +51,7 @@ class _AddProductSpecialState extends State<AddProductSpecial> {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: MyConstant.primary,
         centerTitle: true,
         actions: [
           IconButton(
@@ -58,7 +59,7 @@ class _AddProductSpecialState extends State<AddProductSpecial> {
             icon: Icon(Icons.cloud_upload),
           ),
         ],
-        title: Text('เพิ่มสินค้า'),
+        title: Text('เพิ่มสินค้าราคาพิเศษ'),
       ),
       body: LayoutBuilder(
         builder: (context, constraints) => GestureDetector(
@@ -103,7 +104,7 @@ class _AddProductSpecialState extends State<AddProductSpecial> {
     return Container(
       width: constraints.maxWidth * 0.7,
       child: ElevatedButton(
-        style: MyConstant().myButtonStyle(),
+        style: MyConstant().myButtonStyleAdd(),
         onPressed: () {
           processAddProduct();
         },

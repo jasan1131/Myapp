@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/models/splite_model.dart';
+import 'package:flutter_myappication_1/models/user_models.dart';
+import 'package:flutter_myappication_1/states/buyer_show_shop_seller.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/utility/sqlite_helpper.dart';
 import 'package:flutter_myappication_1/widgets/show_image.dart';
@@ -14,6 +16,7 @@ class ShowCart extends StatefulWidget {
 }
 
 class _ShowCartState extends State<ShowCart> {
+  UserModel? userModel;
   String? distance;
   List<SQLiteModel> sqliteModels = [];
   bool load = true;

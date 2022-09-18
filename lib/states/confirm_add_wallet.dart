@@ -54,6 +54,7 @@ class _ConfirmAddWalletState extends State<ConfirmAddWallet> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: MyConstant.primary,
         centerTitle: true,
         title: Text('ชำระเงิน'),
         leading: IconButton(

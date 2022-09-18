@@ -23,6 +23,7 @@ class _BuyerShowShopSellerState extends State<BuyerShowShopSeller> {
   List<Widget> listWidgets = [];
   int indexPage = 0;
 
+
   @override
   void initState() {
     // TODO: implement initState
@@ -95,7 +96,7 @@ class _BuyerShowShopSellerState extends State<BuyerShowShopSeller> {
           IconButton(
             onPressed: () =>
                 Navigator.pushNamed(context, MyConstant.rounteShowCart),
-            icon: Icon(Icons.shopping_cart_outlined),
+            icon: Icon(Icons.shopping_cart_outlined)
           ),
         ],
       ),

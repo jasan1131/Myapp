@@ -67,6 +67,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: MyConstant.primary,
         // leading: IconButton(
         //   onPressed: () {
         //     Navigator.pushNamedAndRemoveUntil(

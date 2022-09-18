@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_myappication_1/utility/my_constant.dart';
 
 class ShowProgress extends StatelessWidget {
   const ShowProgress({ Key? key }) : super(key: key);
@@ -6,7 +7,7 @@ class ShowProgress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: CircularProgressIndicator(
+      child: CircularProgressIndicator(color: MyConstant.light,
       ),
     );
   }

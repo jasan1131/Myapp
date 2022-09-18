@@ -196,10 +196,10 @@ class _ShowStatusOrderRiderConfirmBuyerState
   }
 
   Container showmap() {
-    if (lat1 != null) {
-      LatLng latLng1 = LatLng(lat1!, lng1!);
+    if (lat2 != null) {
+      LatLng latLng2 = LatLng(lat1!, lng1!);
       position = CameraPosition(
-        target: latLng1,
+        target: latLng2,
         zoom: 15,
       );
     }
@@ -207,7 +207,7 @@ class _ShowStatusOrderRiderConfirmBuyerState
       return Marker(
         markerId: MarkerId('userMarker'),
         position: LatLng(lat1!, lng1!),
-        icon: BitmapDescriptor.defaultMarkerWithHue(200.0),
+        icon: BitmapDescriptor.defaultMarkerWithHue(60.0),
         infoWindow: InfoWindow(title: 'คุณอยู่ที่นี้'),
       );
     }
@@ -229,6 +229,7 @@ class _ShowStatusOrderRiderConfirmBuyerState
       child: lat1 == null
           ? ShowProgress()
           : GoogleMap(
+              myLocationEnabled: true,
               zoomControlsEnabled: true,
               initialCameraPosition: position!,
               mapType: MapType.normal,

@@ -4,7 +4,7 @@ class MyConstant {
   // Genernal
   static String appName = 'Shopping MAll';
   static String domain =
-      'https://43b2-2001-fb1-1e-6b82-b056-f8bc-7bc5-c414.ap.ngrok.io';
+      'https://fa3c-2001-fb1-1c-8d53-803d-4dca-3148-1868.ap.ngrok.io';
 
   static String urlPromptpay = 'https://promptpay.io/0970272217.png';
 
@@ -164,7 +164,14 @@ class MyConstant {
 
   // Button
   ButtonStyle myButtonStyle() => ElevatedButton.styleFrom(
-        primary: MyConstant.primary,
+        primary:Colors.white.withOpacity(0.75),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+      );
+
+  ButtonStyle myButtonStyleAdd() => ElevatedButton.styleFrom(
+        primary:MyConstant.primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),

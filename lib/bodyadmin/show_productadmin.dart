@@ -242,7 +242,7 @@ class _ShowProductAdminState extends State<ShowProductAdmin> {
               placeholder: (context, url) => ShowProgress(),
             ),
             title: ShowTitle(
-              title: 'Delete ${productModel.nameproduct} ?',
+              title: 'ลบสินค้า ${productModel.nameproduct} ?',
               textStyle: MyConstant().h2Style(),
             ),
             subtitle: ShowTitle(
@@ -261,11 +261,11 @@ class _ShowProductAdminState extends State<ShowProductAdmin> {
                   loadValueFromApi();
                 });
               },
-              child: Text('Delete'),
+              child: Text('ลบ'),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('Cancel'),
+              child: Text('ยกเลิก'),
             ),
           ],
         ),

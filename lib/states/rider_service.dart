@@ -76,13 +76,15 @@ class _RiderServiceState extends State<RiderService> {
     });
   }
 
+  List<String> titles = ['รายการสินค้าที่ลูกค้าสั่ง', 'รายการสินค้าที่ต้องส่ง'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyConstant.primary,
         centerTitle: true,
-        title: Text('rider'),
+        title: Text('${titles[indexWidget]}'),
       ),
       drawer: widgets.length == 0
           ? SizedBox()

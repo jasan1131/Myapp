@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_myappication_1/foodmenulist2/food_menu_list2.1.dart';
-import 'package:flutter_myappication_1/foodmenulist2/food_menu_list2.2.dart';
-import 'package:flutter_myappication_1/foodmenulist2/food_menu_list2.3.dart';
-import 'package:flutter_myappication_1/foodmenulist2/food_menu_list2.4.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist2/food_menu_list2.1.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist2/food_menu_list2.2.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist2/food_menu_list2.3.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist2/food_menu_list2.4.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_image.dart';

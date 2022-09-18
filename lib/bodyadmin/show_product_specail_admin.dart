@@ -94,7 +94,7 @@ class _ShowProductSpecailAdminState extends State<ShowProductSpecailAdmin> {
         child: FloatingActionButton(
           backgroundColor: MyConstant.dark,
           onPressed: () =>
-              Navigator.pushNamed(context, MyConstant.rounteAddProduct)
+              Navigator.pushNamed(context, MyConstant.rounteAddProductSpecial)
                   .then((value) => loadValueFromApi()),
           child: Text('เพิ่มสินค้า'),
         ),
@@ -235,39 +235,41 @@ class _ShowProductSpecailAdminState extends State<ShowProductSpecailAdmin> {
   Future<Null> confirmDialogDelete(ProductModel productModel) async {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: ListTile(
-          leading: CachedNetworkImage(
-            imageUrl: createUrl(productModel.imagesproduct),
-            placeholder: (context, url) => ShowProgress(),
+      builder: (context) => SingleChildScrollView(
+        child: AlertDialog(
+          title: ListTile(
+            leading: CachedNetworkImage(
+              imageUrl: createUrl(productModel.imagesproduct),
+              placeholder: (context, url) => ShowProgress(),
+            ),
+            title: ShowTitle(
+              title: 'ลบสินค้า ${productModel.nameproduct} ?',
+              textStyle: MyConstant().h2Style(),
+            ),
+            subtitle: ShowTitle(
+              title: productModel.detailproduct,
+              textStyle: MyConstant().h3Style(),
+            ),
           ),
-          title: ShowTitle(
-            title: 'Delete ${productModel.nameproduct} ?',
-            textStyle: MyConstant().h2Style(),
-          ),
-          subtitle: ShowTitle(
-            title: productModel.detailproduct,
-            textStyle: MyConstant().h3Style(),
-          ),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                print('## Confirm Delete at id ==> ${productModel.id}');
+                String apiDeleteProductWhereIDProduct =
+                    '${MyConstant.domain}/shopping/deleteProductWhereId.php?isAdd=true&id=${productModel.id}';
+                await Dio().get(apiDeleteProductWhereIDProduct).then((value) {
+                  Navigator.pop(context);
+                  loadValueFromApi();
+                });
+              },
+              child: Text('ลบ'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('ยกเลิก'),
+            ),
+          ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () async {
-              print('## Confirm Delete at id ==> ${productModel.id}');
-              String apiDeleteProductWhereIDProduct =
-                  '${MyConstant.domain}/shopping/deleteProductWhereId.php?isAdd=true&id=${productModel.id}';
-              await Dio().get(apiDeleteProductWhereIDProduct).then((value) {
-                Navigator.pop(context);
-                loadValueFromApi();
-              });
-            },
-            child: Text('Delete'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel'),
-          ),
-        ],
       ),
     );
   }

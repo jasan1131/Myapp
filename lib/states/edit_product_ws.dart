@@ -69,13 +69,14 @@ class _EditProductWholeSaleState extends State<EditProductWholeSale> {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: MyConstant.primary,
         centerTitle: true,
-        title: Text('Edit Product'),
+        title: Text('แก้ไขข้อมูลสินค้า'),
         actions: [
           IconButton(
             onPressed: () => procesEdit(),
             icon: Icon(Icons.edit),
-            tooltip: 'Edit Product',
+            tooltip: 'แก้ไขข้อมูลสินค้า',
           ),
         ],
       ),
@@ -92,9 +93,9 @@ class _EditProductWholeSaleState extends State<EditProductWholeSale> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    buildTitle('General :'),
+                    buildTitle('ชื่อสินค้า :'),
                     buildName(constraints),
-                    buildTitle('Type Product :'),
+                    buildTitle('ประเภทของสินค้า :'),
                     buildProductVegetables(size),
                     buildProductFruit(size),
                     buildProductMeetPork(size),
@@ -108,7 +109,7 @@ class _EditProductWholeSaleState extends State<EditProductWholeSale> {
                     buildPrice(constraints),
                     buildUnitPrice(constraints),
                     buildDetail(constraints),
-                    buildTitle('Image Product :'),
+                    buildTitle('รูปภาพของสินค้า :'),
                     buildImage(constraints, 0),
                     buildImage(constraints, 1),
                     buildImage(constraints, 2),
@@ -134,7 +135,7 @@ class _EditProductWholeSaleState extends State<EditProductWholeSale> {
           child: ElevatedButton.icon(
             onPressed: () => procesEdit(),
             icon: Icon(Icons.edit),
-            label: Text('Edit Product'),
+            label: Text('แก้ไขข้อมูลสินค้า'),
           ),
         ),
       ],
@@ -201,7 +202,7 @@ class _EditProductWholeSaleState extends State<EditProductWholeSale> {
           child: TextFormField(
             controller: UnitProductController,
             decoration: InputDecoration(
-              labelText: 'Name :',
+              labelText: 'หน่วยสินค้า :',
               border: OutlineInputBorder(),
             ),
           ),
@@ -220,7 +221,7 @@ class _EditProductWholeSaleState extends State<EditProductWholeSale> {
           child: TextFormField(
             controller: UnitPriceController,
             decoration: InputDecoration(
-              labelText: 'Name :',
+              labelText: 'หน่วยสินค้า :',
               border: OutlineInputBorder(),
             ),
           ),
@@ -238,7 +239,7 @@ class _EditProductWholeSaleState extends State<EditProductWholeSale> {
           child: TextFormField(
             controller: NameController,
             decoration: InputDecoration(
-              labelText: 'Name :',
+              labelText: 'ชื่อสินค้า :',
               border: OutlineInputBorder(),
             ),
           ),
@@ -466,7 +467,7 @@ class _EditProductWholeSaleState extends State<EditProductWholeSale> {
             keyboardType: TextInputType.phone,
             controller: NumberController,
             decoration: InputDecoration(
-              labelText: 'Number :',
+              labelText: 'จำนวนสินค้า :',
               border: OutlineInputBorder(),
             ),
           ),
@@ -486,7 +487,7 @@ class _EditProductWholeSaleState extends State<EditProductWholeSale> {
             keyboardType: TextInputType.phone,
             controller: PriceController,
             decoration: InputDecoration(
-              labelText: 'Price :',
+              labelText: 'ราคาสินค้า :',
               border: OutlineInputBorder(),
             ),
           ),
@@ -505,7 +506,7 @@ class _EditProductWholeSaleState extends State<EditProductWholeSale> {
             maxLines: 3,
             controller: DetailController,
             decoration: InputDecoration(
-              labelText: 'Detail :',
+              labelText: 'รายละเอียดสินค้า :',
               border: OutlineInputBorder(),
             ),
           ),

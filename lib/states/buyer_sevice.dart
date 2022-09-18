@@ -5,8 +5,6 @@ import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_myappication_1/bodys/show_buyer_manage.dart';
-import 'package:flutter_myappication_1/bodys/show_menu_food.dart';
 import 'package:flutter_myappication_1/bodys/show_order_history.dart';
 import 'package:flutter_myappication_1/bodys/show_order_status.dart';
 import 'package:flutter_myappication_1/bodys/show_shop_seller.dart';
@@ -71,13 +69,15 @@ class _BuyerServiceState extends State<BuyerService> {
     });
   }
 
+  List<String> titles = ['ร้านขายสินค้า', 'สถานะการสั่งซื้อ', 'ประวัติการสั่งซื้อ'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyConstant.primary,
         centerTitle: true,
-        title: Text('Buyer'),
+        title: Text('${titles[indexWidget]}'),
       ),
       drawer: Drawer(
         child: Stack(

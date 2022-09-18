@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/models/order_model.dart';
 import 'package:flutter_myappication_1/states/admin.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
+import 'package:flutter_myappication_1/utility/my_dialog.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 
@@ -23,6 +24,7 @@ class _ShowOrderAdminState extends State<ShowOrderAdmin> {
   List<List<String>> listOrderPrices = [];
   List<List<String>> listOrderAmunts = [];
   List<List<String>> listOrderSums = [];
+  List<int> totalProductTnts = [];
   String? idSeller;
   String? id;
 
@@ -50,6 +52,12 @@ class _ShowOrderAdminState extends State<ShowOrderAdmin> {
           List<String> orderPrices = changeArrey(model.priceProduct!);
           List<String> orderAmounts = changeArrey(model.amount!);
           List<String> orderSums = changeArrey(model.sum!);
+          int total = int.parse(model.transport!);
+          for (var string in orderSums) {
+            total = total + int.parse(string.trim());
+            // total = transport + total;
+          }
+
           setState(() {
             statusOrder = false;
             haveData = true;
@@ -58,6 +66,7 @@ class _ShowOrderAdminState extends State<ShowOrderAdmin> {
             listOrderPrices.add(orderPrices);
             listOrderAmunts.add(orderAmounts);
             listOrderSums.add(orderSums);
+            totalProductTnts.add(total);
           });
         }
       }
@@ -94,21 +103,21 @@ class _ShowOrderAdminState extends State<ShowOrderAdmin> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             ShowTitle(
-                              title: orderModels[index].nameBuyer!,
+                              title: ' ${orderModels[index].nameBuyer!}',
                               textStyle: MyConstant().h2Style(),
                             ),
                             Row(
                               children: [
-                                ShowTitle(title: orderModels[index].dateOrder!),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 4),
-                                  child: ShowTitle(
-                                      title: orderModels[index].timeOrder!),
-                                ),
+                                ShowTitle(title: 'วันเวลา : ${orderModels[index].dateOrder!} / ${orderModels[index].timeOrder!}'),
                               ],
+                            ),
+                            ShowTitle(
+                              title: 'ค่าจัดส่ง : ${orderModels[index].transport!}',
+                              textStyle: MyConstant().h2Style(),
                             ),
                             buildTitle(),
                             bildListViewOrder(index),
+                            buildShowTotal(index),
                             buildButton(index),
                           ],
                         ),
@@ -131,6 +140,32 @@ class _ShowOrderAdminState extends State<ShowOrderAdmin> {
                 ),
     );
   }
+
+  Widget buildShowTotal(int index) => Row(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ShowTitle(
+                title: 'ยอดรวมสินค้า : ',
+                textStyle: MyConstant().h2Style(),
+              )
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ShowTitle(
+                  title: totalProductTnts[index].toString(),
+                  textStyle: MyConstant().h2Style(),
+                )
+              ],
+            ),
+          ),
+        ],
+      );
 
   Row buildButton(index) {
     return Row(
@@ -199,12 +234,7 @@ class _ShowOrderAdminState extends State<ShowOrderAdmin> {
     String url =
         '${MyConstant.domain}/shopping/editStatusWhereId.php?isAdd=true&id=$id&status=$status';
     await Dio().get(url).then((value) {
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => AdminServer(),
-          ),
-          (route) => false);
+      MyDialog().normalDialogOrderOk(context, 'รับคำสั่งซื้อเรียบร้อยแล้ว');
     });
   }
 

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_myappication_1/foodmenulist7/food_menu_list7.1.dart';
-import 'package:flutter_myappication_1/foodmenulist7/food_menu_list7.2.dart';
-import 'package:flutter_myappication_1/foodmenulist7/food_menu_list7.3.dart';
-import 'package:flutter_myappication_1/foodmenulist7/food_menu_list7.4.dart';
-import 'package:flutter_myappication_1/foodmenulist7/food_menu_list7.5.dart';
-import 'package:flutter_myappication_1/foodmenulist7/food_menu_list7.6.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist7/food_menu_list7.1.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist7/food_menu_list7.2.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist7/food_menu_list7.3.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist7/food_menu_list7.4.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist7/food_menu_list7.5.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist7/food_menu_list7.6.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_image.dart';

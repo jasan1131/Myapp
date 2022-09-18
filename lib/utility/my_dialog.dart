@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/states/admin.dart';
 import 'package:flutter_myappication_1/states/authen.dart';
 import 'package:flutter_myappication_1/states/buyer_sevice.dart';
+import 'package:flutter_myappication_1/states/rider_service.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_image.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
@@ -119,6 +120,58 @@ class MyDialog {
                   builder: (context) => Authen(),
                 ),
                 (route) => false),
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<Null> normalDialogOrderOk(BuildContext context, String title) async {
+    showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: Column(
+          children: [
+            Image.asset(
+              MyConstant.ok,
+              height: 150,
+            ),
+            ShowTitle(title: title)
+          ],
+        ),
+        children: [
+          TextButton(
+            onPressed: () => Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AdminServer(),
+                ),
+                (route) => false),
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<Null> normalDialogConfirmOrderOk(
+      BuildContext context, String title) async {
+    showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: Column(
+          children: [
+            Image.asset(
+              MyConstant.ok,
+              height: 150,
+            ),
+            ShowTitle(title: title)
+          ],
+        ),
+        children: [
+          TextButton(
+            onPressed: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => RiderService(),), (route) => false),
             child: Text('OK'),
           ),
         ],

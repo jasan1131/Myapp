@@ -5,8 +5,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/models/order_model.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
-import 'package:flutter_myappication_1/states/rider_service.dart';
+
 import 'package:flutter_myappication_1/utility/my_constant.dart';
+import 'package:flutter_myappication_1/utility/my_dialog.dart';
+import 'package:flutter_myappication_1/widgets/show_image.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -84,6 +86,8 @@ class _ShowConfirmOrderByRiderState extends State<ShowConfirmOrderByRider> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
+        title: Text('รายการสินค้าที่ลุกค้าสั่ง'),
         backgroundColor: MyConstant.primary,
       ),
       body: Container(
@@ -97,8 +101,10 @@ class _ShowConfirmOrderByRiderState extends State<ShowConfirmOrderByRider> {
                 width: MediaQuery.of(context).size.width * 0.5,
                 height: MediaQuery.of(context).size.height * 0.35,
                 child: CachedNetworkImage(
-                  imageUrl: '${MyConstant.domain}${userModels[index].avatar}',
+                  errorWidget: (context, url, error) =>
+                      ShowImage(path: MyConstant.avatar),
                   placeholder: (context, url) => ShowProgress(),
+                  imageUrl: '${MyConstant.domain}${userModels[index].avatar}',
                 ),
               ),
               Column(
@@ -142,19 +148,22 @@ class _ShowConfirmOrderByRiderState extends State<ShowConfirmOrderByRider> {
                   ),
                 ],
               ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.75,
-                child: ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(MyConstant.light)),
-                    onPressed: () {
-                      confirmOrder(index);
-                    },
-                    child: ShowTitle(
-                      title: 'ยันยันการรับสินค้า',
-                      textStyle: MyConstant().h3BlackStyle(),
-                    )),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 18),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(MyConstant.light)),
+                      onPressed: () {
+                        confirmOrder(index);
+                      },
+                      child: ShowTitle(
+                        title: 'ยันยันการรับสินค้า',
+                        textStyle: MyConstant().h3BlackStyle(),
+                      )),
+                ),
               ),
             ],
           ),
@@ -172,12 +181,8 @@ class _ShowConfirmOrderByRiderState extends State<ShowConfirmOrderByRider> {
     String url =
         '${MyConstant.domain}/shopping/editStatusWhereId.php?isAdd=true&id=$id&idRider=$idRider&nameRider=$nameRider&status=$status';
     await Dio().get(url).then((value) {
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => RiderService(),
-          ),
-          (route) => false);
+      MyDialog()
+          .normalDialogConfirmOrderOk(context, 'รับคำสั่งซื้อเรียบร้อยแล้ว');
     });
   }
 

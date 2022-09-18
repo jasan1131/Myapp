@@ -169,7 +169,7 @@ class _RiderMapsState extends State<RiderMaps> {
       return Marker(
         markerId: MarkerId('userMarker'),
         position: LatLng(lat1!, lng1!),
-        icon: BitmapDescriptor.defaultMarkerWithHue(150.0),
+        icon: BitmapDescriptor.defaultMarkerWithHue(60.0),
         infoWindow: InfoWindow(title: 'ลูกค้า'),
       );
     }

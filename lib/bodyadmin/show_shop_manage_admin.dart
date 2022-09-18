@@ -44,6 +44,7 @@ class _ShopManageAdminState extends State<ShopManageAdmin> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: MyConstant.primary,
           title: Text('หน้าร้าน'),
           centerTitle: true,
         ),

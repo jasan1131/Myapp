@@ -51,6 +51,7 @@ class _AddProductState extends State<AddProduct> {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: MyConstant.primary,
         centerTitle: true,
         actions: [
           IconButton(
@@ -103,7 +104,7 @@ class _AddProductState extends State<AddProduct> {
     return Container(
       width: constraints.maxWidth * 0.7,
       child: ElevatedButton(
-        style: MyConstant().myButtonStyle(),
+        style: MyConstant().myButtonStyleAdd(),
         onPressed: () {
           processAddProduct();
         },

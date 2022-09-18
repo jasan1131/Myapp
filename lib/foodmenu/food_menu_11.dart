@@ -1,16 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist11/food_menu_list11.1.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist11/food_menu_list11.2.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist11/food_menu_list11.3.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist11/food_menu_list11.4.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist11/food_menu_list11.5.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist11/food_menu_list11.6.dart';
+import 'package:flutter_myappication_1/foodmenulist/foodmenulist11/food_menu_list11.7.dart';
+import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_image.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 
 class FoodMenu11 extends StatefulWidget {
-  const FoodMenu11({Key? key}) : super(key: key);
+  final UserModel userModel;
+  const FoodMenu11({Key? key, required this.userModel}) : super(key: key);
 
   @override
   State<FoodMenu11> createState() => _FoodMenu11State();
 }
 
 class _FoodMenu11State extends State<FoodMenu11> {
+  UserModel? userModel;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    userModel = widget.userModel;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,41 +96,85 @@ class _FoodMenu11State extends State<FoodMenu11> {
           ),
         ),
         TextButton(
-          onPressed: () {},
-          child: ShowTitle(title: '1.เนื้อหมู'),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FoodMenuList11_1(userModel: userModel!),
+            ),
+          ),
+          child: ShowTitle(
+            title: '1.หมูเนื้อแดงล้วน',
+            textStyle: TextStyle(decoration: TextDecoration.underline),
+          ),
         ),
         TextButton(
-          onPressed: () {},
-          child: ShowTitle(title: '2.กระเทียม'),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FoodMenuList11_2(userModel: userModel!),
+            ),
+          ),
+          child: ShowTitle(title: '2.กระเทียม',
+            textStyle: TextStyle(decoration: TextDecoration.underline),),
         ),
         TextButton(
-          onPressed: () {},
-          child: ShowTitle(title: '3.ต้นหอม'),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FoodMenuList11_3(userModel: userModel!),
+            ),
+          ),
+          child: ShowTitle(title: '3.ต้นหอม',
+            textStyle: TextStyle(decoration: TextDecoration.underline),),
         ),
         TextButton(
-          onPressed: () {},
-          child: ShowTitle(title: '4.น้ำมันหอย'),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FoodMenuList11_4(userModel: userModel!),
+            ),
+          ),
+          child: ShowTitle(title: '4.น้ำมันหอยตราแม่ครัว',
+            textStyle: TextStyle(decoration: TextDecoration.underline),),
         ),
         TextButton(
-          onPressed: () {},
-          child: ShowTitle(title: '5.ซีอิ๊วขาว'),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FoodMenuList11_5(userModel: userModel!),
+            ),
+          ),
+          child: ShowTitle(title: '5.ซีอิ๊วขาวตราเด็กสมบูรณ์ สูตร 1',
+            textStyle: TextStyle(decoration: TextDecoration.underline),),
         ),
         TextButton(
-          onPressed: () {},
-          child: ShowTitle(title: '6.น้ำตาล'),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FoodMenuList11_6(userModel: userModel!),
+            ),
+          ),
+          child: ShowTitle(title: '6.น้ำตาล',
+            textStyle: TextStyle(decoration: TextDecoration.underline),),
         ),
         TextButton(
-          onPressed: () {},
-          child: ShowTitle(title: '7.พริกไทย'),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FoodMenuList11_7(userModel: userModel!),
+            ),
+          ),
+          child: ShowTitle(title: '7.พริกไทย',
+            textStyle: TextStyle(decoration: TextDecoration.underline),),
         ),
       ],
     );
   }
 
   Widget buildImage() => Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: ShowImage(path: MyConstant.food11),
-  );
+        padding: const EdgeInsets.all(8.0),
+        child: ShowImage(path: MyConstant.food11),
+      );
 
   Widget buildHead() {
     return Padding(

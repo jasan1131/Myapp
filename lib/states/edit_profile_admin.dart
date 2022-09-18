@@ -83,13 +83,14 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: MyConstant.primary,
         centerTitle: true,
-        title: Text('Edit Profile'),
+        title: Text('แก้ไขข้อมูล'),
         actions: [
           IconButton(
             onPressed: () => processEditProfileAdmin(),
             icon: Icon(Icons.edit),
-            tooltip: 'Edit Profile Admin',
+            tooltip: 'แก้ไขข้อมูล แอดมิน',
           ),
         ],
       ),
@@ -102,13 +103,13 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
             child: ListView(
               padding: EdgeInsets.all(16),
               children: [
-                buildTitle('Avatar :'),
+                buildTitle('รูปผู้ใช้ :'),
                 buildAvatar(constraints),
-                buildTitle('General :'),
+                buildTitle('ข้อมูลแอดมิน :'),
                 buildName(constraints),
                 buildAddress(constraints),
                 buildPhone(constraints),
-                buildTitle('Location :'),
+                buildTitle('แผนที่ :'),
                 buildMap(constraints),
                 buildButtonEdit(),
               ],
@@ -166,7 +167,7 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
     return ElevatedButton.icon(
       onPressed: () => processEditProfileAdmin(),
       icon: Icon(Icons.edit),
-      label: Text('Edit Profile Admin'),
+      label: Text('แก้ไขข้อมูล'),
     );
   }
 
@@ -226,6 +227,7 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
         Row(
           children: [
             IconButton(
+              iconSize: 45,
               onPressed: () => createAvatar(source: ImageSource.camera),
               icon: Icon(
                 Icons.add_a_photo,
@@ -251,6 +253,7 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
                     ),
             ),
             IconButton(
+              iconSize: 45,
               onPressed: () => createAvatar(source: ImageSource.gallery),
               icon: Icon(
                 Icons.add_photo_alternate,
@@ -287,7 +290,7 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
             },
             controller: nameController,
             decoration: InputDecoration(
-              hintText: 'Name :',
+              labelText: 'ชื่อ :',
               border: OutlineInputBorder(),
             ),
           ),
@@ -314,7 +317,7 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
             maxLines: 5,
             controller: addressController,
             decoration: InputDecoration(
-              hintText: 'Address :',
+              labelText: 'ที่อยู่ :',
               border: OutlineInputBorder(),
             ),
           ),
@@ -341,7 +344,7 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
             keyboardType: TextInputType.phone,
             controller: phoneController,
             decoration: InputDecoration(
-              hintText: 'Phone :',
+              labelText: 'เบอร์โทรศัพท์ :',
               border: OutlineInputBorder(),
             ),
           ),

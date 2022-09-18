@@ -38,7 +38,7 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String id = preferences.getString('id')!;
     String apiGetProductWhereIdProduct =
-        '${MyConstant.domain}/shopping/getProductWhereIdProduct.php?isAdd=true&idproduct=$id';
+        '${MyConstant.domain}/shopping/getProductWhereWsProduct.php';
     await Dio().get(apiGetProductWhereIdProduct).then(
       (value) {
         // print('### value ==> $value');
@@ -94,7 +94,7 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
         child: FloatingActionButton(
           backgroundColor: MyConstant.dark,
           onPressed: () =>
-              Navigator.pushNamed(context, MyConstant.rounteAddProduct)
+              Navigator.pushNamed(context, MyConstant.rounteAddProductWholeSale)
                   .then((value) => loadValueFromApi()),
           child: Text('เพิ่มสินค้า'),
         ),
@@ -242,7 +242,7 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
             placeholder: (context, url) => ShowProgress(),
           ),
           title: ShowTitle(
-            title: 'Delete ${productModel.nameproduct} ?',
+            title: 'ลบสินค้า ${productModel.nameproduct} ?',
             textStyle: MyConstant().h2Style(),
           ),
           subtitle: ShowTitle(
@@ -261,11 +261,11 @@ class _ShowProductWholeSaleAdminState extends State<ShowProductWholeSaleAdmin> {
                 loadValueFromApi();
               });
             },
-            child: Text('Delete'),
+            child: Text('ลบ'),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel'),
+            child: Text('ยกเลิก'),
           ),
         ],
       ),

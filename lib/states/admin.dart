@@ -72,10 +72,10 @@ class _AdminServerState extends State<AdminServer> {
             userModel = UserModel.fromMap(item);
             // widgets.add(ShopManageAdmin(userModel: userModel!));
             widgets.add(ShowOrderAdmin());
-            widgets.add(ShowHistoryByOrderByUser());
             widgets.add(ShowProductAdmin());
             widgets.add(ShowProductSpecailAdmin());
             widgets.add(ShowProductWholeSaleAdmin());
+            widgets.add(ShowHistoryByOrderByUser());
             widgets.add(CheckStockProduct());
           });
         });
@@ -83,10 +83,14 @@ class _AdminServerState extends State<AdminServer> {
     });
   }
 
+  List<String> titles = ['รายการสินค้าที่ลูกค้าสั่ง', 'รายการสินค้า', 'รายการสินค้าราคาพิเศษ', 'รายการสินค้าราคาส่ง', 'ประวัติการสั่งซื้อของลูกค้า', 'สต็อกสินค้า'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: MyConstant.primary,
+        title: Text('${titles[indexWidget]}'),
         centerTitle: true,
       ),
       drawer: widgets.length == 0
@@ -99,10 +103,10 @@ class _AdminServerState extends State<AdminServer> {
                     children: [
                       buildHead(),
                       menuShowOrder(),
-                      menuShowHistoryOrder(),
                       menuProduct(),
                       menuProductSpecail(),
                       menuProductWholeSale(),
+                      menuShowHistoryOrder(),
                       menuCheckStockProduct(),
                     ],
                   ),
@@ -127,7 +131,7 @@ class _AdminServerState extends State<AdminServer> {
           },
           icon: Padding(
             padding: const EdgeInsets.only(right: 16),
-            child: Icon(Icons.home),
+            child: Icon(Icons.settings_outlined),
           ),
           iconSize: 36,
           color: MyConstant.light,
@@ -170,7 +174,7 @@ class _AdminServerState extends State<AdminServer> {
     );
   }
 
-  ListTile menuShowHistoryOrder() {
+  ListTile menuProduct() {
     return ListTile(
       onTap: () {
         setState(() {
@@ -179,28 +183,7 @@ class _AdminServerState extends State<AdminServer> {
         });
       },
       leading: Icon(
-        Icons.filter_2_outlined,
-      ),
-      title: ShowTitle(
-        title: 'ประวัติสินค้าที่ลูกค้าสั่ง',
-        textStyle: MyConstant().h2Style(),
-      ),
-      subtitle: ShowTitle(
-          title: 'แสดงรายละเอียดประวัติการสั่งซื้อสินค้าจากลูกค้า',
-          textStyle: MyConstant().h3Style()),
-    );
-  }
-
-  ListTile menuProduct() {
-    return ListTile(
-      onTap: () {
-        setState(() {
-          indexWidget = 2;
-          Navigator.pop(context);
-        });
-      },
-      leading: Icon(
-        Icons.filter_2_outlined,
+        Icons.filter_1_outlined,
       ),
       title: ShowTitle(
         title: 'รายการสินค้า',
@@ -216,12 +199,12 @@ class _AdminServerState extends State<AdminServer> {
     return ListTile(
       onTap: () {
         setState(() {
-          indexWidget = 3;
+          indexWidget = 2;
           Navigator.pop(context);
         });
       },
       leading: Icon(
-        Icons.filter_3_outlined,
+        Icons.filter_2_outlined,
       ),
       title: ShowTitle(
         title: 'รายการสินค้าราคาพิเศษ',
@@ -237,6 +220,27 @@ class _AdminServerState extends State<AdminServer> {
     return ListTile(
       onTap: () {
         setState(() {
+          indexWidget = 3;
+          Navigator.pop(context);
+        });
+      },
+      leading: Icon(
+        Icons.filter_3_outlined,
+      ),
+      title: ShowTitle(
+        title: 'รายการสินค้าราคาส่ง',
+        textStyle: MyConstant().h2Style(),
+      ),
+      subtitle: ShowTitle(
+          title: 'แสดงรายละเอียดของสินค้าราคาส่ง',
+          textStyle: MyConstant().h3Style()),
+    );
+  }
+
+  ListTile menuShowHistoryOrder() {
+    return ListTile(
+      onTap: () {
+        setState(() {
           indexWidget = 4;
           Navigator.pop(context);
         });
@@ -245,11 +249,11 @@ class _AdminServerState extends State<AdminServer> {
         Icons.filter_4_outlined,
       ),
       title: ShowTitle(
-        title: 'รายการสินค้าราคาส่ง',
+        title: 'ประวัติสินค้าที่ลูกค้าสั่ง',
         textStyle: MyConstant().h2Style(),
       ),
       subtitle: ShowTitle(
-          title: 'แสดงรายละเอียดของสินค้าราคาส่ง',
+          title: 'แสดงรายละเอียดประวัติการสั่งซื้อสินค้าจากลูกค้า',
           textStyle: MyConstant().h3Style()),
     );
   }

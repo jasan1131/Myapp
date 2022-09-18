@@ -70,13 +70,14 @@ class _EditProductSpecialState extends State<EditProductSpecial> {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: MyConstant.primary,
         centerTitle: true,
-        title: Text('Edit Product'),
+        title: Text('แก้ไขข้อมูลสินค้า'),
         actions: [
           IconButton(
             onPressed: () => procesEdit(),
             icon: Icon(Icons.edit),
-            tooltip: 'Edit Product',
+            tooltip: 'แก้ไขข้อมูลสินค้า',
           ),
         ],
       ),
@@ -93,9 +94,9 @@ class _EditProductSpecialState extends State<EditProductSpecial> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    buildTitle('General :'),
+                    buildTitle('ชื่อสินค้า :'),
                     buildName(constraints),
-                    buildTitle('Type Product :'),
+                    buildTitle('ประเภทของสินค้า :'),
                     buildProductVegetables(size),
                     buildProductFruit(size),
                     buildProductMeetPork(size),
@@ -109,7 +110,7 @@ class _EditProductSpecialState extends State<EditProductSpecial> {
                     buildPrice(constraints),
                     buildUnitPrice(constraints),
                     buildDetail(constraints),
-                    buildTitle('Image Product :'),
+                    buildTitle('รูปของสินค้า :'),
                     buildImage(constraints, 0),
                     buildImage(constraints, 1),
                     buildImage(constraints, 2),
@@ -135,7 +136,7 @@ class _EditProductSpecialState extends State<EditProductSpecial> {
           child: ElevatedButton.icon(
             onPressed: () => procesEdit(),
             icon: Icon(Icons.edit),
-            label: Text('Edit Product'),
+            label: Text('แก้ไขข้อมูลสินค้า'),
           ),
         ),
       ],
@@ -202,7 +203,7 @@ class _EditProductSpecialState extends State<EditProductSpecial> {
           child: TextFormField(
             controller: UnitProductController,
             decoration: InputDecoration(
-              labelText: 'Name :',
+              labelText: 'หน่วยสินค้า :',
               border: OutlineInputBorder(),
             ),
           ),
@@ -221,7 +222,7 @@ class _EditProductSpecialState extends State<EditProductSpecial> {
           child: TextFormField(
             controller: UnitPriceController,
             decoration: InputDecoration(
-              labelText: 'Name :',
+              labelText: 'หน่วยสินค้า :',
               border: OutlineInputBorder(),
             ),
           ),
@@ -239,7 +240,7 @@ class _EditProductSpecialState extends State<EditProductSpecial> {
           child: TextFormField(
             controller: NameController,
             decoration: InputDecoration(
-              labelText: 'Name :',
+              labelText: 'ชื่อสินค้า :',
               border: OutlineInputBorder(),
             ),
           ),
@@ -467,7 +468,7 @@ class _EditProductSpecialState extends State<EditProductSpecial> {
             keyboardType: TextInputType.phone,
             controller: NumberController,
             decoration: InputDecoration(
-              labelText: 'Number :',
+              labelText: 'จำนวนสินค้า :',
               border: OutlineInputBorder(),
             ),
           ),
@@ -487,7 +488,7 @@ class _EditProductSpecialState extends State<EditProductSpecial> {
             keyboardType: TextInputType.phone,
             controller: PriceController,
             decoration: InputDecoration(
-              labelText: 'Price :',
+              labelText: 'ราคาสินค้า :',
               border: OutlineInputBorder(),
             ),
           ),
@@ -506,7 +507,7 @@ class _EditProductSpecialState extends State<EditProductSpecial> {
             maxLines: 3,
             controller: DetailController,
             decoration: InputDecoration(
-              labelText: 'Detail :',
+              labelText: 'รายละเอียดสินค้า :',
               border: OutlineInputBorder(),
             ),
           ),
