@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
+import 'package:flutter_myappication_1/states/edit_profile_buyer.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
@@ -30,9 +31,9 @@ class _ShowManageBuyerState extends State<ShowManageBuyer> {
 
   Future<Null> refreshUserModel() async {
     print('## refreshUserModel Work');
-    String apiGetUserWhereId =
+    String path =
         '${MyConstant.domain}/shoppingmall/getUserWhereId.php?isAdd=true&id=${userModel!.id}';
-    await Dio().get(apiGetUserWhereId).then((value) {
+    await Dio().get(path).then((value) {
       for (var item in json.decode(value.data)) {
         setState(() {
           userModel = UserModel.fromMap(item);
@@ -53,8 +54,11 @@ class _ShowManageBuyerState extends State<ShowManageBuyer> {
           backgroundColor: MyConstant.primary,
           child: Icon(Icons.edit_outlined),
           onPressed: () {
-            Navigator.pushNamed(context, MyConstant.rounteEditProfileAdmin)
-                .then((value) => refreshUserModel());
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditProfileBuyer(),
+                )).then((value) => refreshUserModel());
           },
         ),
         body: LayoutBuilder(
@@ -64,19 +68,16 @@ class _ShowManageBuyerState extends State<ShowManageBuyer> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: ShowTitle(
-                      title: 'รูปโปรไฟล์ :',
-                      textStyle: MyConstant().h2Style(),
-                    ),
-                  ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      ShowTitle(
+                        title: 'รูปโปรไฟล์ :',
+                        textStyle: MyConstant().h2Stylebold(),
+                      ),
                       Container(
-                        margin: EdgeInsets.symmetric(vertical: 16),
                         width: constraints.maxWidth * 0.6,
+                        height: constraints.maxWidth * 0.6,
                         child: CachedNetworkImage(
                           imageUrl: '${MyConstant.domain}${userModel!.avatar}',
                           placeholder: (context, url) => ShowProgress(),
@@ -84,70 +85,134 @@ class _ShowManageBuyerState extends State<ShowManageBuyer> {
                       ),
                     ],
                   ),
-                  ShowTitle(title: 'ชื่อ :', textStyle: MyConstant().h2Style()),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ShowTitle(
-                            title: userModel!.name,
-                            textStyle: MyConstant().h2Style()),
-                      ),
-                    ],
-                  ),
-                  ShowTitle(
-                    title: 'ที่อยู่ :',
-                    textStyle: MyConstant().h2Style(),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: constraints.maxWidth * 0.6,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ShowTitle(title: userModel!.address),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Row(
+                      children: [
+                        ShowTitle(
+                          title: 'ชื่อ - นามกสุล : ',
+                          textStyle: MyConstant().h2Stylebold(),
                         ),
-                      ),
-                    ],
-                  ),
-                  ShowTitle(
-                    title: 'เบอร์โทรศัพท์ : ${userModel!.phone}',
-                    textStyle: MyConstant().h2Style(),
-                  ),
-                  ShowTitle(
-                      title: 'Location :', textStyle: MyConstant().h2Style()),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 16),
-                        width: constraints.maxWidth * 0.6,
-                        height: constraints.maxWidth * 0.6,
-                        child: GoogleMap(
-                          initialCameraPosition: CameraPosition(
-                            target: LatLng(
-                              double.parse(userModel!.lat),
-                              double.parse(userModel!.lng),
-                            ),
-                            zoom: 16,
+                        Padding(
+                          padding: const EdgeInsets.only(top: 2),
+                          child: ShowTitle(
+                            title: '${userModel!.name} ${userModel!.seconname}',
+                            textStyle: MyConstant().h2Style(),
                           ),
-                          markers: <Marker>[
-                            Marker(
-                                markerId: MarkerId('id'),
-                                position: LatLng(
-                                  double.parse(userModel!.lat),
-                                  double.parse(userModel!.lng),
-                                ),
-                                infoWindow: InfoWindow(
-                                    title: 'You Here ',
-                                    snippet:
-                                        'lat = ${userModel!.lat}, lng = ${userModel!.lng}')),
-                          ].toSet(),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ShowTitle(
+                          title: 'ที่อยู่ : ',
+                          textStyle: MyConstant().h2Stylebold(),
+                        ),
+                        Container(
+                            width: MediaQuery.of(context).size.width * 0.75,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 2),
+                              child: ShowTitle(
+                                title: userModel!.address,
+                                textStyle: MyConstant().h2Style(),
+                              ),
+                            )),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Row(
+                      children: [
+                        ShowTitle(
+                          title: 'เบอร์โทรศัพท์ : ',
+                          textStyle: MyConstant().h2Stylebold(),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 6),
+                          child: ShowTitle(
+                            title: userModel!.phone,
+                            textStyle: MyConstant().h2Style(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Row(
+                      children: [
+                        ShowTitle(
+                          title: 'เฟสบุ๊ก : ',
+                          textStyle: MyConstant().h2Stylebold(),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 6),
+                          child: ShowTitle(
+                            title: userModel!.facebook,
+                            textStyle: MyConstant().h2Style(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Row(
+                      children: [
+                        ShowTitle(
+                          title: 'ไลน์ไอดี : ',
+                          textStyle: MyConstant().h2Stylebold(),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 6),
+                          child: ShowTitle(
+                            title: userModel!.line,
+                            textStyle: MyConstant().h2Style(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ShowTitle(
+                            title: 'แผนที่ : ',
+                            textStyle: MyConstant().h2Stylebold()),
+                        Container(
+                          width: constraints.maxWidth * 0.6,
+                          height: constraints.maxWidth * 0.6,
+                          child: GoogleMap(
+                            initialCameraPosition: CameraPosition(
+                              target: LatLng(
+                                double.parse(userModel!.lat),
+                                double.parse(userModel!.lng),
+                              ),
+                              zoom: 16,
+                            ),
+                            markers: <Marker>[
+                              Marker(
+                                  markerId: MarkerId('id'),
+                                  position: LatLng(
+                                    double.parse(userModel!.lat),
+                                    double.parse(userModel!.lng),
+                                  ),
+                                  infoWindow: InfoWindow(
+                                      title: 'You Here ',
+                                      snippet:
+                                          'lat = ${userModel!.lat}, lng = ${userModel!.lng}')),
+                            ].toSet(),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

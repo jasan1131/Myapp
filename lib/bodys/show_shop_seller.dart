@@ -11,6 +11,7 @@ import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 
 class ShowShopSeller extends StatefulWidget {
+  
   const ShowShopSeller({Key? key}) : super(key: key);
 
   @override
@@ -18,6 +19,7 @@ class ShowShopSeller extends StatefulWidget {
 }
 
 class _ShowShopSellerState extends State<ShowShopSeller> {
+  
   bool load = true;
   List<UserModel> userModels = [];
 
@@ -65,12 +67,9 @@ class _ShowShopSellerState extends State<ShowShopSeller> {
                           fit: BoxFit.cover,
                           imageUrl:
                               '${MyConstant.domain}${userModels[index].avatar}'),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ShowTitle(
-                          title: cutWord(userModels[index].name),
-                          textStyle: MyConstant().h2Style(),
-                        ),
+                      ShowTitle(
+                        title: userModels[index].nameseller,
+                        textStyle: MyConstant().h1Stylebold(),
                       ),
                       ElevatedButton(
                           onPressed: () {

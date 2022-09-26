@@ -31,6 +31,8 @@ class _CreateAccountState extends State<CreateAccount> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  TextEditingController facebookController = TextEditingController();
+  TextEditingController lineController = TextEditingController();
 
   @override
   void initState() {
@@ -333,6 +335,87 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
+  Row buildFacebook(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 16),
+          width: size * 0.75,
+          child: TextFormField(
+            controller: facebookController,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'กรุณากรอก เฟสบุ๊ก ด้วย';
+              } else {}
+            },
+            decoration: InputDecoration(
+              hintText: 'เฟสบุ๊ก :',
+              hintStyle: MyConstant().h3Style(),
+              prefixIcon: Icon(
+                Icons.facebook_outlined,
+                color: MyConstant.dark,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: MyConstant.dark,
+                ),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.light),
+                borderRadius: BorderRadius.circular(15),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildLine(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 15),
+          width: size * 0.75,
+          child: TextFormField(
+            controller: lineController,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'กรุณากรอก ไลน์ ด้วย';
+              } else {}
+            },
+            decoration: InputDecoration(
+              hintText: 'ไลน์ไอดี :',
+              hintStyle: MyConstant().h3Style(),
+              prefixIcon: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 13),
+                child: ImageIcon(
+                  AssetImage(
+                    MyConstant.line,
+                  ),
+                  color: MyConstant.dark,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: MyConstant.dark,
+                ),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.light),
+                borderRadius: BorderRadius.circular(15),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
@@ -358,9 +441,6 @@ class _CreateAccountState extends State<CreateAccount> {
                 buildTitle('รูปภาพ'),
                 buildSubTitle(),
                 buildAvatarIcon(size),
-                // buildTitle('ชนิดของผู้ใช้ :'),
-                // buildRadioBuyer(size),
-                // buildRadioRider(size),
                 buildTitle('ข้อมูลพื้นของผู้ใช้ :'),
                 buildUserName(size),
                 buildSeconName(size),
@@ -368,6 +448,8 @@ class _CreateAccountState extends State<CreateAccount> {
                 buildPassWord(size),
                 buildAddress(size),
                 buildPhone(size),
+                buildFacebook(size),
+                buildLine(size),
                 buildTitle('แสดงพิกัดที่คุณอยู่'),
                 buildMap(),
                 builCreate(context),
@@ -417,6 +499,8 @@ class _CreateAccountState extends State<CreateAccount> {
     String password = passwordController.text;
     String address = addressController.text;
     String phone = phoneController.text;
+    String facebook = facebookController.text;
+    String line = lineController.text;
     print(
         '## name = $name, seconname = $seconname, user = $user, password = $password, address = $address, phone = $phone');
     String path =
@@ -436,6 +520,8 @@ class _CreateAccountState extends State<CreateAccount> {
               password: password,
               address: address,
               phone: phone,
+              facebook: facebook,
+              line: line
             );
           } else {
             // have Avatar
@@ -458,6 +544,8 @@ class _CreateAccountState extends State<CreateAccount> {
                   password: password,
                   address: address,
                   phone: phone,
+                  facebook: facebook,
+                  line: line
                 );
               },
             );
@@ -476,15 +564,17 @@ class _CreateAccountState extends State<CreateAccount> {
       String? user,
       String? password,
       String? address,
-      String? phone}) async {
+      String? phone,
+      String? facebook,
+      String? line}) async {
     print('## ProcessInsertMySQL Work and avatar ==> $avatar');
     String apiInsertUser =
-        '${MyConstant.domain}/shopping/insertUser.php?isAdd=true&avatar=$avatar&type=$type&name=$name&seconname=$seconname&user=$user&password=$password&address=$address&phone=$phone&lat=$lat&lng=$lng';
+        '${MyConstant.domain}/shopping/insertUser.php?isAdd=true&avatar=$avatar&type=$type&name=$name&seconname=$seconname&user=$user&password=$password&address=$address&phone=$phone&facebook=$facebook&line=$line&lat=$lat&lng=$lng';
     await Dio().get(apiInsertUser).then((value) {
       if (value.toString() == 'true') {
         MyDialog().normalDialogOk(
           context,
-          'สมัครสมาชิกเสร็จสิน',
+          'สมัครสมาชิกเสร็จสิ้น',
           '',
         );
       } else {
@@ -583,58 +673,6 @@ class _CreateAccountState extends State<CreateAccount> {
       textStyle: MyConstant().h3Style(),
     );
   }
-
-  // Row buildRadioBuyer(double size) {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.center,
-  //     children: [
-  //       Container(
-  //         width: size * 0.6,
-  //         child: RadioListTile(
-  //           value: 'buyer',
-  //           groupValue: type,
-  //           onChanged: (value) {
-  //             setState(
-  //               () {
-  //                 type = value as String?;
-  //               },
-  //             );
-  //           },
-  //           title: ShowTitle(
-  //             title: 'ผู้ซื้อ',
-  //             textStyle: MyConstant().h3Style(),
-  //           ),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
-
-  // Row buildRadioRider(double size) {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.center,
-  //     children: [
-  //       Container(
-  //         width: size * 0.6,
-  //         child: RadioListTile(
-  //           value: 'rider',
-  //           groupValue: type,
-  //           onChanged: (value) {
-  //             setState(
-  //               () {
-  //                 type = value as String?;
-  //               },
-  //             );
-  //           },
-  //           title: ShowTitle(
-  //             title: 'ผู้ส่ง',
-  //             textStyle: MyConstant().h3Style(),
-  //           ),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
 
   Container buildTitle(String title) {
     return Container(

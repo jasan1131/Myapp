@@ -90,7 +90,7 @@ class _ShowOrderHistoryState extends State<ShowOrderHistory> {
   Widget buildNonHistoryOrder() => Center(
         child: ShowTitle(
           title: 'ไม่มีข้อมูลการสั่งซื้อ',
-          textStyle: MyConstant().h1Style(),
+          textStyle: MyConstant().h1Stylebold(),
         ),
       );
 
@@ -105,69 +105,92 @@ class _ShowOrderHistoryState extends State<ShowOrderHistory> {
     );
   }
 
-  ListView buildListView() {
-    return ListView.builder(
-      itemCount: historyModels.length,
-      itemBuilder: (context, index) => Column(
-        children: [
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
+  Widget buildListView() {
+    return Container(
+      decoration: MyConstant().gradientRadioBackground(),
+      child: ListView.builder(
+        itemCount: historyModels.length,
+        itemBuilder: (context, index) => Column(
+          children: [
+            Card(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  buildName(index),
-                  buildDateTime(index),
-                  buildDistance(index),
-                  buildTransport(index),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        buildName(index),
+                        buildDateTime(index),
+                        buildDistance(index),
+                        buildTransport(index),
+                      ],
+                    ),
+                  ),
                   buildHeadTitle(),
                   buildListViewHistoryProduct(index),
+                  buildDivider(),
                   buildTotal(index),
+                  buildDivider(),
+                  MyConstant().mySizeBox()
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Row buildHeadTitle() {
-    return Row(
-      children: [
-        Expanded(
-          flex: 3,
-          child: ShowTitle(
-            title: 'รายการสินค้า',
-            textStyle: MyConstant().h2Style(),
-          ),
+  Divider buildDivider() {
+    return Divider(
+      color: MyConstant.dark,
+    );
+  }
+
+  Widget buildHeadTitle() {
+    return Container(
+      decoration: BoxDecoration(color: MyConstant.light),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: ShowTitle(
+                title: 'รายชื่อสินค้า',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: ShowTitle(
+                title: 'จำนวน',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: ShowTitle(
+                title: 'ราคา/บาท',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+            ),
+            Expanded(
+              flex: 0,
+              child: ShowTitle(
+                title: 'ราคารวม/บาท',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+            ),
+          ],
         ),
-        Expanded(
-          flex: 1,
-          child: ShowTitle(
-            title: 'จำนวน',
-            textStyle: MyConstant().h2Style(),
-          ),
-        ),
-        Expanded(
-          flex: 1,
-          child: ShowTitle(
-            title: 'ราคา',
-            textStyle: MyConstant().h2Style(),
-          ),
-        ),
-        Expanded(
-          flex: 1,
-          child: ShowTitle(
-            title: 'ผลรวม',
-            textStyle: MyConstant().h2Style(),
-          ),
-        ),
-      ],
+      ),
     );
   }
 
   Widget buildListViewHistoryProduct(int index) => Container(
+        padding: const EdgeInsets.all(8.0),
         child: ListView.builder(
           shrinkWrap: true,
           physics: ScrollPhysics(),
@@ -176,54 +199,132 @@ class _ShowOrderHistoryState extends State<ShowOrderHistory> {
             children: [
               Expanded(
                 flex: 3,
-                child: ShowTitle(title: listNameProducts[index][index2]),
+                child: ShowTitle(
+                  title: listNameProducts[index][index2],
+                  textStyle: MyConstant().h3Style(),
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: ShowTitle(
+                  title: listAmunts[index][index2],
+                  textStyle: MyConstant().h3Style(),
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: ShowTitle(
+                  title: listPriceProducts[index][index2],
+                  textStyle: MyConstant().h3Style(),
+                ),
               ),
               Expanded(
                 flex: 1,
-                child: ShowTitle(title: listAmunts[index][index2]),
-              ),
-              Expanded(
-                flex: 1,
-                child: ShowTitle(title: listPriceProducts[index][index2]),
-              ),
-              Expanded(
-                flex: 1,
-                child: ShowTitle(title: listSums[index][index2]),
+                child: ShowTitle(
+                  title: listSums[index][index2],
+                  textStyle: MyConstant().h3Style(),
+                ),
               ),
             ],
           ),
         ),
       );
 
-  Widget buildTransport(int index) => ShowTitle(
-        title: 'ค่าจัดส่ง : ${historyModels[index].transport}',
-        textStyle: MyConstant().h2Style(),
+  Widget buildTransport(int index) => Row(
+        children: [
+          ShowTitle(
+            title: 'ค่าจัดส่ง : ',
+            textStyle: MyConstant().h3Stylebold(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 3),
+            child: ShowTitle(
+              title: '${historyModels[index].transport}',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ],
       );
 
-  Widget buildDistance(int index) => ShowTitle(
-        title: 'ระยะทาง : ${historyModels[index].distance}',
-        textStyle: MyConstant().h2Style(),
+  Widget buildDistance(int index) => Row(
+        children: [
+          ShowTitle(
+            title: 'ระยะทาง : ',
+            textStyle: MyConstant().h3Stylebold(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: ShowTitle(
+              title: '${historyModels[index].distance}',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ],
       );
 
   Widget buildDateTime(int index) {
-    return Row(
+    return Column(
       children: [
-        ShowTitle(
-          title:
-              'วันและเวลาในการสั่งซื้อ : ${historyModels[index].dateOrder} ${historyModels[index].timeOrder}',
-          textStyle: MyConstant().h2Style(),
+        Row(
+          children: [
+            ShowTitle(
+              title: 'วันที่สั่งซื้อ : ',
+              textStyle: MyConstant().h3Stylebold(),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: ShowTitle(
+                title: '${historyModels[index].dateOrder}',
+                textStyle: MyConstant().h3Style(),
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            ShowTitle(
+              title: 'เวลาที่สั่งซื้อ : ',
+              textStyle: MyConstant().h3Stylebold(),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: ShowTitle(
+                title: '${historyModels[index].timeOrder}',
+                textStyle: MyConstant().h3Style(),
+              ),
+            ),
+          ],
         ),
       ],
     );
   }
 
-  Widget buildName(int index) => ShowTitle(
-        title: 'ชื่อ : ${historyModels[index].nameBuyer}',
-        textStyle: MyConstant().h1Style(),
+  Widget buildName(int index) => Row(
+        children: [
+          ShowTitle(
+            title: 'ชื่อร้าน : ',
+            textStyle: MyConstant().h3Stylebold(),
+          ),
+          ShowTitle(
+            title: '${historyModels[index].nameSeller}',
+            textStyle: MyConstant().h3Style(),
+          ),
+        ],
       );
 
-  Widget buildTotal(int index) => ShowTitle(
-        title: 'ยอดรวมสินค้า : ${historyModels[index].total}',
-        textStyle: MyConstant().h2Style(),
+  Widget buildTotal(int index) => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            ShowTitle(
+              title: 'ยอดรวมสินค้า : ',
+              textStyle: MyConstant().h3Stylebold(),
+            ),
+            ShowTitle(
+              title: '${historyModels[index].total} / บาท',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ],
+        ),
       );
 }

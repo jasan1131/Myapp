@@ -82,7 +82,7 @@ class _BuyerShowShopSellerState extends State<BuyerShowShopSeller> {
       appBar: AppBar(
         backgroundColor: MyConstant.primary,
         centerTitle: true,
-        title: Text(userModel!.name),
+        title: Text(userModel!.nameseller),
         actions: [
           IconButton(
               onPressed: () => Navigator.push(

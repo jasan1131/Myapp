@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/bodyrider/show_confirm_order_by_rider.dart';
 import 'package:flutter_myappication_1/models/order_model.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
-import 'package:flutter_myappication_1/utility/my_dialog.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 
@@ -97,24 +96,29 @@ class _ShowOrderRiderState extends State<ShowOrderRider> {
                   decoration: MyConstant().gradientRadioBackground(),
                   child: ListView.builder(
                     itemCount: orderModels.length,
-                    itemBuilder: (context, index) => Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              buildNameBuyer(index),
-                              buildDateTime(index),
-                              buildTransport(index),
-                              buildTitle(),
-                              bildListViewOrder(index),
-                              buildShowTotal(index),
-                              buildButton(index),
-                            ],
+                    itemBuilder: (context, index) => Card(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                buildNameBuyer(index),
+                                buildDay(index),
+                                buildTime(index),
+                                buildTransport(index),
+                                buildDistance(index),
+                              ],
+                            ),
                           ),
-                        ),
+                          buildTitle(),
+                          bildListViewOrder(index),
+                          buildDivider(),
+                          buildShowTotal(index),
+                          buildDivider(),
+                          buildButton(index),
+                        ],
                       ),
                     ),
                   ),
@@ -138,21 +142,79 @@ class _ShowOrderRiderState extends State<ShowOrderRider> {
     );
   }
 
-  Row buildTransport(int index) {
+  Divider buildDivider() {
+    return Divider(
+      color: MyConstant.dark,
+    );
+  }
+
+  Row buildDistance(int index) {
     return Row(
       children: [
-        ShowTitle(title: 'ระยะทาง : ${orderModels[index].distance!} กิโลเมตร'),
+        ShowTitle(
+          title: 'ระยะทาง : ',
+          textStyle: MyConstant().h3Stylebold(),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 5),
+          child: ShowTitle(
+            title: '${orderModels[index].distance}',
+            textStyle: MyConstant().h3Style(),
+          ),
+        ),
       ],
     );
   }
 
-  Row buildDateTime(int index) {
+  Row buildTransport(int index) {
     return Row(
       children: [
-        ShowTitle(title: orderModels[index].dateOrder!),
+        ShowTitle(
+          title: 'ค่าจัดส่ง : ',
+          textStyle: MyConstant().h3Stylebold(),
+        ),
         Padding(
-          padding: const EdgeInsets.only(left: 4),
-          child: ShowTitle(title: orderModels[index].timeOrder!),
+          padding: const EdgeInsets.only(top: 5),
+          child: ShowTitle(
+            title: '${orderModels[index].transport}',
+            textStyle: MyConstant().h3Style(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildTime(int index) {
+    return Row(
+      children: [
+        ShowTitle(
+          title: 'เวลาที่สั่งซื้อ : ',
+          textStyle: MyConstant().h3Stylebold(),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 5),
+          child: ShowTitle(
+            title: orderModels[index].timeOrder!,
+            textStyle: MyConstant().h3Style(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildDay(int index) {
+    return Row(
+      children: [
+        ShowTitle(
+          title: 'วันที่สั่งซื้อ : ',
+          textStyle: MyConstant().h3Stylebold(),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 5),
+          child: ShowTitle(
+            title: orderModels[index].dateOrder!,
+            textStyle: MyConstant().h3Style(),
+          ),
         ),
       ],
     );
@@ -162,44 +224,35 @@ class _ShowOrderRiderState extends State<ShowOrderRider> {
     return Row(
       children: [
         ShowTitle(
-          title: orderModels[index].nameBuyer!,
-          textStyle: MyConstant().h2Style(),
+          title: 'ชื่อผู้ใช้ : ',
+          textStyle: MyConstant().h3Stylebold(),
+        ),
+        ShowTitle(
+          title: '${orderModels[index].nameBuyer!}',
+          textStyle: MyConstant().h3Style(),
         ),
       ],
     );
   }
 
-  Widget buildShowTotal(int index) => Row(
+  Widget buildShowTotal(int index) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
         children: [
-          Expanded(
-            flex: 4,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ShowTitle(
-                  title: 'ยอดรวมสินค้า : ',
-                  textStyle: MyConstant().h2Style(),
-                )
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ShowTitle(
-                    title: totalProductTnts[index].toString(),
-                    textStyle: MyConstant().h2Style(),
-                  )
-                ],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ShowTitle(
+                title: 'ยอดรวมสินค้า : ${totalProductTnts[index].toString()}',
+                textStyle: MyConstant().h3Style(),
               ),
-            ),
+            ],
           ),
         ],
-      );
+      ),
+    );
+  }
 
   Row buildButton(index) {
     return Row(
@@ -238,92 +291,95 @@ class _ShowOrderRiderState extends State<ShowOrderRider> {
     );
   }
 
-  ListView bildListViewOrder(int index) {
-    return ListView.builder(
-      itemCount: listOrderProducts[index].length,
-      shrinkWrap: true,
-      physics: ScrollPhysics(),
-      itemBuilder: (context, index2) => Row(
-        children: [
-          Expanded(
-              flex: 3,
-              child: ShowTitle(title: listOrderProducts[index][index2])),
-          Expanded(
-            flex: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ShowTitle(
+  Widget bildListViewOrder(int index) {
+    return Container(
+      padding: EdgeInsets.all(8.0),
+      child: ListView.builder(
+        itemCount: listOrderProducts[index].length,
+        shrinkWrap: true,
+        physics: ScrollPhysics(),
+        itemBuilder: (context, index2) => Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: ShowTitle(
+                title: listOrderProducts[index][index2],
+                textStyle: MyConstant().h3Style(),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: ShowTitle(
                   title: listOrderPrices[index][index2],
+                  textStyle: MyConstant().h3Style(),
                 ),
-              ],
+              ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ShowTitle(
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 22),
+                child: ShowTitle(
                   title: listOrderAmunts[index][index2],
+                  textStyle: MyConstant().h3Style(),
                 ),
-              ],
+              ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ShowTitle(
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 22),
+                child: ShowTitle(
                   title: listOrderSums[index][index2],
+                  textStyle: MyConstant().h3Style(),
                 ),
-              ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Container buildTitle() {
+  Widget buildTitle() {
     return Container(
-      padding: EdgeInsets.all(4),
       decoration: BoxDecoration(color: MyConstant.light),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 3,
-            child: ShowTitle(title: 'ชื่อสินค้า'),
-          ),
-          Expanded(
-            flex: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ShowTitle(title: 'จำนวน'),
-              ],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: ShowTitle(
+                title: 'สินค้า',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ShowTitle(title: 'ราคา'),
-              ],
+            Expanded(
+              flex: 1,
+              child: ShowTitle(
+                title: 'จำนวน',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ShowTitle(title: 'ราคารวม'),
-              ],
+            Expanded(
+              flex: 1,
+              child: ShowTitle(
+                title: 'ราคา/บาท',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
             ),
-          ),
-        ],
+            Expanded(
+              flex: 1,
+              child: ShowTitle(
+                title: 'ราคารวม/บาท',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

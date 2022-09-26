@@ -116,24 +116,20 @@ class _ShowProductSpecailAdminState extends State<ShowProductSpecailAdmin> {
         shape: RoundedRectangleBorder(
             side: BorderSide(color: MyConstant.dark),
             borderRadius: BorderRadius.circular(14)),
-        child: Row(
+        child: Column(
           children: [
             Container(
               padding: EdgeInsets.all(4),
-              width: constraints.maxWidth * 0.5 - 4,
+              width: constraints.maxWidth * 0.5,
               height: constraints.maxWidth * 0.5,
               child: Container(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    ShowTitle(
-                      title: productmodel[index].nameproduct,
-                      textStyle: MyConstant().h2Style(),
-                    ),
                     Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: MyConstant.dark),
+                        // border: Border.all(color: MyConstant.dark),
                         borderRadius: BorderRadius.circular(14),
                       ),
                       width: constraints.maxWidth * 0.5,
@@ -155,8 +151,9 @@ class _ShowProductSpecailAdminState extends State<ShowProductSpecailAdmin> {
               ),
             ),
             Container(
-              width: constraints.maxWidth * 0.5 - 4,
-              height: constraints.maxWidth * 0.4,
+              margin: EdgeInsets.all(8.0),
+              // width: constraints.maxWidth * 0.5,
+              // height: constraints.maxWidth * 0.4,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,11 +161,11 @@ class _ShowProductSpecailAdminState extends State<ShowProductSpecailAdmin> {
                   Row(
                     children: [
                       ShowTitle(
-                        title: 'ราคา :${productmodel[index].priceproduct}',
-                        textStyle: MyConstant().h3Style(),
+                        title: 'รายชื่อสินค้า : ',
+                        textStyle: MyConstant().h3Stylebold(),
                       ),
                       ShowTitle(
-                        title: '${productmodel[index].unitprice} THB',
+                        title: productmodel[index].nameproduct,
                         textStyle: MyConstant().h3Style(),
                       ),
                     ],
@@ -176,52 +173,81 @@ class _ShowProductSpecailAdminState extends State<ShowProductSpecailAdmin> {
                   Row(
                     children: [
                       ShowTitle(
-                        title: 'จำนวนสินค้า :${productmodel[index].numberproduct}',
-                        textStyle: MyConstant().h3Style(),
+                        title: 'ราคา : ',
+                        textStyle: MyConstant().h3Stylebold(),
                       ),
                       ShowTitle(
-                        title: '${productmodel[index].unitproduct} THB',
+                        title:
+                            '${productmodel[index].priceproduct} ${productmodel[index].unitprice} / บาท',
                         textStyle: MyConstant().h3Style(),
                       ),
                     ],
                   ),
-                  ShowTitle(
-                    title: cutWord(
-                        'รายละเอียดสินค้า : ${productmodel[index].detailproduct}'),
-                    textStyle: MyConstant().h3Style(),
+                  Row(
+                    children: [
+                      ShowTitle(
+                        title: 'จำนวนสินค้า : ',
+                        textStyle: MyConstant().h3Stylebold(),
+                      ),
+                      ShowTitle(
+                        title:
+                            '${productmodel[index].numberproduct} ${productmodel[index].unitproduct} / บาท',
+                        textStyle: MyConstant().h3Style(),
+                      ),
+                    ],
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      IconButton(
-                        onPressed: () {
-                          // print('## YOu Click Edit');
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => EditProductSpecial(
-                                  productModel: productmodel[index],
-                                ),
-                              )).then((value) => loadValueFromApi());
-                        },
-                        icon: Icon(
-                          Icons.edit_outlined,
-                          size: 36,
-                          color: MyConstant.dark,
-                        ),
+                      ShowTitle(
+                        title: 'รายละเอียดสินค้า : ',
+                        textStyle: MyConstant().h3Stylebold(),
                       ),
-                      IconButton(
-                        onPressed: () {
-                          print('## You Click Delete from index = $index');
-                          confirmDialogDelete(productmodel[index]);
-                        },
-                        icon: Icon(
-                          Icons.delete_outline,
-                          size: 36,
-                          color: Colors.red,
+                      Container(
+                        width: constraints.maxWidth * 0.6,
+                        child: ShowTitle(
+                          title:
+                              cutWord('${productmodel[index].detailproduct}'),
+                          textStyle: MyConstant().h3Style(),
                         ),
                       ),
                     ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            // print('## YOu Click Edit');
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditProductSpecial(
+                                    productModel: productmodel[index],
+                                  ),
+                                )).then((value) => loadValueFromApi());
+                          },
+                          icon: Icon(
+                            Icons.edit_outlined,
+                            size: 36,
+                            color: MyConstant.dark,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            print('## You Click Delete from index = $index');
+                            confirmDialogDelete(productmodel[index]);
+                          },
+                          icon: Icon(
+                            Icons.delete_outline,
+                            size: 36,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ),

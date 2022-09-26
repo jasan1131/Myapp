@@ -5,6 +5,7 @@ import 'package:flutter_myappication_1/states/confirm_order.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/utility/my_dialog.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,7 +18,8 @@ class CashOnDelivery extends StatefulWidget {
 
 class _CashOnDeliveryState extends State<CashOnDelivery> {
   UserModel? userModel;
-  String? dateTimeStr;
+  String? dateDays;
+  String? dateTimes;
   bool load = true;
   String? idbuyer;
   String? namebuyer;
@@ -28,6 +30,8 @@ class _CashOnDeliveryState extends State<CashOnDelivery> {
     super.initState();
     finedCurrentTime();
     findIdBuyer();
+    Intl.defaultLocale = 'th';
+    initializeDateFormatting();
   }
 
   Future<void> findIdBuyer() async {
@@ -38,11 +42,17 @@ class _CashOnDeliveryState extends State<CashOnDelivery> {
 
   void finedCurrentTime() {
     DateTime dateTime = DateTime.now();
-    DateFormat dateFormat = DateFormat('dd/MM/yyyy HH:mm:ss');
+    DateTime dateDay = DateTime.now();
+    // dayNow = dateDay.yearInBuddhistCalendar;
+    int dayNow = dateDay.year + 543;
+
+    DateFormat dateFormatDay = DateFormat('dd/MM/${dayNow}');
+    DateFormat dateFormatTime = DateFormat('HH:mm:ss');
     setState(() {
-      dateTimeStr = dateFormat.format(dateTime);
+      dateDays = dateFormatDay.format(dateDay);
+      dateTimes = dateFormatTime.format(dateTime);
     });
-    print('### DateTime = $dateTimeStr');
+    print('### DateTime = $dayNow');
   }
 
   @override
@@ -63,7 +73,6 @@ class _CashOnDeliveryState extends State<CashOnDelivery> {
 
   Widget buildBottom() {
     return Container(
-      width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
           InsertData();
@@ -76,11 +85,11 @@ class _CashOnDeliveryState extends State<CashOnDelivery> {
   Future<void> InsertData() async {
     var status = 'เก็บเงินปลายทาง';
     var urlAPIInsert =
-        '${MyConstant.domain}/shopping/insertSlip.php?isAdd=true&idbuyer=$idbuyer&namebuyer=$namebuyer&datepay=$dateTimeStr&status=$status';
+        '${MyConstant.domain}/shopping/insertSlip.php?isAdd=true&idbuyer=$idbuyer&namebuyer=$namebuyer&dateDay=$dateDays&dateTime=$dateTimes&statuswallet=$status';
     await Dio().get(urlAPIInsert).then(
           (value) => MyDialog(funcAction: success).actionDialog(
             context,
-            'ทำรายการเสร้จสิ้น',
+            'ทำรายการเสร็จสิ้น',
             'ขอบคุณที่ใช้บริการ',
           ),
         );
@@ -96,16 +105,28 @@ class _CashOnDeliveryState extends State<CashOnDelivery> {
   }
 
   Widget buildDateTime() {
-    return ShowTitle(
-      title: dateTimeStr == null ? 'dd/mm/yy HH:mm:ss' : dateTimeStr!,
-      textStyle: MyConstant().h2Style(),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ShowTitle(
+            title: dateDays == null ? 'dd/mm/yyyy' : dateDays!,
+            textStyle: MyConstant().h2Stylebold(),
+          ),
+        ),
+        ShowTitle(
+          title: dateTimes == null ? 'HH:mm:ss' : dateTimes!,
+          textStyle: MyConstant().h2Stylebold(),
+        ),
+      ],
     );
   }
 
   Widget buildHearder() {
     return ShowTitle(
-      title: 'วันที่ชำระเงิน',
-      textStyle: MyConstant().h1Style(),
+      title: 'วันและเวลาที่ชำระเงิน',
+      textStyle: MyConstant().h1Stylebold(),
     );
   }
 }

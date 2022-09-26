@@ -94,12 +94,12 @@ class _ShowAboutSellerState extends State<ShowAboutSeller> {
       appBar: AppBar(
         backgroundColor: MyConstant.primary,
         centerTitle: true,
-        title: Text(userModel!.name),
+        title: Text(userModel!.nameseller),
       ),
       body: userModel == null
           ? ShowProgress()
           : Container(
-              decoration: MyConstant().gradientRadioBackground(),
+              // decoration: MyConstant().gradientRadioBackground(),
               child: LayoutBuilder(
                 builder: (context, constraints) => SingleChildScrollView(
                   child: Padding(
@@ -121,6 +121,17 @@ class _ShowAboutSellerState extends State<ShowAboutSeller> {
                                 ),
                               ),
                             ],
+                          ),
+                          ListTile(
+                            leading: Icon(
+                              Icons.account_circle_outlined,
+                              color: Colors.black,
+                            ),
+                            title: ShowTitle(
+                              title:
+                                  '${userModel!.name} ${userModel!.seconname}',
+                              textStyle: MyConstant().h3BlackStyle(),
+                            ),
                           ),
                           ListTile(
                             leading: Icon(
@@ -150,13 +161,13 @@ class _ShowAboutSellerState extends State<ShowAboutSeller> {
                             title: Text.rich(
                               TextSpan(
                                 style: TextStyle(
-                                  color: Colors.black,
+                                  color: MyConstant.dark,
                                   decoration: TextDecoration.underline,
                                 ),
                                 children: [
                                   TextSpan(
                                     style: TextStyle(),
-                                    text: 'jasan1131@gmail.com',
+                                    text: userModel!.facebook,
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () async {
                                         String url =
@@ -176,20 +187,21 @@ class _ShowAboutSellerState extends State<ShowAboutSeller> {
                           ),
                           ListTile(
                             leading: ImageIcon(
-                                AssetImage(
-                                  MyConstant.line,
-                                ),
-                                color: Colors.black),
+                              AssetImage(
+                                MyConstant.line,
+                              ),
+                              color: Colors.black,
+                            ),
                             title: Text.rich(
                               TextSpan(
                                 style: TextStyle(
-                                  color: Colors.black,
+                                  color: MyConstant.dark,
                                   decoration: TextDecoration.underline,
                                 ),
                                 children: [
                                   TextSpan(
                                     style: TextStyle(),
-                                    text: 'jasan032',
+                                    text: userModel!.line,
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () async {
                                         String url =
@@ -209,19 +221,20 @@ class _ShowAboutSellerState extends State<ShowAboutSeller> {
                           ),
                           ListTile(
                             leading: ImageIcon(
-                                AssetImage(
-                                  MyConstant.instagram,
-                                ),
-                                color: Colors.black),
+                              AssetImage(
+                                MyConstant.instagram,
+                              ),
+                              color: Colors.black,
+                            ),
                             title: Text.rich(
                               TextSpan(
                                 style: TextStyle(
-                                  color: Colors.black,
+                                  color: MyConstant.dark,
                                   decoration: TextDecoration.underline,
                                 ),
                                 children: [
                                   TextSpan(
-                                    text: 'jason thongchai',
+                                    text: userModel!.instargarm,
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () async {
                                         String url =
@@ -241,19 +254,20 @@ class _ShowAboutSellerState extends State<ShowAboutSeller> {
                           ),
                           ListTile(
                             leading: ImageIcon(
-                                AssetImage(
-                                  MyConstant.twitter,
-                                ),
-                                color: Colors.black),
+                              AssetImage(
+                                MyConstant.twitter,
+                              ),
+                              color: Colors.black,
+                            ),
                             title: Text.rich(
                               TextSpan(
                                 style: TextStyle(
-                                  color: Colors.black,
+                                  color: MyConstant.dark,
                                   decoration: TextDecoration.underline,
                                 ),
                                 children: [
                                   TextSpan(
-                                    text: 'jasan Thongchai',
+                                    text: userModel!.twitter,
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () async {
                                         String url =
@@ -335,6 +349,9 @@ class _ShowAboutSellerState extends State<ShowAboutSeller> {
     }
 
     return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: MyConstant.primary),
+      ),
       margin: EdgeInsets.only(
         left: 16,
         right: 16,

@@ -24,6 +24,7 @@ class BuyerService extends StatefulWidget {
 }
 
 class _BuyerServiceState extends State<BuyerService> {
+  String? nameUser;
   List<Widget> widgets = [
     ShowShopSeller(),
     ShowOrderStatus(),
@@ -37,6 +38,14 @@ class _BuyerServiceState extends State<BuyerService> {
     // TODO: implement initState
     super.initState();
     findUserLogin();
+    findUser();
+  }
+
+  Future<Null> findUser() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      nameUser = preferences.getString('name');
+    });
   }
 
   Future<void> findUserLogin() async {
@@ -62,22 +71,38 @@ class _BuyerServiceState extends State<BuyerService> {
       for (var item in json.decode(value.data)) {
         setState(() {
           userModel = UserModel.fromMap(item);
-          print('### id login ==> ${userModel!.id}');
+          print('### id login ==> ${userModel!.seconname}');
         });
       }
       ;
     });
   }
 
-  List<String> titles = ['ร้านขายสินค้า', 'สถานะการสั่งซื้อ', 'ประวัติการสั่งซื้อ'];
+  List<String> titles = [
+    'ร้านขายสินค้า',
+    'สถานะการสั่งซื้อ',
+    'ประวัติการสั่งซื้อ'
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: MediaQuery.of(context).size.height * 0.1,
         backgroundColor: MyConstant.primary,
         centerTitle: true,
-        title: Text('${titles[indexWidget]}'),
+        title: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(nameUser == null ? 'User' : '$nameUser'),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text('${titles[indexWidget]}'),
+            ),
+          ],
+        ),
       ),
       drawer: Drawer(
         child: Stack(
@@ -86,7 +111,6 @@ class _BuyerServiceState extends State<BuyerService> {
               children: [
                 buildHeard(),
                 showShopSeller(),
-                // showMenuFood(),
                 showOrderStatus(),
                 showOrderHistory()
               ],
@@ -119,27 +143,6 @@ class _BuyerServiceState extends State<BuyerService> {
       },
     );
   }
-
-  // ListTile showMenuFood() {
-  //   return ListTile(
-  //     leading: Icon(
-  //       Icons.restaurant_outlined,
-  //       size: 35,
-  //       color: MyConstant.dark,
-  //     ),
-  //     title: ShowTitle(
-  //       title: 'เมนูอาหาร',
-  //       textStyle: MyConstant().h2Style(),
-  //     ),
-  //     subtitle: ShowTitle(title: 'แนะนำเมนูอาหาร และ วิธีทำอาหาร'),
-  //     onTap: () {
-  //       setState(() {
-  //         indexWidget = 1;
-  //         Navigator.pop(context);
-  //       });
-  //     },
-  //   );
-  // }
 
   ListTile showOrderStatus() {
     return ListTile(

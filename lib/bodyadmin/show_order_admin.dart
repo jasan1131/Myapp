@@ -2,10 +2,9 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_myappication_1/bodyadmin/show_profile_buyer.dart';
 import 'package:flutter_myappication_1/models/order_model.dart';
-import 'package:flutter_myappication_1/states/admin.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
-import 'package:flutter_myappication_1/utility/my_dialog.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 
@@ -17,6 +16,7 @@ class ShowOrderAdmin extends StatefulWidget {
 }
 
 class _ShowOrderAdminState extends State<ShowOrderAdmin> {
+  OrderModel? orderModel;
   bool statusOrder = true;
   bool? haveData;
   List<OrderModel> orderModels = [];
@@ -94,34 +94,18 @@ class _ShowOrderAdminState extends State<ShowOrderAdmin> {
           : haveData!
               ? ListView.builder(
                   itemCount: orderModels.length,
-                  itemBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ShowTitle(
-                              title: ' ${orderModels[index].nameBuyer!}',
-                              textStyle: MyConstant().h2Style(),
-                            ),
-                            Row(
-                              children: [
-                                ShowTitle(title: 'วันเวลา : ${orderModels[index].dateOrder!} / ${orderModels[index].timeOrder!}'),
-                              ],
-                            ),
-                            ShowTitle(
-                              title: 'ค่าจัดส่ง : ${orderModels[index].transport!}',
-                              textStyle: MyConstant().h2Style(),
-                            ),
-                            buildTitle(),
-                            bildListViewOrder(index),
-                            buildShowTotal(index),
-                            buildButton(index),
-                          ],
-                        ),
-                      ),
+                  itemBuilder: (context, index) => Card(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        buildHead(index),
+                        buildTitle(),
+                        bildListViewOrder(index),
+                        buildDivider(),
+                        buildShowTotal(index),
+                        buildDivider(),
+                        buildButton(index),
+                      ],
                     ),
                   ),
                 )
@@ -141,61 +125,108 @@ class _ShowOrderAdminState extends State<ShowOrderAdmin> {
     );
   }
 
-  Widget buildShowTotal(int index) => Row(
+  Divider buildDivider() {
+    return Divider(
+      color: MyConstant.dark,
+    );
+  }
+
+  Widget buildHead(int index) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ShowTitle(
-                title: 'ยอดรวมสินค้า : ',
-                textStyle: MyConstant().h2Style(),
-              )
+                title: 'ชื่อผู้สั่ง : ',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+              ShowTitle(
+                title: '${orderModels[index].nameBuyer!}',
+                textStyle: MyConstant().h3Style(),
+              ),
             ],
           ),
+          Column(
+            children: [
+              Row(
+                children: [
+                  ShowTitle(
+                    title: 'วันที่สั่ง : ',
+                    textStyle: MyConstant().h3Stylebold(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 3),
+                    child: ShowTitle(
+                      title: '${orderModels[index].dateOrder!}',
+                      textStyle: MyConstant().h3Style(),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  ShowTitle(
+                    title: 'เวลาที่สั่ง : ',
+                    textStyle: MyConstant().h3Stylebold(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 3),
+                    child: ShowTitle(
+                      title: '${orderModels[index].timeOrder!}',
+                      textStyle: MyConstant().h3Style(),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              ShowTitle(
+                title: 'ค่าจัดส่ง : ',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 3),
+                child: ShowTitle(
+                  title: '${orderModels[index].transport!}',
+                  textStyle: MyConstant().h3Style(),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildShowTotal(int index) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          ShowTitle(
+            title: 'ยอดรวมสินค้า : ',
+            textStyle: MyConstant().h3Stylebold(),
+          ),
           Padding(
-            padding: const EdgeInsets.only(left: 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ShowTitle(
-                  title: totalProductTnts[index].toString(),
-                  textStyle: MyConstant().h2Style(),
-                )
-              ],
+            padding: const EdgeInsets.only(top: 3.3),
+            child: ShowTitle(
+              title: totalProductTnts[index].toString(),
+              textStyle: MyConstant().h3Style(),
             ),
           ),
         ],
-      );
+      ),
+    );
+  }
 
   Row buildButton(index) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        ElevatedButton(
-            style: ButtonStyle(
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
-                  side: BorderSide(color: MyConstant.dark, width: 145),
-                ),
-              ),
-            ),
-            onPressed: () {},
-            child: Row(
-              children: [
-                Icon(
-                  Icons.cancel_outlined,
-                  color: Colors.red.shade700,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ShowTitle(
-                    title: 'ยกเลิกสินค้า',
-                    textStyle: MyConstant().h3WhiteStyle(),
-                  ),
-                ),
-              ],
-            )),
         ElevatedButton(
           style: ButtonStyle(
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -206,7 +237,12 @@ class _ShowOrderAdminState extends State<ShowOrderAdmin> {
             ),
           ),
           onPressed: () async {
-            confirmOrder(index);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ShowProfileBuyer(orderModel: orderModels[index]),
+                ));
           },
           child: Row(
             children: [
@@ -217,7 +253,7 @@ class _ShowOrderAdminState extends State<ShowOrderAdmin> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ShowTitle(
-                  title: 'ยืนยันสินค้า',
+                  title: 'ดูข้อมูลผู้สั่งซื้อ',
                   textStyle: MyConstant().h3WhiteStyle(),
                 ),
               ),
@@ -228,60 +264,83 @@ class _ShowOrderAdminState extends State<ShowOrderAdmin> {
     );
   }
 
-  Future confirmOrder(index) async {
-    id = orderModels[index].id;
-    String status = 'sellerConfirmOrder';
-    String url =
-        '${MyConstant.domain}/shopping/editStatusWhereId.php?isAdd=true&id=$id&status=$status';
-    await Dio().get(url).then((value) {
-      MyDialog().normalDialogOrderOk(context, 'รับคำสั่งซื้อเรียบร้อยแล้ว');
-    });
-  }
-
   ListView bildListViewOrder(int index) {
     return ListView.builder(
       itemCount: listOrderProducts[index].length,
       shrinkWrap: true,
       physics: ScrollPhysics(),
-      itemBuilder: (context, index2) => Row(
-        children: [
-          Expanded(
-              flex: 3,
-              child: ShowTitle(title: listOrderProducts[index][index2])),
-          Expanded(
-              flex: 1, child: ShowTitle(title: listOrderPrices[index][index2])),
-          Expanded(
-              flex: 1, child: ShowTitle(title: listOrderAmunts[index][index2])),
-          Expanded(
-              flex: 1, child: ShowTitle(title: listOrderSums[index][index2])),
-        ],
+      itemBuilder: (context, index2) => Container(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: ShowTitle(title: listOrderProducts[index][index2]),
+            ),
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: ShowTitle(title: listOrderPrices[index][index2]),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 22),
+                child: ShowTitle(title: listOrderAmunts[index][index2]),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 22),
+                child: ShowTitle(title: listOrderSums[index][index2]),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Container buildTitle() {
+  Widget buildTitle() {
     return Container(
-      padding: EdgeInsets.all(4),
       decoration: BoxDecoration(color: MyConstant.light),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 3,
-            child: ShowTitle(title: 'ชื่อสินค้า'),
-          ),
-          Expanded(
-            flex: 1,
-            child: ShowTitle(title: 'จำนวน'),
-          ),
-          Expanded(
-            flex: 1,
-            child: ShowTitle(title: 'ราคา'),
-          ),
-          Expanded(
-            flex: 1,
-            child: ShowTitle(title: 'ราคารวม'),
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: ShowTitle(
+                title: 'สินค้า',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: ShowTitle(
+                title: 'จำนวน',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: ShowTitle(
+                title: 'ราคา/บาท',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: ShowTitle(
+                title: 'ราคารวม/บาท',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

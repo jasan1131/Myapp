@@ -9,6 +9,7 @@ import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/utility/my_dialog.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,7 +22,8 @@ class ConfirmAddWallet extends StatefulWidget {
 
 class _ConfirmAddWalletState extends State<ConfirmAddWallet> {
   UserModel? userModel;
-  String? dateTimeStr;
+  String? dateDays;
+  String? dateTimes;
   File? file;
   bool load = true;
   String? idbuyer;
@@ -33,6 +35,8 @@ class _ConfirmAddWalletState extends State<ConfirmAddWallet> {
     super.initState();
     finedCurrentTime();
     findIdBuyer();
+    Intl.defaultLocale = 'th';
+    initializeDateFormatting();
   }
 
   Future<void> findIdBuyer() async {
@@ -43,11 +47,16 @@ class _ConfirmAddWalletState extends State<ConfirmAddWallet> {
 
   void finedCurrentTime() {
     DateTime dateTime = DateTime.now();
-    DateFormat dateFormat = DateFormat('dd/MM/yyyy HH:mm:ss');
+    DateTime dateDay = DateTime.now();
+    int dayNow = dateDay.year + 543;
+
+    DateFormat dateFormatDay = DateFormat('dd/MM/${dayNow}');
+    DateFormat dateFormatTime = DateFormat('HH:mm:ss');
     setState(() {
-      dateTimeStr = dateFormat.format(dateTime);
+      dateDays = dateFormatDay.format(dateDay);
+      dateTimes = dateFormatTime.format(dateTime);
     });
-    print('### DateTime = $dateTimeStr');
+    print('### DateTime = $dayNow');
   }
 
   @override
@@ -72,6 +81,7 @@ class _ConfirmAddWalletState extends State<ConfirmAddWallet> {
             buildImage(),
             Spacer(),
             buildBottom(),
+            Spacer(),
           ],
         ),
       ),
@@ -115,11 +125,11 @@ class _ConfirmAddWalletState extends State<ConfirmAddWallet> {
         var pathslip = '/slip/nameslip';
         var status = 'โอนเงิน';
         var urlAPIInsert =
-            '${MyConstant.domain}/shopping/insertSlip.php?isAdd=true&idbuyer=$idbuyer&namebuyer=$namebuyer&datepay=$dateTimeStr&pathslip=$pathslip&status=$status';
+            '${MyConstant.domain}/shopping/insertSlip.php?isAdd=true&idbuyer=$idbuyer&namebuyer=$namebuyer&dateDay=$dateDays&dateTime=$dateTimes&pathslip=$pathslip&statuswallet=$status';
         await Dio().get(urlAPIInsert).then(
               (value) => MyDialog(funcAction: success).actionDialog(
                 context,
-                'ทำรายการเสร้จสิ้น',
+                'ชำระเงินเสร็จสิ้น',
                 'ขอบคุณที่ใช้บริการ',
               ),
             );
@@ -127,8 +137,13 @@ class _ConfirmAddWalletState extends State<ConfirmAddWallet> {
     } catch (e) {}
   }
 
-  void success(){
-    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ConfirmOrder(),), (route) => false);
+  void success() {
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ConfirmOrder(),
+        ),
+        (route) => false);
   }
 
   Future<void> processTakePhoto(ImageSource source) async {
@@ -167,16 +182,28 @@ class _ConfirmAddWalletState extends State<ConfirmAddWallet> {
     );
   }
 
-  ShowTitle buildDateTime() {
-    return ShowTitle(
-      title: dateTimeStr == null ? 'dd/mm/yy HH:mm:ss' : dateTimeStr!,
-      textStyle: MyConstant().h2Style(),
+  Widget buildDateTime() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ShowTitle(
+            title: dateDays == null ? 'dd/mm/' : dateDays!,
+            textStyle: MyConstant().h2Style(),
+          ),
+        ),
+        ShowTitle(
+          title: dateTimes == null ? 'HH:mm:ss' : dateTimes!,
+          textStyle: MyConstant().h2Style(),
+        ),
+      ],
     );
   }
 
   ShowTitle buildHearder() {
     return ShowTitle(
-      title: 'วันที่ชำระเงิน',
+      title: 'วันและเวลาที่ชำระเงิน',
       textStyle: MyConstant().h1Style(),
     );
   }

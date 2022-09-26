@@ -3,7 +3,6 @@ import 'package:flutter_myappication_1/bodys/show_about_appcation_buyer.dart';
 import 'package:flutter_myappication_1/bodys/show_buyer_manage.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
-import 'package:flutter_myappication_1/utility/my_dialog.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 
 class ShowSettingBuyer extends StatefulWidget {
@@ -36,7 +35,6 @@ class _ShowSettingBuyerState extends State<ShowSettingBuyer> {
           children: [
             buildManage(context),
             buildAboutAppcation(context),
-            buildVersionAppication(context)
           ],
         ));
   }
@@ -81,28 +79,6 @@ class _ShowSettingBuyerState extends State<ShowSettingBuyer> {
           children: [
             ShowTitle(
               title: 'เกี่ยวกับแอปพลิเคชัน',
-              textStyle: MyConstant().h2Style(),
-            ),
-          ],
-        )),
-      ),
-    );
-  }
-
-  Widget buildVersionAppication(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        MyDialog().normalDialog1(context, 'เวอร์ชั่นแอปพลิเคชัน', 'แอปพลิเคชันเป็นเวอร์ชันล่าสุด');
-      },
-      child: Container(
-        width: MediaQuery.of(context).size.width * 1,
-        height: MediaQuery.of(context).size.height * 0.1,
-        child: Card(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ShowTitle(
-              title: 'เวอร์ชั่น 1.0.0+1',
               textStyle: MyConstant().h2Style(),
             ),
           ],

@@ -113,20 +113,29 @@ class _ShowHistoryByOrderByUserState extends State<ShowHistoryByOrderByUser> {
       itemBuilder: (context, index) => Column(
         children: [
           Card(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  buildName(index),
-                  buildDateTime(index),
-                  buildDistance(index),
-                  buildTransport(index),
-                  buildHeadTitle(),
-                  buildListViewHistoryProduct(index),
-                  buildTotal(index),
-                ],
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      buildName(index),
+                      buildDay(index),
+                      buildTime(index),
+                      buildDistance(index),
+                      buildTransport(index),
+                    ],
+                  ),
+                ),
+                buildHeadTitle(),
+                buildListViewHistoryProduct(index),
+                buildDivider(),
+                buildTotal(index),
+                buildDivider(),
+                MyConstant().mySizeBox()
+              ],
             ),
           ),
         ],
@@ -134,38 +143,50 @@ class _ShowHistoryByOrderByUserState extends State<ShowHistoryByOrderByUser> {
     );
   }
 
-  Row buildHeadTitle() {
-    return Row(
-      children: [
-        Expanded(
-          flex: 3,
-          child: ShowTitle(
-            title: 'รายการสินค้า',
-            textStyle: MyConstant().h2Style(),
-          ),
+  Divider buildDivider() {
+    return Divider(
+      color: MyConstant.dark,
+    );
+  }
+
+  Widget buildHeadTitle() {
+    return Container(
+      decoration: BoxDecoration(color: MyConstant.light),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: ShowTitle(
+                title: 'สินค้า',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: ShowTitle(
+                title: 'จำนวน',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: ShowTitle(
+                title: 'ราคา/บาท',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: ShowTitle(
+                title: 'ราคารวม/บาท',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+            ),
+          ],
         ),
-        Expanded(
-          flex: 1,
-          child: ShowTitle(
-            title: 'จำนวน',
-            textStyle: MyConstant().h2Style(),
-          ),
-        ),
-        Expanded(
-          flex: 1,
-          child: ShowTitle(
-            title: 'ราคา',
-            textStyle: MyConstant().h2Style(),
-          ),
-        ),
-        Expanded(
-          flex: 1,
-          child: ShowTitle(
-            title: 'ผลรวม',
-            textStyle: MyConstant().h2Style(),
-          ),
-        ),
-      ],
+      ),
     );
   }
 
@@ -174,70 +195,150 @@ class _ShowHistoryByOrderByUserState extends State<ShowHistoryByOrderByUser> {
           shrinkWrap: true,
           physics: ScrollPhysics(),
           itemCount: listNameProducts[index].length,
-          itemBuilder: (context, index2) => Row(
-            children: [
-              Expanded(
-                flex: 3,
-                child: ShowTitle(
-                  title: listNameProducts[index][index2],
-                  textStyle: MyConstant().h2Style(),
+          itemBuilder: (context, index2) => Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: ShowTitle(
+                    title: listNameProducts[index][index2],
+                    textStyle: MyConstant().h3Style(),
+                  ),
                 ),
-              ),
-              Expanded(
-                flex: 1,
-                child: ShowTitle(
-                  title: listAmunts[index][index2],
-                  textStyle: MyConstant().h2Style(),
+                Expanded(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: ShowTitle(
+                      title: listAmunts[index][index2],
+                      textStyle: MyConstant().h3Style(),
+                    ),
+                  ),
                 ),
-              ),
-              Expanded(
-                flex: 1,
-                child: ShowTitle(
-                  title: listPriceProducts[index][index2],
-                  textStyle: MyConstant().h2Style(),
+                Expanded(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 22),
+                    child: ShowTitle(
+                      title: listPriceProducts[index][index2],
+                      textStyle: MyConstant().h3Style(),
+                    ),
+                  ),
                 ),
-              ),
-              Expanded(
-                flex: 1,
-                child: ShowTitle(
-                  title: listSums[index][index2],
-                  textStyle: MyConstant().h2Style(),
+                Expanded(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 22),
+                    child: ShowTitle(
+                      title: listSums[index][index2],
+                      textStyle: MyConstant().h3Style(),
+                    ),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );
 
-  Widget buildTransport(int index) => ShowTitle(
-        title: 'ค่าจัดส่ง : ${historyModels[index].transport}',
-        textStyle: MyConstant().h2Style(),
+  Widget buildTransport(int index) => Row(
+        children: [
+          ShowTitle(
+            title: 'ค่าจัดส่ง : ',
+            textStyle: MyConstant().h3Stylebold(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 3),
+            child: ShowTitle(
+              title: '${historyModels[index].transport}',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ],
       );
 
-  Widget buildDistance(int index) => ShowTitle(
-        title: 'ระยะทาง : ${historyModels[index].distance}',
-        textStyle: MyConstant().h2Style(),
+  Widget buildDistance(int index) => Row(
+        children: [
+          ShowTitle(
+            title: 'ระยะทาง : ',
+            textStyle: MyConstant().h3Stylebold(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 3),
+            child: ShowTitle(
+              title: '${historyModels[index].distance}',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ],
       );
 
-  Widget buildDateTime(int index) {
+  Widget buildDay(int index) {
     return Row(
       children: [
         ShowTitle(
-          title:
-              'วันและเวลาในการสั่งซื้อ : ${historyModels[index].dateOrder} ${historyModels[index].timeOrder}',
-          textStyle: MyConstant().h2Style(),
+          title: 'วันที่สั่งซื้อ : ',
+          textStyle: MyConstant().h3Stylebold(),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 3),
+          child: ShowTitle(
+            title: '${historyModels[index].dateOrder}',
+            textStyle: MyConstant().h3Style(),
+          ),
         ),
       ],
     );
   }
 
-  Widget buildName(int index) => ShowTitle(
-        title: 'ชื่อ : ${historyModels[index].nameBuyer}',
-        textStyle: MyConstant().h1Style(),
+  Widget buildTime(int index) {
+    return Row(
+      children: [
+        ShowTitle(
+          title: 'เวลาที่สั่งซื้อ : ',
+          textStyle: MyConstant().h3Stylebold(),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 3),
+          child: ShowTitle(
+            title: '${historyModels[index].timeOrder}',
+            textStyle: MyConstant().h3Style(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildName(int index) => Row(
+        children: [
+          ShowTitle(
+            title: 'ชื่อผู้สั่ง : ',
+            textStyle: MyConstant().h3Stylebold(),
+          ),
+          ShowTitle(
+            title: '${historyModels[index].nameBuyer}',
+            textStyle: MyConstant().h3Style(),
+          ),
+        ],
       );
 
-  Widget buildTotal(int index) => ShowTitle(
-        title: 'ยอดรวมสินค้า : ${historyModels[index].total}',
-        textStyle: MyConstant().h2Style(),
+  Widget buildTotal(int index) => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            ShowTitle(
+              title: 'ยอดรวมสินค้า : ',
+              textStyle: MyConstant().h3Stylebold(),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 3),
+              child: ShowTitle(
+                title: '${historyModels[index].total}',
+                textStyle: MyConstant().h3Style(),
+              ),
+            ),
+          ],
+        ),
       );
 }

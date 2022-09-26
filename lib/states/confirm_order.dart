@@ -10,6 +10,7 @@ import 'package:flutter_myappication_1/utility/my_dialog.dart';
 import 'package:flutter_myappication_1/utility/sqlite_helpper.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -35,6 +36,8 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
     // TODO: implement initState
     super.initState();
     processReadSqlite();
+    Intl.defaultLocale = 'th';
+    initializeDateFormatting();
   }
 
   Future<Null> processReadSqlite() async {
@@ -127,29 +130,65 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
 
   Widget buildNameShop() {
     return Container(
-      margin: EdgeInsets.only(bottom: 8),
+      margin: EdgeInsets.only(left: 8.0),
       child: Column(
         children: <Widget>[
           Row(
             children: <Widget>[
-              ShowTitle(
-                title: 'ร้าน : ${sqliteModels[0].nameSeller}',
+              Row(
+                children: [
+                  ShowTitle(
+                    title: 'ชื่อร้าน : ',
+                    textStyle: MyConstant().h3Stylebold(),
+                  ),
+                  ShowTitle(
+                    title: '${sqliteModels[0].nameSeller}',
+                    textStyle: MyConstant().h3Style(),
+                  ),
+                ],
               ),
             ],
           ),
-          Row(
-            children: <Widget>[
-              ShowTitle(
-                title: 'ระยะทาง : ${sqliteModels[0].distance} กิโลเมตร',
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.only(top: 8, bottom: 8),
+            child: Row(
+              children: <Widget>[
+                Row(
+                  children: [
+                    ShowTitle(
+                      title: 'ระยะทาง : ',
+                      textStyle: MyConstant().h3Stylebold(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 2),
+                      child: ShowTitle(
+                        title: '${sqliteModels[0].distance} / กิโลเมตร',
+                        textStyle: MyConstant().h3Style(),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-          Row(
-            children: <Widget>[
-              ShowTitle(
-                title: 'ค่าจัดส่ง : ${sqliteModels[0].transport} บาท',
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Row(
+              children: <Widget>[
+                Row(
+                  children: [
+                    ShowTitle(
+                      title: 'ค่าจัดส่ง : ',
+                      textStyle: MyConstant().h3Stylebold(),
+                    ),
+                    ShowTitle(
+                      title: 'ค่าจัดส่ง : ${sqliteModels[0].transport} / บาท',
+                      textStyle: MyConstant().h3Style(),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -173,30 +212,23 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
     );
   }
 
-  Widget buildTotal() {
+  Row buildTotal() {
     return Row(
       children: [
-        Expanded(
-          flex: 4,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              ShowTitle(
-                title: 'Total :',
-                textStyle: MyConstant().h2Style(),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ShowTitle(
+                title: 'ยอดรวมสินค้า :',
+                textStyle: MyConstant().h3Stylebold(),
               ),
-            ],
-          ),
-        ),
-        Expanded(
-          flex: 2,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 14),
-            child: ShowTitle(
-              title: total == null ? '' : total.toString(),
-              textStyle: MyConstant().h2Style(),
             ),
-          ),
+          ],
+        ),
+        ShowTitle(
+          title: total == null ? '' : '${total.toString()} / บาท',
+          textStyle: MyConstant().h3Style(),
         ),
       ],
     );
@@ -218,48 +250,32 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
         child: Row(
           children: [
             Expanded(
+              flex: 3,
+              child: ShowTitle(
+                title: sqliteModels[index].nameProduct,
+                textStyle: MyConstant().h3Style(),
+              ),
+            ),
+            Expanded(
               flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: ShowTitle(
-                  title: sqliteModels[index].nameProduct,
-                  textStyle: MyConstant().h3Style(),
-                ),
+              child: ShowTitle(
+                title: sqliteModels[index].amount,
+                textStyle: MyConstant().h3Style(),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: ShowTitle(
+                title: sqliteModels[index].priceProduct,
+                textStyle: MyConstant().h3Style(),
               ),
             ),
             Expanded(
               flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 12),
-                child: ShowTitle(
-                  title: sqliteModels[index].priceProduct,
-                  textStyle: MyConstant().h3Style(),
-                ),
+              child: ShowTitle(
+                title: sqliteModels[index].sum,
+                textStyle: MyConstant().h3Style(),
               ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: ShowTitle(
-                  title: sqliteModels[index].amount,
-                  textStyle: MyConstant().h3Style(),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: ShowTitle(
-                  title: sqliteModels[index].sum,
-                  textStyle: MyConstant().h3Style(),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: SizedBox(),
             ),
           ],
         ),
@@ -267,50 +283,40 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
     );
   }
 
-  Container buildHead() {
+  Widget buildHead() {
     return Container(
       decoration: BoxDecoration(color: MyConstant.light),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4),
+        padding: const EdgeInsets.all(8),
         child: Row(
           children: [
             Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: ShowTitle(
-                  title: 'สินค้า',
-                  textStyle: MyConstant().h2Style(),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
+              flex: 3,
               child: ShowTitle(
-                title: 'ราคา',
-                textStyle: MyConstant().h2Style(),
+                title: 'รายชื่อสินค้า',
+                textStyle: MyConstant().h3Stylebold(),
               ),
             ),
             Expanded(
-              flex: 1,
+              flex: 2,
               child: ShowTitle(
                 title: 'จำนวน',
-                textStyle: MyConstant().h2Style(),
+                textStyle: MyConstant().h3Stylebold(),
               ),
             ),
             Expanded(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: ShowTitle(
-                  title: 'รวม',
-                  textStyle: MyConstant().h2Style(),
-                ),
+              flex: 2,
+              child: ShowTitle(
+                title: 'ราคา/บาท',
+                textStyle: MyConstant().h3Stylebold(),
               ),
             ),
             Expanded(
-              flex: 1,
-              child: SizedBox(),
+              flex: 0,
+              child: ShowTitle(
+                title: 'ราคารวม/บาท',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
             ),
           ],
         ),
@@ -320,9 +326,10 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
 
   Future<Null> ordreThread() async {
     DateTime orderDateOrder = DateTime.now();
+    int dayNow = orderDateOrder.year + 543;
     DateTime orderTimeOrder = DateTime.now();
 
-    String dateOrder = DateFormat('dd-MM-yyyy').format(orderDateOrder);
+    String dateOrder = DateFormat('dd/MM/${dayNow}').format(orderDateOrder);
     String timeOrder = DateFormat('HH:mm:ss').format(orderTimeOrder);
 
     String idSeller = sqliteModels[0].idSeller;
@@ -352,9 +359,11 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
     String totals = total.toString();
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
-
     String idBuyer = preferences.getString('id')!;
     String nameBuyer = preferences.getString('name')!;
+    // String facebook = userModel!.facebook;
+    // String phone = userModel!.phone;
+    // String line = userModel!.line;
 
     // print('dateOrdre = $dateOrder, timeOrder = $timeOrder');
     // print('idSeller = $idSeller, nameSeller = $nameSeller, distance = $distance, transport = $transport');
@@ -363,7 +372,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
     // );
 
     String url =
-        '${MyConstant.domain}/shopping/insertOrder.php?isAdd=true&idSeller=$idSeller&nameSeller=$nameSeller&idBuyer=$idBuyer&nameBuyer=$nameBuyer&distance=$distance&transport=$transport&dateOrder=$dateOrder&timeOrder=$timeOrder&idProduct=$idProduct&nameProduct=$nameProduct&priceProduct=$priceProduct&amount=$amount&sum=$sum&total=$totals&status=awaitOrder';
+        '${MyConstant.domain}/shopping/insertOrder.php?isAdd=true&idSeller=$idSeller&nameSeller=$nameSeller&idBuyer=$idBuyer&nameBuyer=$nameBuyer&distance=$distance&transport=$transport&dateOrder=$dateOrder&timeOrder=$timeOrder&nameProduct=$nameProduct&priceProduct=$priceProduct&amount=$amount&sum=$sum&total=$total&status=awaitOrder';
     await Dio().get(url).then((value) {
       if (value.toString() == 'true') {
         clearAllSqlite();
@@ -377,7 +386,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
   Future<Null> clearAllSqlite() async {
     MyDialog().normalDialogNavigator(
       context,
-      'ทำรายการเสร็จสิน',
+      'ทำรายการเสร็จสิ้น',
       'ส่งรายการสินค้าที่สั่งไปยังร้านค้าเรียบร้อยแล้ว ขอบคุณที่ใช้บริการ',
     );
     await SQLiteHelpper().emptySQLite().then((value) {

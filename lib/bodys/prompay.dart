@@ -23,15 +23,91 @@ class _PrompayState extends State<Prompay> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            BuildTitle(),
-            buildCopyPrompay(),
-            buildQRcodePromptpay(),
-            buildDownload(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              BuildTitle(),
+              buildCopyPrompay(),
+              buildQRcodePromptpay(),
+              buildDownload(),
+              buildText(),
+            ],
+          ),
         ),
-      ),floatingActionButton: NavigatorCFW(),
+      ),
+      floatingActionButton: NavigatorCFW(),
+    );
+  }
+
+  Widget buildText() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Row(
+              children: [
+                Text(
+                  'หมายเหตุ :',
+                  style: TextStyle(color: Colors.red, fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+          Row(
+            children: [
+              Text(
+                'วิธีการชำระเงินแบบการโอนเงินผ่าน พร้อมเพย์',
+                style: TextStyle(color: Colors.red, fontSize: 16),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Text(
+                '1. ทำการกดปุ่มคัดลอกเพื่อคัดลอกเบอร์โทรศัพท์',
+                style: TextStyle(color: Colors.red, fontSize: 16),
+              ),
+            ],
+          ),
+          Text(
+            '2. ทำการเปิดแอปพลิดเคชันธนาคาร หรือ โมบายแบงค์กิ้ง และทำการชำระเงิน',
+            style: TextStyle(color: Colors.red, fontSize: 16),
+          ),
+          Text(
+            '3. เมื่อทำการชำระเงินเสร็จสิ้นให้กับมาที่แอปพิเคชันเพื่อทำการเพิ่มบิลการชำระเงิน',
+            style: TextStyle(color: Colors.red, fontSize: 16),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: Row(
+              children: [
+                Text(
+                  'วิธีการเพิ่มบิล',
+                  style: TextStyle(color: Colors.red, fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+          Row(
+            children: [
+              Text(
+                '1. ทำการกดปุ่มเพิ่มบิล',
+                style: TextStyle(color: Colors.red, fontSize: 16),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Text(
+                '2. ทำการเพิ่มบิลการชำระเงิน และกดปุ่มอัพโหลดบิล',
+                style: TextStyle(color: Colors.red, fontSize: 16),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -43,13 +119,13 @@ class _PrompayState extends State<Prompay> {
 
           await GallerySaver.saveImage(url);
           await Dio().download(url, path).then(
-                (value) => MyDialog().normalDialog(
+                (value) => MyDialog().normalDialogCoppy1(
                     context,
                     'ดาวน์โหลด QRcode สำเร็จ !',
-                    'กรุณาไปที่แอพธนาคาร เพื่ออ่าน QRcode'),
+                    'กรุณาไปที่แอพธนาคาร เพื่อสแกน QRcode'),
               );
         },
-        child: Text('Download QRcode'),
+        child: Text('ดาวน์โหลด คิวอาร์โค้ด'),
       );
 
   Container buildQRcodePromptpay() {
@@ -70,28 +146,78 @@ class _PrompayState extends State<Prompay> {
           side: BorderSide(color: MyConstant.dark),
           borderRadius: BorderRadius.circular(15),
         ),
-        child: ListTile(
-          title: ShowTitle(
-            title: '097-027-2217',
-            textStyle: MyConstant().h2Style(),
-          ),
-          subtitle: ShowTitle(title: 'บัญชี Prompay'),
-          trailing: IconButton(
-            onPressed: () {
-              Clipboard.setData(
-                ClipboardData(text: '0970272217'),
-              );
-              MyDialog().normalDialog(
-                context,
-                'Copy Prompay ',
-                'คัดลอก เลขบัญชี Prompay ไปยังคีย์บอร์ดสำเร็จแล้ว',
-              );
-            },
-            icon: Icon(
-              Icons.copy,
-              color: MyConstant.dark,
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ShowTitle(
+                    title: 'พร้อมเพย์ ',
+                    textStyle: MyConstant().h2Stylebold(),
+                  ),
+                  Row(
+                    children: [
+                      ShowTitle(
+                        title: 'ชื่อบัญชี : ',
+                        textStyle: MyConstant().h3Stylebold(),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: ShowTitle(
+                          title: 'สุนทร รัศมีทองสายธาร',
+                          textStyle: MyConstant().h3Style(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      ShowTitle(
+                        title: 'เบอร์โทรศัพท์ : ',
+                        textStyle: MyConstant().h3Stylebold(),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: ShowTitle(
+                          title: '097-027-2217',
+                          textStyle: MyConstant().h3Style(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.only(left: 80),
+              child: Column(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Clipboard.setData(
+                        ClipboardData(text: '0970272217'),
+                      );
+                      MyDialog().normalDialogCoppy1(
+                        context,
+                        'คัดลอกเลขบัญชี พร้อมเพย์ ไปยังคีย์บอร์ดสำเร็จแล้ว',
+                        'กรุณาไปที่แอพธนาคาร เพื่อทำการชำระเงิน',
+                      );
+                    },
+                    icon: Icon(
+                      Icons.copy,
+                      color: MyConstant.dark,
+                    ),
+                  ),
+                  ShowTitle(
+                    title: 'คัดลอก',
+                    textStyle: MyConstant().h3Stylebold(),
+                  )
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -99,8 +225,8 @@ class _PrompayState extends State<Prompay> {
 
   ShowTitle BuildTitle() {
     return ShowTitle(
-      title: 'การโอนเงินโดยใช้ Prompay',
-      textStyle: MyConstant().h1Style(),
+      title: 'การโอนเงินโดยใช้ พร้อมเพย์ ',
+      textStyle: MyConstant().h1Stylebold(),
     );
   }
 }

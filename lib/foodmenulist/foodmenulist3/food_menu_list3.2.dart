@@ -20,7 +20,7 @@ import 'package:location/location.dart';
 
 class FoodMenuList3_2 extends StatefulWidget {
   final UserModel userModel;
-  const FoodMenuList3_2({ Key? key, required this.userModel}) : super(key: key);
+  const FoodMenuList3_2({Key? key, required this.userModel}) : super(key: key);
 
   @override
   State<FoodMenuList3_2> createState() => _FoodMenuList3_2State();
@@ -55,7 +55,8 @@ class _FoodMenuList3_2State extends State<FoodMenuList3_2> {
   }
 
   Future<Null> readApiAllShop() async {
-    String urlAPI = '${MyConstant.domain}/shopping/getProductWhereNameProduct(หอมหัวใหญ่).php';
+    String urlAPI =
+        '${MyConstant.domain}/shopping/getProductWhereNameProduct(หอมหัวใหญ่).php';
     await Dio().get(urlAPI).then(
       (value) {
         setState(() {
@@ -114,58 +115,28 @@ class _FoodMenuList3_2State extends State<FoodMenuList3_2> {
           ),
         ],
       ),
-      body: OrientationBuilder(
-        builder: (context, orientation) {
-          if (orientation == Orientation.portrait) {
-            return load
-                ? ShowProgress()
-                : haveData!
-                    ? listProduct()
-                    : Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ShowTitle(
-                              title: 'NO DATA',
-                              textStyle: MyConstant().h1Style(),
-                            ),
-                          ],
-                        ),
-                      );
-          } else {
-            return load
-                ? ShowProgress()
-                : haveData!
-                    ? listProductHolizon()
-                    : Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ShowTitle(
-                              title: 'NO DATA',
-                              textStyle: MyConstant().h1Style(),
-                            ),
-                          ],
-                        ),
-                      );
-          }
-        },
-      ),
+      body: load
+          ? ShowProgress()
+          : haveData!
+              ? listProduct()
+              : Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ShowTitle(title: 'ไม่มีข้อมูลของสินค้า'),
+                    ],
+                  ),
+                ),
     );
   }
 
-  Container listProduct() {
+  Widget listProduct() {
     return Container(
       decoration: MyConstant().planBackground(),
-      child: GridView.builder(
+      child: ListView.builder(
         itemCount: productmodels.length,
-        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          childAspectRatio: 2 / 4,
-          maxCrossAxisExtent: 360,
-        ),
         itemBuilder: (context, index) => GestureDetector(
           onTap: () {
-            // print('### YOu Click Index ===>> $index');
             ShowAlertDialog(
               productmodels[index],
               listImages[index],
@@ -181,8 +152,8 @@ class _FoodMenuList3_2State extends State<FoodMenuList3_2> {
               child: Column(
                 children: [
                   Container(
-                    width: MediaQuery.of(context).size.width * 0.4 - 8,
-                    height: MediaQuery.of(context).size.height * 0.22,
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    height: MediaQuery.of(context).size.height * 0.3,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       child: CachedNetworkImage(
@@ -201,163 +172,71 @@ class _FoodMenuList3_2State extends State<FoodMenuList3_2> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ShowTitle(
-                            title: productmodels[index].nameproduct,
-                            textStyle: MyConstant().h3Style(),
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          Row(
                             children: [
                               ShowTitle(
-                                title: 'ราคา :',
-                                textStyle: MyConstant().h3Style(),
+                                title: 'ชื่อรายการสินค้า : ',
+                                textStyle: MyConstant().h3Stylebold(),
                               ),
-                              ShowTitle(
-                                title:
-                                    '${productmodels[index].priceproduct} บาท / ${productmodels[index].unitprice}',
-                                textStyle: MyConstant().h3Style(),
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.5,
+                                child: ShowTitle(
+                                    title: productmodels[index].nameproduct),
                               ),
                             ],
                           ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ShowTitle(
-                                title: 'จำนวนสินค้า :',
-                                textStyle: MyConstant().h3Style(),
-                              ),
-                              ShowTitle(
-                                title:
-                                    '${productmodels[index].numberproduct} / ${productmodels[index].unitproduct}',
-                                textStyle: MyConstant().h3Style(),
-                              ),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5),
+                            child: Row(
+                              children: [
+                                ShowTitle(
+                                  title: 'จำนวนสินค้า : ',
+                                  textStyle: MyConstant().h3Stylebold(),
+                                ),
+                                ShowTitle(
+                                  title:
+                                      '${productmodels[index].numberproduct} / ${productmodels[index].unitproduct}',
+                                  textStyle: MyConstant().h3Style(),
+                                ),
+                              ],
+                            ),
                           ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ShowTitle(
-                                title: 'รายระเอียดสินค้า :',
-                                textStyle: MyConstant().h3Style(),
-                              ),
-                              ShowTitle(
-                                title:
-                                    cutWord(productmodels[index].detailproduct),
-                                textStyle: MyConstant().h3Style(),
-                              ),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5),
+                            child: Row(
+                              children: [
+                                ShowTitle(
+                                  title: 'ราคา : ',
+                                  textStyle: MyConstant().h3Stylebold(),
+                                ),
+                                ShowTitle(
+                                  title:
+                                      '${productmodels[index].priceproduct} บาท / ${productmodels[index].unitprice}',
+                                  textStyle: MyConstant().h3Style(),
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Container listProductHolizon() {
-    return Container(
-      child: GridView.builder(
-        itemCount: productmodels.length,
-        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          childAspectRatio: 2 / 2,
-          maxCrossAxisExtent: 500,
-        ),
-        itemBuilder: (context, index) => GestureDetector(
-          onTap: () {
-            // print('### YOu Click Index ===>> $index');
-            ShowAlertDialog(
-              productmodels[index],
-              listImages[index],
-            );
-          },
-          child: Card(
-            shape: RoundedRectangleBorder(
-              side: BorderSide(color: MyConstant.dark),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            shadowColor: MyConstant.dark,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.3 - 8,
-                    height: MediaQuery.of(context).size.height * 0.55,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: CachedNetworkImage(
-                        fit: BoxFit.fill,
-                        imageUrl:
-                            findUrlImage(productmodels[index].imagesproduct),
-                        placeholder: (context, url) => ShowProgress(),
-                        errorWidget: (context, url, error) =>
-                            ShowImage(path: MyConstant.imageeror),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ShowTitle(
-                            title: productmodels[index].nameproduct,
-                            textStyle: MyConstant().h3Style(),
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ShowTitle(
-                                title: 'ราคา :',
-                                textStyle: MyConstant().h3Style(),
-                              ),
-                              ShowTitle(
-                                title:
-                                    '${productmodels[index].priceproduct} บาท / ${productmodels[index].unitprice}',
-                                textStyle: MyConstant().h3Style(),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ShowTitle(
-                                title: 'จำนวนสินค้า :',
-                                textStyle: MyConstant().h3Style(),
-                              ),
-                              ShowTitle(
-                                title:
-                                    '${productmodels[index].numberproduct} / ${productmodels[index].unitproduct}',
-                                textStyle: MyConstant().h3Style(),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ShowTitle(
-                                title: 'รายระเอียดสินค้า :',
-                                textStyle: MyConstant().h3Style(),
-                              ),
-                              ShowTitle(
-                                title:
-                                    cutWord(productmodels[index].detailproduct),
-                                textStyle: MyConstant().h3Style(),
-                              ),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ShowTitle(
+                                  title: 'รายละเอียดสินค้า : ',
+                                  textStyle: MyConstant().h3Stylebold(),
+                                ),
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.55,
+                                  child: ShowTitle(
+                                    title: cutWord(
+                                        productmodels[index].detailproduct),
+                                    textStyle: MyConstant().h3Style(),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -392,75 +271,79 @@ class _FoodMenuList3_2State extends State<FoodMenuList3_2> {
       builder: (context) => StatefulBuilder(
         builder: (context, setState) {
           return AlertDialog(
-            title: ListTile(
-              leading: ShowImage(path: MyConstant.image1),
-              title: ShowTitle(
-                title: productmodel.nameproduct,
-                textStyle: MyConstant().h2Style(),
-              ),
-              subtitle: ShowTitle(
-                title: 'ราคา ${productmodel.priceproduct} บาท',
-                textStyle: MyConstant().h3Style(),
-              ),
-            ),
             content: Container(
-              width: double.maxFinite,
+              width: MediaQuery.of(context).size.width * 1,
               child: SingleChildScrollView(
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
                   children: [
                     imagePath(productmodel),
-                    Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ShowTitle(
-                          title: 'รายระเอียดสินค้า :',
-                          textStyle: MyConstant().h2Style(),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.66,
-                            child: ShowTitle(
-                              title: productmodel.detailproduct,
-                              textStyle: MyConstant().h3Style(),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            if (amountInt != 1) {
-                              setState(() {
-                                amountInt--;
-                              });
-                            }
-                          },
-                          icon: Icon(
-                            Icons.remove_circle_outline,
-                            color: MyConstant.dark,
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5),
+                          child: Row(
+                            children: [
+                              ShowTitle(
+                                title: 'ชื่อรายการสินค้า : ',
+                                textStyle: MyConstant().h3Stylebold(),
+                              ),
+                              ShowTitle(
+                                title: productmodel.nameproduct,
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                            ],
                           ),
                         ),
-                        ShowTitle(
-                          title: amountInt.toString(),
-                          textStyle: MyConstant().h1Style(),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5),
+                          child: Row(
+                            children: [
+                              ShowTitle(
+                                title: 'จำนวนของสินค้า : ',
+                                textStyle: MyConstant().h3Stylebold(),
+                              ),
+                              ShowTitle(
+                                title:
+                                    '${productmodel.numberproduct} / ${productmodel.unitproduct}',
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                            ],
+                          ),
                         ),
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              amountInt++;
-                            });
-                          },
-                          icon: Icon(
-                            Icons.add_circle_outline,
-                            color: MyConstant.dark,
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5),
+                          child: Row(
+                            children: [
+                              ShowTitle(
+                                title: 'ราคาของสินค้า : ',
+                                textStyle: MyConstant().h3Stylebold(),
+                              ),
+                              ShowTitle(
+                                title:
+                                    '${productmodel.priceproduct} / ${productmodel.unitprice}',
+                                textStyle: MyConstant().h3Style(),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ShowTitle(
+                                title: 'รายละเอียดสินค้า :',
+                                textStyle: MyConstant().h3Stylebold(),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.7,
+                                child: ShowTitle(
+                                  title: productmodel.detailproduct,
+                                  textStyle: MyConstant().h3Style(),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -473,67 +356,107 @@ class _FoodMenuList3_2State extends State<FoodMenuList3_2> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  TextButton(
-                    onPressed: () async {
-                      String idSeller = userModel!.id;
-                      String nameSeller = userModel!.name;
-                      String idProduct = productmodel.id;
-                      String nameProduct = productmodel.nameproduct;
-                      String priceProduct = productmodel.priceproduct;
-                      String number = productmodel.numberproduct;
-                      int minunInt = int.parse(number) - amountInt;
-                      String numberProduct = minunInt.toString();
-                      String amount = amountInt.toString();
-                      int sumInt = int.parse(priceProduct) * amountInt;
-                      String sum = sumInt.toString();
-
-                      lat2 = double.parse(userModel!.lat);
-                      lng2 = double.parse(userModel!.lng);
-
-                      double distance =
-                          MyAPI().calculateDistance(lat1!, lng1!, lat2!, lng2!);
-
-                      var myFormat = NumberFormat('##0.0#', 'en_US');
-                      String distancestring = myFormat.format(distance);
-
-                      int transport = MyAPI().calculateTransport(distance);
-                      print(
-                          'idproduct = $idProduct, nameproduct = $nameProduct, numberproduct = $numberProduct, priceproduct = $priceProduct, amount = $amount, sum = $sum, distance = $distancestring, transport = $transport');
-
-                      SQLiteModel sqLiteModel = SQLiteModel(
-                          idSeller: idSeller,
-                          nameSeller: nameSeller,
-                          idProduct: idProduct,
-                          nameProduct: nameProduct,
-                          numberProduct: numberProduct,
-                          priceProduct: priceProduct,
-                          amount: amount,
-                          sum: sum,
-                          distance: distancestring,
-                          transport: transport.toString());
-                      await SQLiteHelpper()
-                          .insertValueSQLite(sqLiteModel)
-                          .then((value) {
-                        amountInt = 1;
-                        Navigator.pop(context);
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCart(),));
-                      });
+                  IconButton(
+                    onPressed: () {
+                      if (amountInt != 1) {
+                        setState(() {
+                          amountInt--;
+                        });
+                      }
                     },
-                    child: ShowTitle(
-                      title: 'Add',
-                      textStyle: MyConstant().h2BlueStyle(),
+                    icon: Icon(
+                      Icons.remove_circle_outline,
+                      color: MyConstant.dark,
                     ),
                   ),
-                  TextButton(
+                  ShowTitle(
+                    title: amountInt.toString(),
+                    textStyle: MyConstant().h1Style(),
+                  ),
+                  IconButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      setState(() {
+                        amountInt++;
+                      });
                     },
-                    child: ShowTitle(
-                      title: 'Cancel',
-                      textStyle: MyConstant().h2RedStyle(),
+                    icon: Icon(
+                      Icons.add_circle_outline,
+                      color: MyConstant.dark,
                     ),
                   ),
                 ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TextButton(
+                      onPressed: () async {
+                        String idSeller = userModel!.id;
+                        String nameSeller = userModel!.nameseller;
+                        String idProduct = productmodel.id;
+                        String nameProduct = productmodel.nameproduct;
+                        String priceProduct = productmodel.priceproduct;
+                        String number = productmodel.numberproduct;
+                        int minunInt = int.parse(number) - amountInt;
+                        String numberProduct = minunInt.toString();
+                        String amount = amountInt.toString();
+                        int sumInt = int.parse(priceProduct) * amountInt;
+                        String sum = sumInt.toString();
+
+                        lat2 = double.parse(userModel!.lat);
+                        lng2 = double.parse(userModel!.lng);
+
+                        double distance = MyAPI()
+                            .calculateDistance(lat1!, lng1!, lat2!, lng2!);
+
+                        var myFormat = NumberFormat('##0.0#', 'en_US');
+                        String distancestring = myFormat.format(distance);
+
+                        int transport = MyAPI().calculateTransport(distance);
+                        print(
+                            'idproduct = $idProduct, nameproduct = $nameProduct, numberproduct = $numberProduct, priceproduct = $priceProduct, amount = $amount, sum = $sum, distance = $distancestring, transport = $transport');
+
+                        SQLiteModel sqLiteModel = SQLiteModel(
+                            idSeller: idSeller,
+                            nameSeller: nameSeller,
+                            idProduct: idProduct,
+                            nameProduct: nameProduct,
+                            numberProduct: numberProduct,
+                            priceProduct: priceProduct,
+                            amount: amount,
+                            sum: sum,
+                            distance: distancestring,
+                            transport: transport.toString());
+                        await SQLiteHelpper()
+                            .insertValueSQLite(sqLiteModel)
+                            .then((value) {
+                          amountInt = 1;
+                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ShowCart(),
+                              ));
+                        });
+                      },
+                      child: ShowTitle(
+                        title: 'เพิ่มสินค้า',
+                        textStyle: MyConstant().h2BlueStyle(),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: ShowTitle(
+                        title: 'ยกเลิกสินค้า',
+                        textStyle: MyConstant().h2RedStyle(),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           );
@@ -555,24 +478,20 @@ class _FoodMenuList3_2State extends State<FoodMenuList3_2> {
     dynamic imgl = watherImage.length;
     return Container(
         child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CarouselSlider(
           options: CarouselOptions(
+            viewportFraction: 1,
+            height: MediaQuery.of(context).size.height * 0.3,
             enableInfiniteScroll: false,
-            disableCenter: true,
+            disableCenter: false,
           ),
           carouselController: imgController,
           items: watherImage
-              .map((item) => Container(
-                    margin: EdgeInsets.symmetric(horizontal: 30),
-                    child: CachedNetworkImage(
-                      fit: BoxFit.fill,
-                      height: MediaQuery.of(context).size.height * 2,
-                      width: MediaQuery.of(context).size.width * 1,
-                      imageUrl:
-                          '${MyConstant.domain}/shopping${item.toString()}',
-                      placeholder: (context, url) => ShowProgress(),
-                    ),
+              .map((item) => CachedNetworkImage(
+                    imageUrl: '${MyConstant.domain}/shopping${item.toString()}',
+                    placeholder: (context, url) => ShowProgress(),
                   ))
               .toList(),
         ),
@@ -582,12 +501,16 @@ class _FoodMenuList3_2State extends State<FoodMenuList3_2> {
             ...Iterable<int>.generate(watherImage.length).map(
               (int pageIndex) => Flexible(
                 child: ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(MyConstant.primary)),
-                  onPressed: () => imgController.animateToPage(pageIndex),
-                  child: Text("${pageIndex + 1}"),
-                ),
+                    style: ElevatedButton.styleFrom(
+                      primary: MyConstant.primary,
+                      shape: CircleBorder(),
+                      fixedSize: const Size(25, 25),
+                    ),
+                    onPressed: () => imgController.animateToPage(pageIndex),
+                    child: ShowTitle(
+                      title: '${pageIndex + 1}',
+                      textStyle: MyConstant().h2WhiteStyle(),
+                    )),
               ),
             ),
           ],
@@ -598,9 +521,9 @@ class _FoodMenuList3_2State extends State<FoodMenuList3_2> {
 
   String cutWord(String string) {
     String result = string;
-    if (result.length >= 50) {
-      result = result.substring(0, 50);
-      result = '$result ... ';
+    if (result.length >= 100) {
+      result = result.substring(0, 100);
+      result = '$result ...';
     }
     return result;
   }

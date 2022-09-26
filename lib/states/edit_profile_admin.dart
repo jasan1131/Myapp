@@ -26,6 +26,8 @@ class EditProfileAdmin extends StatefulWidget {
 class _EditProfileAdminState extends State<EditProfileAdmin> {
   UserModel? userModel;
   TextEditingController nameController = TextEditingController();
+  TextEditingController nameSellerController = TextEditingController();
+  TextEditingController seconnameController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   LatLng? latLng;
@@ -71,7 +73,9 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
       for (var item in json.decode(value.data)) {
         setState(() {
           userModel = UserModel.fromMap(item);
+          nameSellerController.text = userModel!.nameseller;
           nameController.text = userModel!.name;
+          seconnameController.text = userModel!.seconname;
           addressController.text = userModel!.address;
           phoneController.text = userModel!.phone;
         });
@@ -106,7 +110,9 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
                 buildTitle('รูปผู้ใช้ :'),
                 buildAvatar(constraints),
                 buildTitle('ข้อมูลแอดมิน :'),
+                buildNameSeller(constraints),
                 buildName(constraints),
+                buildSeconname(constraints),
                 buildAddress(constraints),
                 buildPhone(constraints),
                 buildTitle('แผนที่ :'),
@@ -273,6 +279,32 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
     );
   }
 
+  Row buildNameSeller(BoxConstraints constraints) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 16),
+          width: constraints.maxWidth * 0.6,
+          child: TextFormField(
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please Fill Name';
+              } else {
+                return null;
+              }
+            },
+            controller: nameSellerController,
+            decoration: InputDecoration(
+              labelText: 'ชื่อ :',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Row buildName(BoxConstraints constraints) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -291,6 +323,32 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
             controller: nameController,
             decoration: InputDecoration(
               labelText: 'ชื่อ :',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildSeconname(BoxConstraints constraints) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 16),
+          width: constraints.maxWidth * 0.6,
+          child: TextFormField(
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please Fill Name';
+              } else {
+                return null;
+              }
+            },
+            controller: seconnameController,
+            decoration: InputDecoration(
+              labelText: 'นามสกุล :',
               border: OutlineInputBorder(),
             ),
           ),

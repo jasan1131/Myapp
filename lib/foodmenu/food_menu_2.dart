@@ -41,6 +41,7 @@ class _FoodMenu2State extends State<FoodMenu2> {
             buildImage(),
             buildStaple(),
             buildTitle(),
+            MyConstant().mySizeBox()
           ],
         ),
       ),

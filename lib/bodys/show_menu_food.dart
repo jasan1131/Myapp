@@ -21,7 +21,6 @@ import 'package:flutter_myappication_1/foodmenu/food_menu_8.dart';
 import 'package:flutter_myappication_1/foodmenu/food_menu_9.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
-import 'package:flutter_myappication_1/widgets/show_image.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 
 class ShowMenuFood extends StatefulWidget {
@@ -468,7 +467,7 @@ class _ShowMenuFoodState extends State<ShowMenuFood> {
                 width: MediaQuery.of(context).size.width * 0.25,
               ),
               ShowTitle(
-                title: 'ผัดเปรี้ยวหวานหมู',
+                title: 'ผัดเปรี้ยวหวานหมู ',
                 textStyle: MyConstant().h3Style(),
               ),
             ],

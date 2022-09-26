@@ -48,13 +48,77 @@ class MyDialog {
           ),
         ),
         actions: [
-          TextButton(
+          ElevatedButton(
             onPressed: () async {
               // Navigator.pop(context);
               await Geolocator.openLocationSettings();
               exit(0);
             },
-            child: Text('OK'),
+            child: ShowTitle(
+              title: 'ปิด',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<Null> normalDialogCoppy1(
+      BuildContext context, String title, String message) async {
+    showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: Column(
+          children: [
+            Image.asset(
+              MyConstant.ok,
+              height: 150,
+            ),
+            Container(width: MediaQuery.of(context).size.width * 0.5,
+              child: Column(
+                children: [
+                  ShowTitle(title: title),
+                  ShowTitle(title: message),
+                ],
+              ),
+            )
+          ],
+        ),
+        children: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: ShowTitle(
+              title: 'ปิด',
+              textStyle: MyConstant().h3Style(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<Null> normalDialogCoppy(
+      BuildContext context, String title, String message) async {
+    showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: Column(
+          children: [
+            Image.asset(
+              MyConstant.ok,
+              height: 150,
+            ),
+            ShowTitle(title: title)
+          ],
+        ),
+        children: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: ShowTitle(
+              title: 'ปิด',
+              textStyle: MyConstant().h3Style(),
+            ),
           ),
         ],
       ),
@@ -82,7 +146,10 @@ class MyDialog {
         children: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('OK'),
+            child: ShowTitle(
+              title: 'ปิด',
+              textStyle: MyConstant().h3Style(),
+            ),
           ),
         ],
       ),
@@ -120,7 +187,10 @@ class MyDialog {
                   builder: (context) => Authen(),
                 ),
                 (route) => false),
-            child: Text('OK'),
+            child: ShowTitle(
+              title: 'ปิด',
+              textStyle: MyConstant().h3Style(),
+            ),
           ),
         ],
       ),
@@ -148,7 +218,10 @@ class MyDialog {
                   builder: (context) => AdminServer(),
                 ),
                 (route) => false),
-            child: Text('OK'),
+            child: ShowTitle(
+              title: 'ปิด',
+              textStyle: MyConstant().h3Style(),
+            ),
           ),
         ],
       ),
@@ -171,8 +244,16 @@ class MyDialog {
         ),
         children: [
           TextButton(
-            onPressed: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => RiderService(),), (route) => false),
-            child: Text('OK'),
+            onPressed: () => Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => RiderService(),
+                ),
+                (route) => false),
+            child: ShowTitle(
+              title: 'ปิด',
+              textStyle: MyConstant().h3Style(),
+            ),
           ),
         ],
       ),
@@ -197,7 +278,10 @@ class MyDialog {
         children: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('OK'),
+            child: ShowTitle(
+              title: 'ปิด',
+              textStyle: MyConstant().h3Style(),
+            ),
           ),
         ],
       ),
@@ -235,7 +319,10 @@ class MyDialog {
                   builder: (context) => BuyerService(),
                 ),
                 (route) => false),
-            child: Text('OK'),
+            child: ShowTitle(
+              title: 'ปิด',
+              textStyle: MyConstant().h3Style(),
+            ),
           ),
         ],
       ),
@@ -265,7 +352,10 @@ class MyDialog {
                   builder: (context) => AdminServer(),
                 ),
                 (route) => false),
-            child: Text('OK'),
+            child: ShowTitle(
+              title: 'ปิด',
+              textStyle: MyConstant().h3Style(),
+            ),
           ),
         ],
       ),
@@ -298,7 +388,10 @@ class MyDialog {
         children: [
           TextButton(
             onPressed: funcAction,
-            child: Text('OK'),
+            child: ShowTitle(
+              title: 'ปิด',
+              textStyle: MyConstant().h3Style(),
+            ),
           ),
         ],
       ),

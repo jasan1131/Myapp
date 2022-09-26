@@ -4,7 +4,7 @@ class MyConstant {
   // Genernal
   static String appName = 'Shopping MAll';
   static String domain =
-      'https://fa3c-2001-fb1-1c-8d53-803d-4dca-3148-1868.ap.ngrok.io';
+      'https://7f9b-2001-fb1-1c-b830-f5b8-1240-9b01-c8e0.ap.ngrok.io';
 
   static String urlPromptpay = 'https://promptpay.io/0970272217.png';
 
@@ -97,60 +97,83 @@ class MyConstant {
         ),
       );
 
-  // Style
-  TextStyle h1Style() => TextStyle(
+  //Text h1Style
+  TextStyle h1Stylebold() => TextStyle(
         fontSize: 24,
         color: dark,
         fontWeight: FontWeight.bold,
       );
+  TextStyle h1Style() => TextStyle(
+        fontSize: 24,
+        color: dark,
+        fontWeight: FontWeight.normal,
+      );
   TextStyle h1WhiteStyle() => TextStyle(
         fontSize: 24,
         color: Colors.white,
-        fontWeight: FontWeight.w800,
+        fontWeight: FontWeight.normal,
       );
   TextStyle h1BackStyle() => TextStyle(
         fontSize: 24,
         color: Colors.black,
-        fontWeight: FontWeight.w800,
+        fontWeight: FontWeight.normal,
       );
 
+  //Text h2Style
   TextStyle h2Style() => TextStyle(
         fontSize: 18,
         color: dark,
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.normal,
+      );
+  TextStyle h2Stylebold() => TextStyle(
+        fontSize: 18,
+        color: dark,
+        fontWeight: FontWeight.bold,
       );
   TextStyle h2WhiteStyle() => TextStyle(
         fontSize: 18,
         color: Colors.white,
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.normal,
       );
   TextStyle h2RedStyle() => TextStyle(
         fontSize: 18,
         color: Colors.red.shade800,
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.bold,
       );
   TextStyle h2BlueStyle() => TextStyle(
         fontSize: 18,
         color: Colors.blue.shade800,
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.normal,
       );
   TextStyle h2BackStyle() => TextStyle(
         fontSize: 18,
         color: Colors.black,
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.normal,
       );
 
+  //Text h3Style
   TextStyle h3Style() => TextStyle(
         fontSize: 14,
         color: dark,
         fontWeight: FontWeight.normal,
+      );
+  TextStyle h3Stylebold() => TextStyle(
+        fontSize: 14,
+        color: dark,
+        fontWeight: FontWeight.bold,
       );
   TextStyle h3WhiteStyle() => TextStyle(
         fontSize: 14,
         color: Colors.white,
         fontWeight: FontWeight.normal,
       );
-  TextStyle h3BlackStyle() => TextStyle(
+  TextStyle h3BlackStyleBold() => TextStyle(
+        fontSize: 14,
+        color: Colors.black,
+        fontWeight: FontWeight.bold,
+      );
+
+      TextStyle h3BlackStyle() => TextStyle(
         fontSize: 14,
         color: Colors.black,
         fontWeight: FontWeight.normal,
@@ -164,14 +187,14 @@ class MyConstant {
 
   // Button
   ButtonStyle myButtonStyle() => ElevatedButton.styleFrom(
-        primary:Colors.white.withOpacity(0.75),
+        primary: Colors.white.withOpacity(0.75),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),
       );
 
   ButtonStyle myButtonStyleAdd() => ElevatedButton.styleFrom(
-        primary:MyConstant.primary,
+        primary: MyConstant.primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),

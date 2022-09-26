@@ -108,38 +108,79 @@ class _ShowConfirmOrderByRiderState extends State<ShowConfirmOrderByRider> {
                 ),
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
+                  Card(
+                    child: Column(
                       children: [
-                        ShowTitle(
-                          title: 'ชื่อ ${userModels[index].name}',
-                          textStyle: MyConstant().h1BackStyle(),
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Row(
+                            children: [
+                              ShowTitle(
+                                title: 'ชื่อ ',
+                                textStyle: MyConstant().h2Stylebold(),
+                              ),
+                              ShowTitle(
+                                title: '${userModels[index].name}',
+                                textStyle: MyConstant().h2Style(),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Row(
+                                  children: [
+                                    ShowTitle(
+                                      title: 'นามสกุล ',
+                                      textStyle: MyConstant().h2Stylebold(),
+                                    ),
+                                    ShowTitle(
+                                      title: '${userModels[index].seconname}',
+                                      textStyle: MyConstant().h2Style(),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 16),
-                          child: ShowTitle(
-                            title: 'นามสกุล ${userModels[index].seconname}',
-                            textStyle: MyConstant().h1BackStyle(),
+                          padding: const EdgeInsets.all(4.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ShowTitle(
+                                title: 'ที่อยู่ : ',
+                                textStyle: MyConstant().h3Stylebold(),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(top: 1),
+                                width: MediaQuery.of(context).size.width * 0.7,
+                                child: ShowTitle(
+                                  title: '${userModels[index].address}',
+                                  textStyle: MyConstant().h3Style(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Row(
+                            children: [
+                              ShowTitle(
+                                title: 'เบอร์โทรศัพท์ : ',
+                                textStyle: MyConstant().h3Stylebold(),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 4),
+                                child: ShowTitle(
+                                  title: '${userModels[index].phone}',
+                                  textStyle: MyConstant().h3Style(),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ShowTitle(
-                      title: 'ที่อยู่ : ${userModels[index].address}',
-                      textStyle: MyConstant().h2BackStyle(),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ShowTitle(
-                      title: 'เบอรืโทรศัพท์ : ${userModels[index].phone}',
-                      textStyle: MyConstant().h2BackStyle(),
                     ),
                   ),
                   Padding(
@@ -154,8 +195,10 @@ class _ShowConfirmOrderByRiderState extends State<ShowConfirmOrderByRider> {
                   width: MediaQuery.of(context).size.width * 0.75,
                   child: ElevatedButton(
                       style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(MyConstant.light)),
+                        backgroundColor: MaterialStateProperty.all(
+                          Colors.white.withOpacity(0.75),
+                        ),
+                      ),
                       onPressed: () {
                         confirmOrder(index);
                       },

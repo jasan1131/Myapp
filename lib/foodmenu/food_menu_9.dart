@@ -43,6 +43,7 @@ class _FoodMenu9State extends State<FoodMenu9> {
             buildImage(),
             buildStaple(),
             buildTitle(),
+            MyConstant().mySizeBox()
           ],
         ),
       ),
@@ -120,7 +121,7 @@ class _FoodMenu9State extends State<FoodMenu9> {
                   ),
                 ),
             child: ShowTitle(
-              title: '2.อกไก่',
+              title: '2.อกไก่ ',
               textStyle: TextStyle(decoration: TextDecoration.underline),
             )),
         TextButton(

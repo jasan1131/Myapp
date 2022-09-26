@@ -14,6 +14,7 @@ class _PDPAState extends State<PDPA> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('ข้อกำหนดและเงื่อนไข'),
         backgroundColor: MyConstant.primary,
         centerTitle: true,
       ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/models/splite_model.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
-import 'package:flutter_myappication_1/states/buyer_show_shop_seller.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/utility/sqlite_helpper.dart';
 import 'package:flutter_myappication_1/widgets/show_image.dart';
@@ -96,7 +95,7 @@ class _ShowCartState extends State<ShowCart> {
                 padding: const EdgeInsets.all(8.0),
                 child: ShowTitle(
                   title: 'รายการสินค้าที่สั่ง',
-                  textStyle: MyConstant().h1Style(),
+                  textStyle: MyConstant().h1Stylebold(),
                 ),
               ),
             ],
@@ -116,29 +115,65 @@ class _ShowCartState extends State<ShowCart> {
 
   Widget buildNameShop() {
     return Container(
-      margin: EdgeInsets.only(bottom: 8),
+      margin: EdgeInsets.only(left: 8.0),
       child: Column(
         children: <Widget>[
           Row(
             children: <Widget>[
-              ShowTitle(
-                title: 'ร้าน : ${sqliteModels[0].nameSeller}',
+              Row(
+                children: [
+                  ShowTitle(
+                    title: 'ชื่อร้าน : ',
+                    textStyle: MyConstant().h3Stylebold(),
+                  ),
+                  ShowTitle(
+                    title: '${sqliteModels[0].nameSeller}',
+                    textStyle: MyConstant().h3Style(),
+                  ),
+                ],
               ),
             ],
           ),
-          Row(
-            children: <Widget>[
-              ShowTitle(
-                title: 'ระยะทาง : ${sqliteModels[0].distance} กิโลเมตร',
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.only(top: 8, bottom: 8),
+            child: Row(
+              children: <Widget>[
+                Row(
+                  children: [
+                    ShowTitle(
+                      title: 'ระยะทาง : ',
+                      textStyle: MyConstant().h3Stylebold(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 2),
+                      child: ShowTitle(
+                        title: '${sqliteModels[0].distance} / กิโลเมตร',
+                        textStyle: MyConstant().h3Style(),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-          Row(
-            children: <Widget>[
-              ShowTitle(
-                title: 'ค่าจัดส่ง : ${sqliteModels[0].transport} บาท',
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Row(
+              children: <Widget>[
+                Row(
+                  children: [
+                    ShowTitle(
+                      title: 'ค่าจัดส่ง : ',
+                      textStyle: MyConstant().h3Stylebold(),
+                    ),
+                    ShowTitle(
+                      title: 'ค่าจัดส่ง : ${sqliteModels[0].transport} / บาท',
+                      textStyle: MyConstant().h3Style(),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -203,27 +238,20 @@ class _ShowCartState extends State<ShowCart> {
   Row buildTotal() {
     return Row(
       children: [
-        Expanded(
-          flex: 4,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              ShowTitle(
-                title: 'Total :',
-                textStyle: MyConstant().h2Style(),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ShowTitle(
+                title: 'ยอดรวมสินค้า :',
+                textStyle: MyConstant().h3Stylebold(),
               ),
-            ],
-          ),
-        ),
-        Expanded(
-          flex: 2,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 14),
-            child: ShowTitle(
-              title: total == null ? '' : total.toString(),
-              textStyle: MyConstant().h2Style(),
             ),
-          ),
+          ],
+        ),
+        ShowTitle(
+          title: total == null ? '' : '${total.toString()} / บาท',
+          textStyle: MyConstant().h3Style(),
         ),
       ],
     );
@@ -240,108 +268,96 @@ class _ShowCartState extends State<ShowCart> {
       shrinkWrap: true,
       physics: ScrollPhysics(),
       itemCount: sqliteModels.length,
-      itemBuilder: (context, index) => Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 8),
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 3,
               child: ShowTitle(
                 title: sqliteModels[index].nameProduct,
                 textStyle: MyConstant().h3Style(),
               ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 12),
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.only(),
+                child: ShowTitle(
+                  title: sqliteModels[index].amount,
+                  textStyle: MyConstant().h3Style(),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 2,
               child: ShowTitle(
                 title: sqliteModels[index].priceProduct,
                 textStyle: MyConstant().h3Style(),
               ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: ShowTitle(
-                title: sqliteModels[index].amount,
-                textStyle: MyConstant().h3Style(),
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16),
+            Expanded(
+              flex: 1,
               child: ShowTitle(
                 title: sqliteModels[index].sum,
                 textStyle: MyConstant().h3Style(),
               ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: IconButton(
-              onPressed: () async {
-                int idSQLite = sqliteModels[index].id!;
-                print('### Delete idSQLite ==>> $idSQLite');
-                await SQLiteHelpper()
-                    .deleteSQLiteWhereId(idSQLite)
-                    .then((value) => processReadSQLite());
-              },
-              icon: Icon(
-                Icons.delete_forever_outlined,
-                color: Colors.red.shade800,
+            Expanded(
+              flex: 1,
+              child: IconButton(
+                onPressed: () async {
+                  int idSQLite = sqliteModels[index].id!;
+                  print('### Delete idSQLite ==>> $idSQLite');
+                  await SQLiteHelpper()
+                      .deleteSQLiteWhereId(idSQLite)
+                      .then((value) => processReadSQLite());
+                },
+                icon: Icon(
+                  Icons.delete_forever_outlined,
+                  color: Colors.red.shade800,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Container buildHead() {
+  Widget buildHead() {
     return Container(
       decoration: BoxDecoration(color: MyConstant.light),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4),
+        padding: const EdgeInsets.all(8),
         child: Row(
           children: [
             Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: ShowTitle(
-                  title: 'สินค้า',
-                  textStyle: MyConstant().h2Style(),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
+              flex: 3,
               child: ShowTitle(
-                title: 'ราคา',
-                textStyle: MyConstant().h2Style(),
+                title: 'รายชื่อสินค้า',
+                textStyle: MyConstant().h3Stylebold(),
               ),
             ),
             Expanded(
-              flex: 1,
+              flex: 2,
               child: ShowTitle(
                 title: 'จำนวน',
-                textStyle: MyConstant().h2Style(),
+                textStyle: MyConstant().h3Stylebold(),
               ),
             ),
             Expanded(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: ShowTitle(
-                  title: 'รวม',
-                  textStyle: MyConstant().h2Style(),
-                ),
+              flex: 2,
+              child: ShowTitle(
+                title: 'ราคา/บาท',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+            ),
+            Expanded(
+              flex: 0,
+              child: ShowTitle(
+                title: 'ราคารวม/บาท',
+                textStyle: MyConstant().h3Stylebold(),
               ),
             ),
             Expanded(

@@ -134,169 +134,167 @@ class _ShowStatusAwaitOrderState extends State<ShowStatusAwaitOrder> {
   Widget buildContent() => Container(
         decoration: MyConstant().gradientRadioBackground(),
         child: ListView.builder(
-          padding: EdgeInsets.all(16),
           itemCount: orderModels.length,
           itemBuilder: (context, index) => Column(
             children: [
               Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      MyConstant().mySizeBox(),
-                      buildHead(index),
-                      buildHeadTitle(),
-                      buildListViewOrderProduct(index),
-                      buildShowTotal(index),
-                    ],
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ShowTitle(
+                            title: 'รอการยืนยันสินค้าจากร้านค้า',
+                            textStyle: MyConstant().h2Stylebold(),
+                          ),
+                        ),
+                      ],
+                    ),
+                    buildHead(index),
+                    buildHeadTitle(),
+                    buildListViewOrderProduct(index),
+                    buildDivider(),
+                    buildShowTotal(index),
+                    buildDivider(),
+                    MyConstant().mySizeBox()
+                  ],
                 ),
               ),
-              // MyConstant().mySizeBox(),
-              // buildStepIndicator(statusInts[index]),
-              // MyConstant().mySizeBox(),
             ],
           ),
         ),
       );
 
-  // Widget buildStepIndicator(int index) {
-  //   return Column(
-  //     children: [],
-  //   );
-  // }
+  Divider buildDivider() {
+    return Divider(
+      color: MyConstant.dark,
+    );
+  }
 
   Widget buildShowTotal(int index) => Padding(
-        padding: const EdgeInsets.all(4),
+        padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-            Expanded(
-              flex: 10,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ShowTitle(
-                    title:
-                        'ยอดรวมสินค้า : ${totalProductTnts[index].toString()}',
-                    textStyle: MyConstant().h2Style(),
-                  )
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: SizedBox(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ShowTitle(
+                  title: 'ยอดรวมสินค้า : ${totalProductTnts[index].toString()} / บาท',
+                  textStyle: MyConstant().h3Style(),
+                )
+              ],
             ),
           ],
         ),
       );
 
   Widget buildHead(int index) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            ShowTitle(
-              title: 'ร้าน : ${orderModels[index].nameSeller}',
-              textStyle: MyConstant().h1Style(),
-            ),
-          ],
-        ),
-        ShowTitle(
-          title: 'วันที่สั่งซื้อ : ${orderModels[index].dateOrder}',
-          textStyle: MyConstant().h2Style(),
-        ),
-        ShowTitle(
-          title: 'เวลาที่สั่งซื้อ : ${orderModels[index].timeOrder}',
-          textStyle: MyConstant().h2Style(),
-        ),
-        ShowTitle(
-          title: 'ระยะทาง : ${orderModels[index].distance} กิโลเมต',
-          textStyle: MyConstant().h2Style(),
-        ),
-        ShowTitle(
-          title: 'ค่าจัดส่ง : ${orderModels[index].transport} บาท',
-          textStyle: MyConstant().h2Style(),
-        ),
-      ],
-    );
-  }
-
-  Widget buildListViewOrderProduct(int index) => Container(
-        padding: EdgeInsets.all(4),
-        child: ListView.builder(
-          shrinkWrap: true,
-          physics: ScrollPhysics(),
-          itemCount: listOrderProducts[index].length,
-          itemBuilder: (context, index2) => Row(
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              Expanded(
-                flex: 3,
-                child: ShowTitle(
-                  title: listOrderProducts[index][index2],
-                  textStyle: MyConstant().h2Style(),
-                ),
+              ShowTitle(
+                title: 'ชื่อร้าน : ',
+                textStyle: MyConstant().h3Stylebold(),
               ),
-              Expanded(
-                flex: 1,
-                child: ShowTitle(
-                  title: listOrderAmunts[index][index2],
-                  textStyle: MyConstant().h2Style(),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: ShowTitle(
-                  title: listOrderPrices[index][index2],
-                  textStyle: MyConstant().h2Style(),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: ShowTitle(
-                  title: listOrderSums[index][index2],
-                  textStyle: MyConstant().h2Style(),
-                ),
+              ShowTitle(
+                title: '${orderModels[index].nameSeller}',
+                textStyle: MyConstant().h3Style(),
               ),
             ],
           ),
-        ),
-      );
+          Row(
+            children: [
+              ShowTitle(
+                title: 'วันที่สั่งซื้อ : ',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+              ShowTitle(
+                title: '${orderModels[index].dateOrder}',
+                textStyle: MyConstant().h3Style(),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              ShowTitle(
+                title: 'เวลาที่สั่งซื้อ : ',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+              ShowTitle(
+                title: '${orderModels[index].timeOrder}',
+                textStyle: MyConstant().h3Style(),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              ShowTitle(
+                title: 'ระยะทาง : ',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+              ShowTitle(
+                title: '${orderModels[index].distance} / กิโลเมต',
+                textStyle: MyConstant().h3Style(),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              ShowTitle(
+                title: 'ค่าจัดส่ง : ',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+              ShowTitle(
+                title: '${orderModels[index].transport} / บาท',
+                textStyle: MyConstant().h3Style(),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget buildHeadTitle() {
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: Container(
-        decoration: BoxDecoration(color: MyConstant.light),
+    return Container(
+      decoration: BoxDecoration(color: MyConstant.light),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
             Expanded(
               flex: 3,
               child: ShowTitle(
-                title: 'รายการสินค้า',
-                textStyle: MyConstant().h2Style(),
+                title: 'รายชื่อสินค้า',
+                textStyle: MyConstant().h3Stylebold(),
               ),
             ),
             Expanded(
-              flex: 1,
+              flex: 2,
               child: ShowTitle(
                 title: 'จำนวน',
-                textStyle: MyConstant().h2Style(),
+                textStyle: MyConstant().h3Stylebold(),
               ),
             ),
             Expanded(
-              flex: 1,
+              flex: 2,
               child: ShowTitle(
-                title: 'ราคา',
-                textStyle: MyConstant().h2Style(),
+                title: 'ราคา/บาท',
+                textStyle: MyConstant().h3Stylebold(),
               ),
             ),
             Expanded(
-              flex: 1,
+              flex: 0,
               child: ShowTitle(
-                title: 'ผลรวม',
-                textStyle: MyConstant().h2Style(),
+                title: 'ราคารวม/บาท',
+                textStyle: MyConstant().h3Stylebold(),
               ),
             ),
           ],
@@ -305,45 +303,45 @@ class _ShowStatusAwaitOrderState extends State<ShowStatusAwaitOrder> {
     );
   }
 
-  ListView buildListview(int index) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: ScrollPhysics(),
-      itemCount: listOrderProducts[index].length,
-      itemBuilder: (context, index2) => Row(
-        children: [
-          Expanded(
-            flex: 3,
-            child: Text(listOrderProducts[index][index2]),
-          ),
-          Expanded(
-            flex: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(child: Text(listOrderPrices[index][index2])),
-              ],
+  Widget buildListViewOrderProduct(int index) {
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: ScrollPhysics(),
+        itemCount: listOrderProducts[index].length,
+        itemBuilder: (context, index2) => Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: ShowTitle(
+                title: listOrderProducts[index][index2],
+                textStyle: MyConstant().h3Style(),
+              ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(listOrderAmunts[index][index2]),
-              ],
+            Expanded(
+              flex: 2,
+              child: ShowTitle(
+                title: listOrderAmunts[index][index2],
+                textStyle: MyConstant().h3Style(),
+              ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(listOrderSums[index][index2]),
-              ],
+            Expanded(
+              flex: 2,
+              child: ShowTitle(
+                title: listOrderPrices[index][index2],
+                textStyle: MyConstant().h3Style(),
+              ),
             ),
-          ),
-        ],
+            Expanded(
+              flex: 1,
+              child: ShowTitle(
+                title: listOrderSums[index][index2],
+                textStyle: MyConstant().h3Style(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
