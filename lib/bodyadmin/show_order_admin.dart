@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/bodyadmin/show_profile_buyer.dart';
 import 'package:flutter_myappication_1/models/order_model.dart';
+import 'package:flutter_myappication_1/states/show_about_buyer.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
@@ -241,7 +242,7 @@ class _ShowOrderAdminState extends State<ShowOrderAdmin> {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      ShowProfileBuyer(orderModel: orderModels[index]),
+                      ShowAboutBuyer(orderModel: orderModels[index]),
                 ));
           },
           child: Row(

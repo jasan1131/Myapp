@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_myappication_1/bodyrider/rider_map.dart';
 import 'package:flutter_myappication_1/models/order_model.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
@@ -196,13 +195,13 @@ class _ShowProfileBuyerState extends State<ShowProfileBuyer> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 125),
+                padding: const EdgeInsets.symmetric(horizontal: 120),
                 child: ElevatedButton(
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18),
-                        side: BorderSide(color: MyConstant.dark, width: 145),
+                        side: BorderSide(color: MyConstant.dark, ),
                       ),
                     ),
                   ),
@@ -216,9 +215,9 @@ class _ShowProfileBuyerState extends State<ShowProfileBuyer> {
                         color: Colors.green.shade400,
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.only(left: 8, bottom: 3),
                         child: ShowTitle(
-                          title: 'ดูข้อมูลผู้สั่งซื้อ',
+                          title: 'ยืนยันการรับสินค้า',
                           textStyle: MyConstant().h3WhiteStyle(),
                         ),
                       ),
@@ -240,7 +239,7 @@ class _ShowProfileBuyerState extends State<ShowProfileBuyer> {
         '${MyConstant.domain}/shopping/editStatusWhereId.php?isAdd=true&id=$id&status=$status';
     await Dio().get(url).then((value) {
       MyDialog()
-          .normalDialogConfirmOrderOk(context, 'รับคำสั่งซื้อเรียบร้อยแล้ว');
+          .normalDialogOrderOk(context, 'รับคำสั่งซื้อเรียบร้อยแล้ว');
     });
   }
 }
