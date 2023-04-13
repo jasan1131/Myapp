@@ -6,6 +6,7 @@ import 'package:flutter_myappication_1/type/type_fruit.dart';
 import 'package:flutter_myappication_1/type/type_meet.dart';
 import 'package:flutter_myappication_1/type/type_vegetable.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
+import 'package:flutter_myappication_1/widgets/show_image.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 
 class BuyerProductType extends StatefulWidget {
@@ -29,12 +30,12 @@ class _BuyerProductTypeState extends State<BuyerProductType> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: MyConstant().gradientRadioBackground(),
-        child: Column(
-          children: [
-            SingleChildScrollView(
-              child: Padding(
+      body: SingleChildScrollView(
+        child: Container(
+          decoration: MyConstant().gradientRadioBackground(),
+          child: Column(
+            children: [
+              Padding(
                 padding: const EdgeInsets.all(8),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -47,8 +48,8 @@ class _BuyerProductTypeState extends State<BuyerProductType> {
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -63,27 +64,28 @@ class _BuyerProductTypeState extends State<BuyerProductType> {
               builder: (context) => TypeVegatables(userModel: userModel!),
             ));
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.15,
-            width: MediaQuery.of(context).size.width * 0.75,
-            child: Card(
-              child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ShowTitle(
-                      title: 'ผัก ',
-                      textStyle: MyConstant().h2BackStyle(),
-                    ),
-                  ],
+      child: Container(
+        width: MediaQuery.of(context).size.width * 1.0,
+        child: Card(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 60),
+                child: ShowTitle(
+                  title: 'ผัก ',
+                  textStyle: MyConstant().h2BackStyle(),
                 ),
               ),
-            ),
+              Container(
+                child: Image.asset(
+                  MyConstant.vegetable,
+                  width: 250,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -97,27 +99,28 @@ class _BuyerProductTypeState extends State<BuyerProductType> {
               builder: (context) => TypeFruit(userModel: userModel!),
             ));
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.15,
-            width: MediaQuery.of(context).size.width * 0.75,
-            child: Card(
-              child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ShowTitle(
-                      title: 'ผลไม้  ',
-                      textStyle: MyConstant().h2BackStyle(),
-                    ),
-                  ],
+      child: Container(
+        width: MediaQuery.of(context).size.width * 1.0,
+        child: Card(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                child: ShowTitle(
+                  title: 'ผลไม้ ',
+                  textStyle: MyConstant().h2BackStyle(),
                 ),
               ),
-            ),
+              Container(
+                child: Image.asset(
+                  MyConstant.fruit,
+                  width: 250,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -133,22 +136,28 @@ class _BuyerProductTypeState extends State<BuyerProductType> {
               ),
             ));
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.15,
-            width: MediaQuery.of(context).size.width * 0.75,
-            child: Card(
-              child: Center(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 1.0,
+        child: Card(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: ShowTitle(
-                  title: 'เนื้อสัตว์  ',
+                  title: 'เนื้อสัตว์ ',
                   textStyle: MyConstant().h2BackStyle(),
                 ),
               ),
-            ),
+              Container(
+                child: Image.asset(
+                  MyConstant.meet,
+                  width: 250,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -162,22 +171,28 @@ class _BuyerProductTypeState extends State<BuyerProductType> {
               builder: (context) => TypeDriedGoods(userModel: userModel!),
             ));
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.15,
-            width: MediaQuery.of(context).size.width * 0.75,
-            child: Card(
-              child: Center(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 1.0,
+        child: Card(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: ShowTitle(
-                  title: 'ของแห้ง  ',
+                  title: 'อาหารแห้ง ',
                   textStyle: MyConstant().h2BackStyle(),
                 ),
               ),
-            ),
+              Container(
+                child: Image.asset(
+                  MyConstant.driedfood,
+                  width: 250,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -191,22 +206,28 @@ class _BuyerProductTypeState extends State<BuyerProductType> {
               builder: (context) => TypeCondiments(userModel: userModel!),
             ));
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.15,
-            width: MediaQuery.of(context).size.width * 0.75,
-            child: Card(
-              child: Center(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 1.0,
+        child: Card(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ShowTitle(
-                  title: 'เครื่องปรุงรส  ',
+                  title: 'เครื่องปรุงรส ',
                   textStyle: MyConstant().h2BackStyle(),
                 ),
               ),
-            ),
+              Container(
+                child: Image.asset(
+                  MyConstant.condiment,
+                  width: 250,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

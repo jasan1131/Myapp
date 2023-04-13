@@ -17,6 +17,10 @@ class SQLiteHelpper {
   final String columSum = 'sum';
   final String columDistance = 'distance';
   final String columTrasport = 'transport';
+  final String columAddress = 'address';
+  final String columPhone = 'phone';
+  final String columFacebook = 'facebook';
+  final String columLine = 'line';
 
   SQLiteHelpper() {
     initialDatabase();
@@ -26,7 +30,7 @@ class SQLiteHelpper {
     await openDatabase(
       join(await getDatabasesPath(), nameDetabase),
       onCreate: (db, version) => db.execute(
-          'CREATE TABLE $tableDatabase ($columId INTEGER PRIMARY KEY, $columIdSeller TEXT, $columNameSeller TEXT, $columIdProduct TEXT, $columNameProduct TEXT, $columNumberProduct TEXT, $columPriceProduct TEXT, $columAmount TEXT, $columSum TEXT, $columDistance TEXT, $columTrasport TEXT)'),
+          'CREATE TABLE $tableDatabase ($columId INTEGER PRIMARY KEY, $columIdSeller TEXT, $columNameSeller TEXT, $columIdProduct TEXT, $columNameProduct TEXT, $columNumberProduct TEXT, $columPriceProduct TEXT, $columAmount TEXT, $columSum TEXT, $columDistance TEXT, $columTrasport TEXT, $columAddress TEXT, $columPhone TEXT, $columFacebook TEXT, $columLine TEXT)'),
       version: version,
     );
   }

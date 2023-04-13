@@ -4,8 +4,7 @@ class MyConstant {
   // Genernal
   static String appName = 'Shopping MAll';
   static String domain =
-      'https://25c2-2001-fb1-1e-df8c-6917-e498-4787-b534.ap.ngrok.io';
-
+      'https://ad2c-202-133-187-8.ngrok-free.app';
   static String urlPromptpay = 'https://promptpay.io/0970272217.png';
 
   // Route
@@ -36,6 +35,7 @@ class MyConstant {
   static String logofood = 'images/logofood.png';
   static String bill = 'images/bill.png';
 
+  //menuFood
   static String food1 = 'images/food1.png';
   static String food2 = 'images/food2.jpg';
   static String food3 = 'images/food3.jpg';
@@ -56,10 +56,25 @@ class MyConstant {
   static String food18 = 'images/food18.jpg';
   static String food19 = 'images/food19.jpg';
   static String food20 = 'images/food20.png';
+
   static String ok = 'images/ok.png';
   static String line = 'images/line.png';
   static String instagram = 'images/instagram.png';
   static String twitter = 'images/twitter.png';
+
+  //type
+  static String fruit = 'images/fruit.jpg';
+  static String vegetable = 'images/vegetable.jpg';
+  static String meet = 'images/meet.jpg';
+  static String driedfood = 'images/driedfood.jpg';
+  static String condiment = 'images/condiment.jpg';
+
+  //type meet
+  static String pook = 'images/pook.jpg';
+  static String beef = 'images/beef.jpg';
+  static String chicken = 'images/chicken.jpg';
+  static String seafood = 'images/seafood.jpg';
+
   // color
   static Color primary = Color(0xff64b5f6);
   static Color dark = Color(0xff2286c3);
@@ -173,7 +188,7 @@ class MyConstant {
         fontWeight: FontWeight.bold,
       );
 
-      TextStyle h3BlackStyle() => TextStyle(
+  TextStyle h3BlackStyle() => TextStyle(
         fontSize: 14,
         color: Colors.black,
         fontWeight: FontWeight.normal,
@@ -209,4 +224,9 @@ class MyConstant {
   String keyType = 'type';
   String keyUser = 'user';
   String keyName = 'name';
+  String keySecondName = 'secondname';
+  String keyAddress = 'address';
+  String keyPhone = 'phone';
+  String keyFacebook = 'facebook';
+  String keyLine = 'line';
 }

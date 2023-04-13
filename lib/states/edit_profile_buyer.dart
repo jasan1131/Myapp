@@ -6,6 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
+import 'package:flutter_myappication_1/states/buyer_sevice.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/utility/my_dialog.dart';
 import 'package:flutter_myappication_1/widgets/show_image.dart';
@@ -163,11 +164,14 @@ class _EditProfileBuyerState extends State<EditProfileBuyer> {
   Future<Null> editValueToMySQL(String pathAvatar) async {
     print('## pathAvatar ==>> $pathAvatar');
     String apiEditProfile =
-        '${MyConstant.domain}/shopping/editProfileBuyerWhereId.php?isAdd=true&id=${userModel!.id}&avatar=${userModel!.avatar}&name=${nameController.text}&seconname=${seconNameController.text}&address=${addressController.text}&phone=${phoneController.text}&facebook=${facebookController.text}&line=${lineController.text}&lat=${latLng!.latitude}&lng=${latLng!.longitude}';
+        '${MyConstant.domain}/shopping/editProfileBuyerWhereId.php?isAdd=true&id=${userModel!.id}&avatar=$pathAvatar&name=${nameController.text}&seconname=${seconNameController.text}&address=${addressController.text}&phone=${phoneController.text}&facebook=${facebookController.text}&line=${lineController.text}&lat=${latLng!.latitude}&lng=${latLng!.longitude}';
     await Dio().get(apiEditProfile).then(
       (value) {
-        Navigator.pop(context);
-        Navigator.pop(context);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BuyerService(),
+            ));
       },
     );
   }
@@ -274,6 +278,7 @@ class _EditProfileBuyerState extends State<EditProfileBuyer> {
 
   CachedNetworkImage buildShowImageNetwork() {
     return CachedNetworkImage(
+      errorWidget: (context, url, error) => ShowImage(path: MyConstant.avatar),
       imageUrl: '${MyConstant.domain}${userModel!.avatar}',
       placeholder: (context, url) => ShowProgress(),
     );
@@ -289,7 +294,7 @@ class _EditProfileBuyerState extends State<EditProfileBuyer> {
           child: TextFormField(
             validator: (value) {
               if (value!.isEmpty) {
-                return 'กรุณากรอกชื่อ';
+                return 'กรุณากรอก ชื่อ';
               } else {
                 return null;
               }
@@ -341,7 +346,7 @@ class _EditProfileBuyerState extends State<EditProfileBuyer> {
           child: TextFormField(
             validator: (value) {
               if (value!.isEmpty) {
-                return 'กรุรากรอกที่อยู่';
+                return 'กรุรากรอก ที่อยู่';
               } else {
                 return null;
               }
@@ -368,7 +373,7 @@ class _EditProfileBuyerState extends State<EditProfileBuyer> {
           child: TextFormField(
             validator: (value) {
               if (value!.isEmpty) {
-                return 'กรุณากรอกเบอร์โทรศัพท์';
+                return 'กรุณากรอก เบอร์โทรศัพท์';
               } else {
                 return null;
               }
@@ -395,7 +400,7 @@ class _EditProfileBuyerState extends State<EditProfileBuyer> {
           child: TextFormField(
             validator: (value) {
               if (value!.isEmpty) {
-                return 'กรุณากรอกเบอร์โทรศัพท์';
+                return 'กรุณากรอก เฟสบุ๊ก';
               } else {
                 return null;
               }
@@ -421,7 +426,7 @@ class _EditProfileBuyerState extends State<EditProfileBuyer> {
           child: TextFormField(
             validator: (value) {
               if (value!.isEmpty) {
-                return 'กรุณากรอกเบอร์โทรศัพท์';
+                return 'กรุณากรอก ไลน์ไอดี';
               } else {
                 return null;
               }

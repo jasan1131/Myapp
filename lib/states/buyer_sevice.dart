@@ -71,7 +71,7 @@ class _BuyerServiceState extends State<BuyerService> {
       for (var item in json.decode(value.data)) {
         setState(() {
           userModel = UserModel.fromMap(item);
-          print('### id login ==> ${userModel!.seconname}');
+          print('### id login ==> ${userModel!.id}');
         });
       }
       ;
@@ -222,11 +222,11 @@ class _BuyerServiceState extends State<BuyerService> {
                       '${MyConstant.domain}${userModel!.avatar}'),
                 ),
       accountName: ShowTitle(
-        title: userModel == null ? '' : userModel!.name,
+        title: userModel == null ? '' : '${userModel!.name}   ',
         textStyle: MyConstant().h2Style(),
       ),
       accountEmail: ShowTitle(
-        title: userModel == null ? '' : userModel!.user,
+        title: userModel == null ? '' : '${userModel!.user}   ',
         textStyle: MyConstant().h3Style(),
       ),
     );

@@ -13,6 +13,10 @@ class SQLiteModel {
   final String sum;
   final String distance;
   final String transport;
+  final String address;
+  final String phone;
+  final String facebook;
+  final String line;
   SQLiteModel({
     this.id,
     required this.idSeller,
@@ -25,6 +29,10 @@ class SQLiteModel {
     required this.sum,
     required this.distance,
     required this.transport,
+    required this.address,
+    required this.phone,
+    required this.facebook,
+    required this.line,
   });
 
   SQLiteModel copyWith({
@@ -39,6 +47,10 @@ class SQLiteModel {
     String? sum,
     String? distance,
     String? transport,
+    String? address,
+    String? phone,
+    String? facebook,
+    String? line,
   }) {
     return SQLiteModel(
       id: id ?? this.id,
@@ -52,6 +64,10 @@ class SQLiteModel {
       sum: sum ?? this.sum,
       distance: distance ?? this.distance,
       transport: transport ?? this.transport,
+      address: address ?? this.address,
+      phone: phone ?? this.phone,
+      facebook: facebook ?? this.facebook,
+      line: line ?? this.line,
     );
   }
 
@@ -68,6 +84,10 @@ class SQLiteModel {
       'sum': sum,
       'distance': distance,
       'transport': transport,
+      'address': address,
+      'phone': phone,
+      'facebook': facebook,
+      'line': line,
     };
   }
 
@@ -84,6 +104,10 @@ class SQLiteModel {
       sum: map['sum'] as String,
       distance: map['distance'] as String,
       transport: map['transport'] as String,
+      address: map['address'] as String,
+      phone: map['phone'] as String,
+      facebook: map['facebook'] as String,
+      line: map['line'] as String,
     );
   }
 
@@ -93,7 +117,7 @@ class SQLiteModel {
 
   @override
   String toString() {
-    return 'SQLiteModel(id: $id, idSeller: $idSeller, nameSeller: $nameSeller, idProduct: $idProduct, nameProduct: $nameProduct, numberProduct: $numberProduct, priceProduct: $priceProduct, amount: $amount, sum: $sum, distance: $distance, transport: $transport)';
+    return 'SQLiteModel(id: $id, idSeller: $idSeller, nameSeller: $nameSeller, idProduct: $idProduct, nameProduct: $nameProduct, numberProduct: $numberProduct, priceProduct: $priceProduct, amount: $amount, sum: $sum, distance: $distance, transport: $transport, address: $address, phone: $phone, facebook: $facebook, line: $line)';
   }
 
   @override
@@ -111,7 +135,11 @@ class SQLiteModel {
       other.amount == amount &&
       other.sum == sum &&
       other.distance == distance &&
-      other.transport == transport;
+      other.transport == transport &&
+      other.address == address &&
+      other.phone == phone &&
+      other.facebook == facebook &&
+      other.line == line;
   }
 
   @override
@@ -126,6 +154,10 @@ class SQLiteModel {
       amount.hashCode ^
       sum.hashCode ^
       distance.hashCode ^
-      transport.hashCode;
+      transport.hashCode ^
+      address.hashCode ^
+      phone.hashCode ^
+      facebook.hashCode ^
+      line.hashCode;
   }
 }

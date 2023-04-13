@@ -23,6 +23,7 @@ class _CashOnDeliveryState extends State<CashOnDelivery> {
   bool load = true;
   String? idbuyer;
   String? namebuyer;
+   String? secondnamebuyer;
 
   @override
   void initState() {
@@ -38,6 +39,7 @@ class _CashOnDeliveryState extends State<CashOnDelivery> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     idbuyer = preferences.getString('id');
     namebuyer = preferences.getString('name');
+    secondnamebuyer = preferences.getString('secondname');
   }
 
   void finedCurrentTime() {
@@ -83,9 +85,8 @@ class _CashOnDeliveryState extends State<CashOnDelivery> {
   }
 
   Future<void> InsertData() async {
-    var status = 'เก็บเงินปลายทาง';
     var urlAPIInsert =
-        '${MyConstant.domain}/shopping/insertSlip.php?isAdd=true&idbuyer=$idbuyer&namebuyer=$namebuyer&dateDay=$dateDays&dateTime=$dateTimes&statuswallet=$status';
+        '${MyConstant.domain}/shopping/insertSlip.php?isAdd=true&idbuyer=$idbuyer&namebuyer=$namebuyer&secondnamebuyer=$secondnamebuyer&dateDay=$dateDays&dateTime=$dateTimes&status=เก็บเงินปลายทาง';
     await Dio().get(urlAPIInsert).then(
           (value) => MyDialog(funcAction: success).actionDialog(
             context,

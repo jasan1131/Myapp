@@ -10,6 +10,7 @@ import 'package:flutter_myappication_1/states/show_status_buyer_seller_order.dar
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:steps_indicator/steps_indicator.dart';
 
@@ -103,7 +104,6 @@ class _ShowOrderStatusState extends State<ShowOrderStatus> {
               haveData = true;
               statusOrder = false;
               orderModels.add(model);
-
               listOrderProducts.add(orderProducts);
               listOrderPrices.add(orderPrices);
               listOrderAmunts.add(orderAmounts);
@@ -243,26 +243,33 @@ class _ShowOrderStatusState extends State<ShowOrderStatus> {
     );
   }
 
-  Widget buildShowTotal(int index) => Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ShowTitle(
-                  title: 'ยอดรวมสินค้า : ',
-                  textStyle: MyConstant().h3Stylebold(),
-                ),
-                ShowTitle(
-                  title: '${totalProductTnts[index].toString()} / บาท',
+  Widget buildShowTotal(int index) {
+    NumberFormat myFormat = NumberFormat.decimalPattern('en_us');
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ShowTitle(
+                title: 'ยอดรวมสินค้า : ',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 2.0),
+                child: ShowTitle(
+                  title: myFormat.format(totalProductTnts[index]),
                   textStyle: MyConstant().h3Style(),
-                )
-              ],
-            ),
-          ],
-        ),
-      );
+                ),
+              ),
+              ShowTitle(title: ' บาท')
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget buildHead(int index) {
     return Padding(
@@ -321,7 +328,7 @@ class _ShowOrderStatusState extends State<ShowOrderStatus> {
               Padding(
                 padding: const EdgeInsets.only(top: 2),
                 child: ShowTitle(
-                  title: '${orderModels[index].distance} / กิโลเมต',
+                  title: '${orderModels[index].distance} กิโลเมต',
                   textStyle: MyConstant().h3Style(),
                 ),
               ),
@@ -338,7 +345,7 @@ class _ShowOrderStatusState extends State<ShowOrderStatus> {
                   Padding(
                     padding: const EdgeInsets.only(top: 2),
                     child: ShowTitle(
-                      title: '${orderModels[index].transport} / บาท',
+                      title: '${orderModels[index].transport} บาท',
                       textStyle: MyConstant().h3Style(),
                     ),
                   ),

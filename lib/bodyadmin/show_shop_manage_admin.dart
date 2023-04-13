@@ -68,129 +68,241 @@ class _ShopManageAdminState extends State<ShopManageAdmin> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ShowTitle(
-                        title: 'รูปโปรไฟล์ :',
-                        textStyle: MyConstant().h2Stylebold(),
-                      ),
-                      Container(
-                        width: constraints.maxWidth * 0.6,
-                        height: constraints.maxWidth * 0.6,
-                        child: CachedNetworkImage(
-                          imageUrl: '${MyConstant.domain}${userModel!.avatar}',
-                          placeholder: (context, url) => ShowProgress(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: Row(
-                      children: [
-                        ShowTitle(
-                          title: 'ชื่อร้าน : ',
-                          textStyle: MyConstant().h2Stylebold(),
-                        ),
-                        ShowTitle(
-                          title: '${userModel!.nameseller}',
-                          textStyle: MyConstant().h2Style(),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: Row(
-                      children: [
-                        ShowTitle(
-                          title: 'ชื่อ - นามกสุล : ',
-                          textStyle: MyConstant().h2Stylebold(),
-                        ),
-                        ShowTitle(
-                          title: '${userModel!.name} ${userModel!.seconname}',
-                          textStyle: MyConstant().h2Style(),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ShowTitle(
-                          title: 'ที่อยู่ :',
-                          textStyle: MyConstant().h2Stylebold(),
-                        ),
-                        Container(
-                            width: MediaQuery.of(context).size.width * 0.75,
-                            child: ShowTitle(
-                              title: userModel!.address,
-                              textStyle: MyConstant().h2Style(),
-                            )),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: Row(
-                      children: [
-                        ShowTitle(
-                          title: 'เบอร์โทรศัพท์ : ',
-                          textStyle: MyConstant().h2Stylebold(),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 6),
-                          child: ShowTitle(
-                            title: userModel!.phone,
-                            textStyle: MyConstant().h2Style(),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ShowTitle(
-                            title: 'แผนที่ : ',
-                            textStyle: MyConstant().h2Stylebold()),
-                        Container(
-                          width: constraints.maxWidth * 0.6,
-                          height: constraints.maxWidth * 0.6,
-                          child: GoogleMap(
-                            initialCameraPosition: CameraPosition(
-                              target: LatLng(
-                                double.parse(userModel!.lat),
-                                double.parse(userModel!.lng),
-                              ),
-                              zoom: 16,
-                            ),
-                            markers: <Marker>[
-                              Marker(
-                                  markerId: MarkerId('id'),
-                                  position: LatLng(
-                                    double.parse(userModel!.lat),
-                                    double.parse(userModel!.lng),
-                                  ),
-                                  infoWindow: InfoWindow(
-                                      title: 'You Here ',
-                                      snippet:
-                                          'lat = ${userModel!.lat}, lng = ${userModel!.lng}')),
-                            ].toSet(),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  buildImage(constraints),
+                  buildHomePage(),
+                  buildNameANDSeconName(),
+                  buildAddress(context),
+                  buildPhone(),
+                  buildFacebook(),
+                  buildLine(),
+                  buildInstaGram(),
+                  buildTwitter(),
+                  buildMap(constraints),
                 ],
               ),
             ),
           ),
         ));
+  }
+
+  Padding buildTwitter() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Row(
+        children: [
+          ShowTitle(
+            title: 'ทวิตเตอร์ : ',
+            textStyle: MyConstant().h2Stylebold(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 2),
+            child: ShowTitle(
+              title: userModel!.twitter,
+              textStyle: MyConstant().h2Style(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding buildInstaGram() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Row(
+        children: [
+          ShowTitle(
+            title: 'อินสตราแกรม : ',
+            textStyle: MyConstant().h2Stylebold(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 2),
+            child: ShowTitle(
+              title: userModel!.instargarm,
+              textStyle: MyConstant().h2Style(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding buildLine() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Row(
+        children: [
+          ShowTitle(
+            title: 'ไอดีไลน์ : ',
+            textStyle: MyConstant().h2Stylebold(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 2),
+            child: ShowTitle(
+              title: userModel!.line,
+              textStyle: MyConstant().h2Style(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding buildFacebook() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Row(
+        children: [
+          ShowTitle(
+            title: 'เฟสบุ๊ก : ',
+            textStyle: MyConstant().h2Stylebold(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 2),
+            child: ShowTitle(
+              title: userModel!.facebook,
+              textStyle: MyConstant().h2Style(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+
+  Padding buildMap(BoxConstraints constraints) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ShowTitle(title: 'แผนที่ : ', textStyle: MyConstant().h2Stylebold()),
+          Container(
+            width: constraints.maxWidth * 0.6,
+            height: constraints.maxWidth * 0.6,
+            child: GoogleMap(
+              initialCameraPosition: CameraPosition(
+                target: LatLng(
+                  double.parse(userModel!.lat),
+                  double.parse(userModel!.lng),
+                ),
+                zoom: 16,
+              ),
+              markers: <Marker>[
+                Marker(
+                    markerId: MarkerId('id'),
+                    position: LatLng(
+                      double.parse(userModel!.lat),
+                      double.parse(userModel!.lng),
+                    ),
+                    infoWindow: InfoWindow(
+                        title: 'You Here ',
+                        snippet:
+                            'lat = ${userModel!.lat}, lng = ${userModel!.lng}')),
+              ].toSet(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding buildPhone() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Row(
+        children: [
+          ShowTitle(
+            title: 'เบอร์โทรศัพท์ : ',
+            textStyle: MyConstant().h2Stylebold(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: ShowTitle(
+              title: userModel!.phone,
+              textStyle: MyConstant().h2Style(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding buildAddress(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ShowTitle(
+            title: 'ที่อยู่ :',
+            textStyle: MyConstant().h2Stylebold(),
+          ),
+          Container(
+              width: MediaQuery.of(context).size.width * 0.75,
+              child: ShowTitle(
+                title: userModel!.address,
+                textStyle: MyConstant().h2Style(),
+              )),
+        ],
+      ),
+    );
+  }
+
+  Padding buildNameANDSeconName() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Row(
+        children: [
+          ShowTitle(
+            title: 'ชื่อ - นามกสุล : ',
+            textStyle: MyConstant().h2Stylebold(),
+          ),
+          ShowTitle(
+            title: '${userModel!.name} ${userModel!.seconname}',
+            textStyle: MyConstant().h2Style(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding buildHomePage() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Row(
+        children: [
+          ShowTitle(
+            title: 'ชื่อร้าน : ',
+            textStyle: MyConstant().h2Stylebold(),
+          ),
+          ShowTitle(
+            title: '${userModel!.nameseller}',
+            textStyle: MyConstant().h2Style(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Row buildImage(BoxConstraints constraints) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ShowTitle(
+          title: 'รูปโปรไฟล์ :',
+          textStyle: MyConstant().h2Stylebold(),
+        ),
+        Container(
+          width: constraints.maxWidth * 0.6,
+          height: constraints.maxWidth * 0.6,
+          child: CachedNetworkImage(
+            imageUrl: '${MyConstant.domain}${userModel!.avatar}',
+            placeholder: (context, url) => ShowProgress(),
+          ),
+        ),
+      ],
+    );
   }
 }

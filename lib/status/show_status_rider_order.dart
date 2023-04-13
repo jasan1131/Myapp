@@ -197,7 +197,7 @@ class _ShowStatusRiderOrderState extends State<ShowStatusRiderOrder> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ShowTitle(
-                  title: 'ยอดรวมสินค้า : ${totalProductInts[index].toString()} / บาท',
+                  title: 'ยอดรวมสินค้า : ${totalProductInts[index].toString()} บาท',
                   textStyle: MyConstant().h3Style(),
                 )
               ],
@@ -255,7 +255,7 @@ class _ShowStatusRiderOrderState extends State<ShowStatusRiderOrder> {
                 textStyle: MyConstant().h3Stylebold(),
               ),
               ShowTitle(
-                title: '${orderModels[index].distance} / กิโลเมต',
+                title: '${orderModels[index].distance} กิโลเมต',
                 textStyle: MyConstant().h3Style(),
               ),
             ],
@@ -267,7 +267,7 @@ class _ShowStatusRiderOrderState extends State<ShowStatusRiderOrder> {
                 textStyle: MyConstant().h3Stylebold(),
               ),
               ShowTitle(
-                title: '${orderModels[index].transport} / บาท',
+                title: '${orderModels[index].transport} บาท',
                 textStyle: MyConstant().h3Style(),
               ),
             ],

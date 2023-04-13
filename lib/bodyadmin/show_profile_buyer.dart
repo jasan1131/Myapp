@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/models/order_model.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
-import 'package:flutter_myappication_1/utility/my_dialog.dart';
 import 'package:flutter_myappication_1/widgets/show_image.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
@@ -63,7 +62,7 @@ class _ShowProfileBuyerState extends State<ShowProfileBuyer> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('รายการสินค้าที่ต้องส่ง'),
+        title: Text('รายการสินค้าที่ลูกค้าสั่ง'),
         backgroundColor: MyConstant.primary,
       ),
       body: Container(
@@ -92,27 +91,13 @@ class _ShowProfileBuyerState extends State<ShowProfileBuyer> {
                       child: Row(
                         children: [
                           ShowTitle(
-                            title: 'ชื่อ ',
+                            title: 'ชื่อ - นามสกุล ',
                             textStyle: MyConstant().h2Stylebold(),
                           ),
                           ShowTitle(
-                            title: '${userModels[index].name}',
+                            title:
+                                '${userModels[index].name} ${userModels[index].seconname}',
                             textStyle: MyConstant().h2Style(),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Row(
-                              children: [
-                                ShowTitle(
-                                  title: 'นามสกุล ',
-                                  textStyle: MyConstant().h2Stylebold(),
-                                ),
-                                ShowTitle(
-                                  title: '${userModels[index].seconname}',
-                                  textStyle: MyConstant().h2Style(),
-                                ),
-                              ],
-                            ),
                           ),
                         ],
                       ),
@@ -194,52 +179,10 @@ class _ShowProfileBuyerState extends State<ShowProfileBuyer> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 120),
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                        side: BorderSide(color: MyConstant.dark, ),
-                      ),
-                    ),
-                  ),
-                  onPressed: () async {
-                    confirmOrder(index);
-                  },
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.radio_button_off,
-                        color: Colors.green.shade400,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8, bottom: 3),
-                        child: ShowTitle(
-                          title: 'ยืนยันการรับสินค้า',
-                          textStyle: MyConstant().h3WhiteStyle(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  Future confirmOrder(index) async {
-    id = orderModel!.id;
-    String status = 'sellerConfirmOrder';
-    String url =
-        '${MyConstant.domain}/shopping/editStatusWhereId.php?isAdd=true&id=$id&status=$status';
-    await Dio().get(url).then((value) {
-      MyDialog()
-          .normalDialogOrderOk(context, 'รับคำสั่งซื้อเรียบร้อยแล้ว');
-    });
   }
 }

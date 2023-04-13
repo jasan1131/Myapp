@@ -11,7 +11,6 @@ import 'package:flutter_myappication_1/widgets/show_title.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ShowStatusOrderRiderConfirmBuyer extends StatefulWidget {
   final OrderModel orderModel;
@@ -28,72 +27,48 @@ class _ShowStatusOrderRiderConfirmBuyerState
   UserModel? userModel;
   OrderModel? orderModel;
   double? lat1, lng1, lat2, lng2;
-  double distance = 0.0;
-  bool loadData = true;
-  bool? haveData;
+  String? idRider;
+  bool? loadData;
   CameraPosition? position;
   GoogleMapController? mapController;
   PolylinePoints polylinePoints = PolylinePoints();
-  String googleApiKey = "AIzaSyDnIQCYp-e4OoLMf-Q5YrfKNyTo94Lvpfg";
+  // String googleAPiKey = "AIzaSyDnIQCYp-e4OoLMf-Q5YrfKNyTo94Lvpfg";
+  String googleAPiKey = "AIzaSyDsZE5oAGc6HPl_dnn3tjC6asUJAZU1BdU";
   Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
-  String? idRider;
-  String? idBuyer;
+  double distance = 0.0;
 
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
     orderModel = widget.orderModel;
+    super.initState();
     readLocation();
   }
 
   Future<Null> readLocation() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    idBuyer = preferences.getString('id');
     idRider = orderModel!.idRider;
-    print('idBuyer = $idBuyer');
-    try {
-      String pathURL =
-          '${MyConstant.domain}/shopping/getUserWhereId.php?isAdd=true&id=$idBuyer';
-      await Dio().get(pathURL).then((value) async {
-        setState(() {
-          loadData = false;
-          haveData = false;
-        });
-        for (var item in json.decode(value.data)) {
-          UserModel models = UserModel.fromMap(item);
-
-          LocationData? locationData = await finalLocationData();
-          setState(() {
-            lat1 = double.parse(models.lat);
-            lng1 = double.parse(models.lng);
-            // print('lat1 = $lat1, lng1 = $lng1');
-          });
-        }
-      });
-    } catch (e) {}
-
     try {
       String pathAPI =
           '${MyConstant.domain}/shopping/getUserWhereId.php?isAdd=true&id=$idRider';
       await Dio().get(pathAPI).then((value) async {
         setState(() {
           loadData = false;
-          haveData = false;
         });
         for (var item in json.decode(value.data)) {
           UserModel model = UserModel.fromMap(item);
 
           LocationData? locationData = await finalLocationData();
           setState(() {
-            lat2 = double.parse(model.lat);
-            lng2 = double.parse(model.lng);
-            // print('lat2 = $lat2, lng2 = $lng2');
+            lat1 = double.parse(model.lat);
+            lng1 = double.parse(model.lng);
+            lat2 = locationData!.latitude;
+            lng2 = locationData.longitude;
+            print('lat1 = $lat1, lng1 = $lng1, lat2 = $lat2, lng2 = $lng2');
           });
           PolylineResult result =
               await polylinePoints.getRouteBetweenCoordinates(
-            googleApiKey,
+            googleAPiKey,
             PointLatLng(lat1!, lng1!),
             PointLatLng(lat2!, lng2!),
             travelMode: TravelMode.driving,
@@ -105,7 +80,7 @@ class _ShowStatusOrderRiderConfirmBuyerState
               );
             });
           } else {
-            // print(result.errorMessage);
+            print(result.errorMessage);
           }
 
           double totalDistance = 0;
@@ -116,10 +91,8 @@ class _ShowStatusOrderRiderConfirmBuyerState
                 polylineCoordinates[i + 1].latitude,
                 polylineCoordinates[i + 1].longitude);
           }
-          // print(totalDistance);
+          print(totalDistance);
           setState(() {
-            haveData = true;
-            loadData = false;
             distance = totalDistance;
           });
           addPolyLine(polylineCoordinates);
@@ -166,40 +139,37 @@ class _ShowStatusOrderRiderConfirmBuyerState
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        title: Text('สถานะการจัดส่งสินค้า'),
         backgroundColor: MyConstant.primary,
       ),
-      body: loadData
-          ? ShowProgress()
-          : haveData!
-              ? Stack(
-                  children: [
-                    showmap(),
-                    Positioned(
-                        top: 10,
-                        left: 125,
-                        child: Card(
-                          child: Container(
-                            child: Padding(
-                              padding: const EdgeInsets.all(20),
-                              child: ShowTitle(
-                                title: 'Total Distance: ' +
-                                    distance.toStringAsFixed(2) +
-                                    ' km',
-                              ),
-                            ),
-                          ),
-                        )),
-                  ],
-                )
-              : ShowProgress(),
+      body: Stack(
+        children: [
+          showmap(),
+          Positioned(
+              top: 10,
+              left: 125,
+              child: Card(
+                child: Container(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: ShowTitle(
+                      title: 'Total Distance: ' +
+                          distance.toStringAsFixed(2) +
+                          ' km',
+                    ),
+                  ),
+                ),
+              )),
+        ],
+      ),
     );
   }
 
   Container showmap() {
-    if (lat2 != null) {
-      LatLng latLng2 = LatLng(lat1!, lng1!);
+    if (lat1 != null) {
+      LatLng latLng1 = LatLng(lat1!, lng1!);
       position = CameraPosition(
-        target: latLng2,
+        target: latLng1,
         zoom: 15,
       );
     }
@@ -214,10 +184,10 @@ class _ShowStatusOrderRiderConfirmBuyerState
 
     Marker riderMarker() {
       return Marker(
-        markerId: MarkerId('userMarker'),
+        markerId: MarkerId('riderMarker'),
         position: LatLng(lat2!, lng2!),
-        icon: BitmapDescriptor.defaultMarkerWithHue(150.0),
-        infoWindow: InfoWindow(title: 'คนส่งสินค้า'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(160.0),
+        infoWindow: InfoWindow(title: 'คนส่งสินค้น'),
       );
     }
 
@@ -229,11 +199,10 @@ class _ShowStatusOrderRiderConfirmBuyerState
       child: lat1 == null
           ? ShowProgress()
           : GoogleMap(
-              myLocationEnabled: true,
               zoomControlsEnabled: true,
               initialCameraPosition: position!,
               mapType: MapType.normal,
-              // myLocationEnabled: true,
+              myLocationEnabled: true,
               onMapCreated: _onMapCreated,
               markers: mySet(),
               polylines: Set<Polyline>.of(polylines.values),

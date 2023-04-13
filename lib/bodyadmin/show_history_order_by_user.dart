@@ -6,6 +6,7 @@ import 'package:flutter_myappication_1/models/history_model.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ShowHistoryByOrderByUser extends StatefulWidget {
@@ -25,6 +26,7 @@ class _ShowHistoryByOrderByUserState extends State<ShowHistoryByOrderByUser> {
   List<List<String>> listPriceProducts = [];
   List<List<String>> listAmunts = [];
   List<List<String>> listSums = [];
+  List<int> totalProductTnts = [];
   String? idSeller;
   String? id;
 
@@ -60,6 +62,11 @@ class _ShowHistoryByOrderByUserState extends State<ShowHistoryByOrderByUser> {
                 changeArrey(history.priceProduct);
             List<String> historyAmunts = changeArrey(history.amount);
             List<String> historySums = changeArrey(history.sum);
+            int total = int.parse(history.transport);
+            for (var string in historySums) {
+              total = total + int.parse(string.trim());
+              // total = transport + total;
+            }
             setState(() {
               statusOrder = false;
               haveData = true;
@@ -69,6 +76,7 @@ class _ShowHistoryByOrderByUserState extends State<ShowHistoryByOrderByUser> {
               listPriceProducts.add(historyPriceProducts);
               listAmunts.add(historyAmunts);
               listSums.add(historySums);
+              totalProductTnts.add(total);
             });
           }
         }
@@ -132,7 +140,7 @@ class _ShowHistoryByOrderByUserState extends State<ShowHistoryByOrderByUser> {
                 buildHeadTitle(),
                 buildListViewHistoryProduct(index),
                 buildDivider(),
-                buildTotal(index),
+                buildShowTotal(index),
                 buildDivider(),
                 MyConstant().mySizeBox()
               ],
@@ -157,28 +165,28 @@ class _ShowHistoryByOrderByUserState extends State<ShowHistoryByOrderByUser> {
         child: Row(
           children: [
             Expanded(
-              flex: 2,
+              flex: 3,
               child: ShowTitle(
-                title: 'สินค้า',
+                title: 'รายชื่อสินค้า',
                 textStyle: MyConstant().h3Stylebold(),
               ),
             ),
             Expanded(
-              flex: 1,
+              flex: 2,
               child: ShowTitle(
                 title: 'จำนวน',
                 textStyle: MyConstant().h3Stylebold(),
               ),
             ),
             Expanded(
-              flex: 1,
+              flex: 2,
               child: ShowTitle(
                 title: 'ราคา/บาท',
                 textStyle: MyConstant().h3Stylebold(),
               ),
             ),
             Expanded(
-              flex: 1,
+              flex: 0,
               child: ShowTitle(
                 title: 'ราคารวม/บาท',
                 textStyle: MyConstant().h3Stylebold(),
@@ -191,53 +199,42 @@ class _ShowHistoryByOrderByUserState extends State<ShowHistoryByOrderByUser> {
   }
 
   Widget buildListViewHistoryProduct(int index) => Container(
+        padding: const EdgeInsets.all(8.0),
         child: ListView.builder(
           shrinkWrap: true,
           physics: ScrollPhysics(),
           itemCount: listNameProducts[index].length,
-          itemBuilder: (context, index2) => Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: ShowTitle(
-                    title: listNameProducts[index][index2],
-                    textStyle: MyConstant().h3Style(),
-                  ),
+          itemBuilder: (context, index2) => Row(
+            children: [
+              Expanded(
+                flex: 3,
+                child: ShowTitle(
+                  title: listNameProducts[index][index2],
+                  textStyle: MyConstant().h3Style(),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: ShowTitle(
-                      title: listAmunts[index][index2],
-                      textStyle: MyConstant().h3Style(),
-                    ),
-                  ),
+              ),
+              Expanded(
+                flex: 2,
+                child: ShowTitle(
+                  title: listAmunts[index][index2],
+                  textStyle: MyConstant().h3Style(),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 22),
-                    child: ShowTitle(
-                      title: listPriceProducts[index][index2],
-                      textStyle: MyConstant().h3Style(),
-                    ),
-                  ),
+              ),
+              Expanded(
+                flex: 2,
+                child: ShowTitle(
+                  title: listPriceProducts[index][index2],
+                  textStyle: MyConstant().h3Style(),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 22),
-                    child: ShowTitle(
-                      title: listSums[index][index2],
-                      textStyle: MyConstant().h3Style(),
-                    ),
-                  ),
+              ),
+              Expanded(
+                flex: 1,
+                child: ShowTitle(
+                  title: listSums[index][index2],
+                  textStyle: MyConstant().h3Style(),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       );
@@ -249,9 +246,9 @@ class _ShowHistoryByOrderByUserState extends State<ShowHistoryByOrderByUser> {
             textStyle: MyConstant().h3Stylebold(),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 3),
+            padding: const EdgeInsets.only(top: 1),
             child: ShowTitle(
-              title: '${historyModels[index].transport}',
+              title: '${historyModels[index].transport} บาท',
               textStyle: MyConstant().h3Style(),
             ),
           ),
@@ -267,7 +264,7 @@ class _ShowHistoryByOrderByUserState extends State<ShowHistoryByOrderByUser> {
           Padding(
             padding: const EdgeInsets.only(top: 3),
             child: ShowTitle(
-              title: '${historyModels[index].distance}',
+              title: '${historyModels[index].distance} กิโลเมตร',
               textStyle: MyConstant().h3Style(),
             ),
           ),
@@ -323,22 +320,31 @@ class _ShowHistoryByOrderByUserState extends State<ShowHistoryByOrderByUser> {
         ],
       );
 
-  Widget buildTotal(int index) => Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            ShowTitle(
-              title: 'ยอดรวมสินค้า : ',
-              textStyle: MyConstant().h3Stylebold(),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 3),
-              child: ShowTitle(
-                title: '${historyModels[index].total}',
-                textStyle: MyConstant().h3Style(),
+  Widget buildShowTotal(int index) {
+    NumberFormat myFormat = NumberFormat.decimalPattern('en_us');
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ShowTitle(
+                title: 'ยอดรวมสินค้า : ',
+                textStyle: MyConstant().h3Stylebold(),
               ),
-            ),
-          ],
-        ),
-      );
+              Padding(
+                padding: const EdgeInsets.only(top: 2.0),
+                child: ShowTitle(
+                  title: myFormat.format(totalProductTnts[index]),
+                  textStyle: MyConstant().h3Style(),
+                ),
+              ),
+              ShowTitle(title: ' บาท')
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 }

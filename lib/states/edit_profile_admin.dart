@@ -6,6 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
+import 'package:flutter_myappication_1/states/admin.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/utility/my_dialog.dart';
 import 'package:flutter_myappication_1/widgets/show_image.dart';
@@ -26,10 +27,14 @@ class EditProfileAdmin extends StatefulWidget {
 class _EditProfileAdminState extends State<EditProfileAdmin> {
   UserModel? userModel;
   TextEditingController nameController = TextEditingController();
-  TextEditingController nameSellerController = TextEditingController();
+  TextEditingController userBuyerController = TextEditingController();
   TextEditingController seconnameController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  TextEditingController facebookController = TextEditingController();
+  TextEditingController lineController = TextEditingController();
+  TextEditingController instagramController = TextEditingController();
+  TextEditingController twitterController = TextEditingController();
   LatLng? latLng;
   final formKey = GlobalKey<FormState>();
   File? file;
@@ -73,11 +78,15 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
       for (var item in json.decode(value.data)) {
         setState(() {
           userModel = UserModel.fromMap(item);
-          nameSellerController.text = userModel!.nameseller;
+          userBuyerController.text = userModel!.nameseller;
           nameController.text = userModel!.name;
           seconnameController.text = userModel!.seconname;
           addressController.text = userModel!.address;
           phoneController.text = userModel!.phone;
+          facebookController.text = userModel!.facebook;
+          lineController.text = userModel!.line;
+          instagramController.text = userModel!.instargarm;
+          twitterController.text = userModel!.twitter;
         });
       }
     });
@@ -115,8 +124,12 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
                 buildSeconname(constraints),
                 buildAddress(constraints),
                 buildPhone(constraints),
+                buildFacebook(constraints),
+                buildLine(constraints),
+                buildInStagram(constraints),
+                buildTwitter(constraints),
                 buildTitle('แผนที่ :'),
-                buildMap(constraints),
+                // buildMap(constraints),
                 buildButtonEdit(),
               ],
             ),
@@ -160,11 +173,15 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
   Future<Null> editValueToMySQL(String pathAvatar) async {
     print('## pathAvatar ==>> $pathAvatar');
     String apiEditProfile =
-        '${MyConstant.domain}/shopping/editProfileAdminWhereId.php?isAdd=true&id=${userModel!.id}&avatar=$pathAvatar&name=${nameController.text}&address=${addressController.text}&phone=${phoneController.text}&lat=${latLng!.latitude}&lng=${latLng!.longitude}';
+        '${MyConstant.domain}/shopping/editProfileAdminWhereId.php?isAdd=true&id=${userModel!.id}&avatar=$pathAvatar&name=${nameController.text}&seconname=${seconnameController.text}&address=${addressController.text}&phone=${phoneController.text}&facebook=${facebookController.text}&line=${lineController.text}&instargarm=${instagramController.text}&twitter=${twitterController.text}&lat=${latLng!.latitude}&lng=${latLng!.longitude}';
     await Dio().get(apiEditProfile).then(
       (value) {
         Navigator.pop(context);
-        Navigator.pop(context);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AdminServer(),
+            ));
       },
     );
   }
@@ -177,41 +194,41 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
     );
   }
 
-  Row buildMap(BoxConstraints constraints) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: MyConstant.primary),
-          ),
-          margin: EdgeInsets.symmetric(vertical: 16),
-          width: constraints.maxWidth * 0.6,
-          height: constraints.maxWidth * 0.5,
-          child: latLng == null
-              ? ShowProgress()
-              : GoogleMap(
-                  initialCameraPosition: CameraPosition(
-                    target: latLng!,
-                    zoom: 16,
-                  ),
-                  onMapCreated: (controller) {},
-                  markers: <Marker>[
-                    Marker(
-                      markerId: MarkerId('id'),
-                      position: latLng!,
-                      infoWindow: InfoWindow(
-                        title: userModel!.address,
-                        snippet:
-                            'lat = ${latLng!.latitude}, lng = ${latLng!.longitude}',
-                      ),
-                    ),
-                  ].toSet(),
-                ),
-        ),
-      ],
-    );
-  }
+  // Row buildMap(BoxConstraints constraints) {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.center,
+  //     children: [
+  //       Container(
+  //         decoration: BoxDecoration(
+  //           border: Border.all(color: MyConstant.primary),
+  //         ),
+  //         margin: EdgeInsets.symmetric(vertical: 16),
+  //         width: constraints.maxWidth * 0.6,
+  //         height: constraints.maxWidth * 0.5,
+  //         child: latLng == null
+  //             ? ShowProgress()
+  //             : GoogleMap(
+  //                 initialCameraPosition: CameraPosition(
+  //                   target: latLng!,
+  //                   zoom: 16,
+  //                 ),
+  //                 onMapCreated: (controller) {},
+  //                 markers: <Marker>[
+  //                   Marker(
+  //                     markerId: MarkerId('id'),
+  //                     position: latLng!,
+  //                     infoWindow: InfoWindow(
+  //                       title: userModel!.address,
+  //                       snippet:
+  //                           'lat = ${latLng!.latitude}, lng = ${latLng!.longitude}',
+  //                     ),
+  //                   ),
+  //                 ].toSet(),
+  //               ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Future<Null> createAvatar({ImageSource? source}) async {
     try {
@@ -289,14 +306,14 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
           child: TextFormField(
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Please Fill Name';
+                return 'กรุณากรอก ชื่อบัญชี';
               } else {
                 return null;
               }
             },
-            controller: nameSellerController,
+            controller: userBuyerController,
             decoration: InputDecoration(
-              labelText: 'ชื่อ :',
+              labelText: 'ชื่อบัญชี :',
               border: OutlineInputBorder(),
             ),
           ),
@@ -315,7 +332,7 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
           child: TextFormField(
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Please Fill Name';
+                return 'กรุณากรอก ชื่อ';
               } else {
                 return null;
               }
@@ -341,7 +358,7 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
           child: TextFormField(
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Please Fill Name';
+                return 'กรุณากรอก นามสกุล';
               } else {
                 return null;
               }
@@ -367,7 +384,7 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
           child: TextFormField(
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Please Fill Address';
+                return 'กรุณากรอก ที่อยู่';
               } else {
                 return null;
               }
@@ -394,7 +411,7 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
           child: TextFormField(
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Please Fill Phone';
+                return 'กรุณากรอก เบอร์โทรศัพท์';
               } else {
                 return null;
               }
@@ -403,6 +420,110 @@ class _EditProfileAdminState extends State<EditProfileAdmin> {
             controller: phoneController,
             decoration: InputDecoration(
               labelText: 'เบอร์โทรศัพท์ :',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildFacebook(BoxConstraints constraints) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 16),
+          width: constraints.maxWidth * 0.6,
+          child: TextFormField(
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'กรุณากรอก เฟสบุ๊ก';
+              } else {
+                return null;
+              }
+            },
+            controller: facebookController,
+            decoration: InputDecoration(
+              labelText: 'เฟสบุ๊ก :',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildLine(BoxConstraints constraints) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 16),
+          width: constraints.maxWidth * 0.6,
+          child: TextFormField(
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'กรุณากรอก ไลน์ไอดี';
+              } else {
+                return null;
+              }
+            },
+            controller: lineController,
+            decoration: InputDecoration(
+              labelText: 'ไลน์ไอดี :',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildInStagram(BoxConstraints constraints) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 16),
+          width: constraints.maxWidth * 0.6,
+          child: TextFormField(
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'กรุณากรอก อินสตราแกรม';
+              } else {
+                return null;
+              }
+            },
+            controller: instagramController,
+            decoration: InputDecoration(
+              labelText: 'อินสตราแกรม :',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildTwitter(BoxConstraints constraints) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 16),
+          width: constraints.maxWidth * 0.6,
+          child: TextFormField(
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'กรุณากรอก ทิตเตอร์';
+              } else {
+                return null;
+              }
+            },
+            controller: twitterController,
+            decoration: InputDecoration(
+              labelText: 'ทวิตเตอร์ :',
               border: OutlineInputBorder(),
             ),
           ),

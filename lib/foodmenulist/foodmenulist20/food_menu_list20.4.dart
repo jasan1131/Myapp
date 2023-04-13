@@ -17,6 +17,7 @@ import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FoodMenuList20_4 extends StatefulWidget {
   final UserModel userModel;
@@ -393,6 +394,12 @@ class _FoodMenuList20_4State extends State<FoodMenuList20_4> {
                   children: [
                     TextButton(
                       onPressed: () async {
+                        SharedPreferences preferences = await SharedPreferences.getInstance();
+                        String address = preferences.getString('address')!;
+                        String phone = preferences.getString('phone')!;
+                        String facebook = preferences.getString('facebook')!;
+                        String line = preferences.getString('line')!;
+
                         String idSeller = userModel!.id;
                         String nameSeller = userModel!.nameseller;
                         String idProduct = productmodel.id;
@@ -415,8 +422,8 @@ class _FoodMenuList20_4State extends State<FoodMenuList20_4> {
                         String distancestring = myFormat.format(distance);
 
                         int transport = MyAPI().calculateTransport(distance);
-                        print(
-                            'idproduct = $idProduct, nameproduct = $nameProduct, numberproduct = $numberProduct, priceproduct = $priceProduct, amount = $amount, sum = $sum, distance = $distancestring, transport = $transport');
+                        // print(
+                        //     'idproduct = $idProduct, nameproduct = $nameProduct, numberproduct = $numberProduct, priceproduct = $priceProduct, amount = $amount, sum = $sum, distance = $distancestring, transport = $transport');
 
                         SQLiteModel sqLiteModel = SQLiteModel(
                             idSeller: idSeller,
@@ -428,7 +435,12 @@ class _FoodMenuList20_4State extends State<FoodMenuList20_4> {
                             amount: amount,
                             sum: sum,
                             distance: distancestring,
-                            transport: transport.toString());
+                            transport: transport.toString(),
+                            address: address,
+                            phone: phone,
+                            facebook: facebook,
+                            line: line
+                            );
                         await SQLiteHelpper()
                             .insertValueSQLite(sqLiteModel)
                             .then((value) {

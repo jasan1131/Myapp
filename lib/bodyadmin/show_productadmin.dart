@@ -149,112 +149,116 @@ class _ShowProductAdminState extends State<ShowProductAdmin> {
                 ),
               ),
             ),
-            Container(
-              margin: EdgeInsets.all(8.0),
-              // width: constraints.maxWidth * 0.5,
-              // height: constraints.maxWidth * 0.4,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      ShowTitle(
-                        title: 'รายชื่อสินค้า : ',
-                        textStyle: MyConstant().h3Stylebold(),
-                      ),
-                      ShowTitle(
-                        title: productModels[index].nameproduct,
-                        textStyle: MyConstant().h3Style(),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      ShowTitle(
-                        title: 'ราคา : ',
-                        textStyle: MyConstant().h3Stylebold(),
-                      ),
-                      ShowTitle(
-                        title:
-                            '${productModels[index].priceproduct} ${productModels[index].unitprice} / บาท',
-                        textStyle: MyConstant().h3Style(),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      ShowTitle(
-                        title: 'จำนวนสินค้า : ',
-                        textStyle: MyConstant().h3Stylebold(),
-                      ),
-                      ShowTitle(
-                        title:
-                            '${productModels[index].numberproduct} ${productModels[index].unitproduct} / บาท',
-                        textStyle: MyConstant().h3Style(),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ShowTitle(
-                        title: 'รายละเอียดสินค้า : ',
-                        textStyle: MyConstant().h3Stylebold(),
-                      ),
-                      Container(
-                        width: constraints.maxWidth * 0.6,
-                        child: ShowTitle(
-                          title:
-                              cutWord('${productModels[index].detailproduct}'),
-                          textStyle: MyConstant().h3Style(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            // print('## YOu Click Edit');
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => EditProdut(
-                                    productModel: productModels[index],
-                                  ),
-                                )).then((value) => loadValueFromApi());
-                          },
-                          icon: Icon(
-                            Icons.edit_outlined,
-                            size: 36,
-                            color: MyConstant.dark,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            print('## You Click Delete from index = $index');
-                            confirmDialogDelete(productModels[index]);
-                          },
-                          icon: Icon(
-                            Icons.delete_outline,
-                            size: 36,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
+            buildTitles(index, constraints, context),
           ],
         ),
       ),
     );
+  }
+
+  Container buildTitles(int index, BoxConstraints constraints, BuildContext context) {
+    return Container(
+            margin: EdgeInsets.all(8.0),
+            // width: constraints.maxWidth * 0.5,
+            // height: constraints.maxWidth * 0.4,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    ShowTitle(
+                      title: 'รายชื่อสินค้า : ',
+                      textStyle: MyConstant().h3Stylebold(),
+                    ),
+                    ShowTitle(
+                      title: productModels[index].nameproduct,
+                      textStyle: MyConstant().h3Style(),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    ShowTitle(
+                      title: 'ราคา : ',
+                      textStyle: MyConstant().h3Stylebold(),
+                    ),
+                    ShowTitle(
+                      title:
+                          '${productModels[index].priceproduct} ${productModels[index].unitprice} / บาท',
+                      textStyle: MyConstant().h3Style(),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    ShowTitle(
+                      title: 'จำนวนสินค้า : ',
+                      textStyle: MyConstant().h3Stylebold(),
+                    ),
+                    ShowTitle(
+                      title:
+                          '${productModels[index].numberproduct} ${productModels[index].unitproduct} / บาท',
+                      textStyle: MyConstant().h3Style(),
+                    ),
+                  ],
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ShowTitle(
+                      title: 'รายละเอียดสินค้า : ',
+                      textStyle: MyConstant().h3Stylebold(),
+                    ),
+                    Container(
+                      width: constraints.maxWidth * 0.6,
+                      child: ShowTitle(
+                        title:
+                            cutWord('${productModels[index].detailproduct}'),
+                        textStyle: MyConstant().h3Style(),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          // print('## YOu Click Edit');
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditProdut(
+                                  productModel: productModels[index],
+                                ),
+                              )).then((value) => loadValueFromApi());
+                        },
+                        icon: Icon(
+                          Icons.edit_outlined,
+                          size: 36,
+                          color: MyConstant.dark,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          print('## You Click Delete from index = $index');
+                          confirmDialogDelete(productModels[index]);
+                        },
+                        icon: Icon(
+                          Icons.delete_outline,
+                          size: 36,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          );
   }
 
   Future<Null> confirmDialogDelete(ProductModel productModel) async {

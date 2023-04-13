@@ -69,7 +69,7 @@ class _ShowOrderShippedByRiderState extends State<ShowOrderShippedByRider> {
         backgroundColor: MyConstant.primary,
       ),
       body: Container(
-        decoration: MyConstant().gradientRadioBackground(),
+        // decoration: MyConstant().gradientRadioBackground(),
         child: ListView.builder(
           itemCount: userModels.length,
           itemBuilder: (context, index) => Column(
@@ -160,17 +160,17 @@ class _ShowOrderShippedByRiderState extends State<ShowOrderShippedByRider> {
                 ),
               ),
               ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                    Colors.white.withOpacity(0.75),
-                  ),
-                ),
+                // style: ButtonStyle(
+                //   backgroundColor: MaterialStateProperty.all(
+                //     Colors.white.withOpacity(0.75),
+                //   ),
+                // ),
                 onPressed: () {
                   confirmOrder(index);
                 },
                 child: ShowTitle(
                   title: 'ยืนยันการส่งสินค้า',
-                  textStyle: MyConstant().h3BlackStyle(),
+                  textStyle: MyConstant().h3WhiteStyle(),
                 ),
               )
             ],

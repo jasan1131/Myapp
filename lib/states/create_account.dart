@@ -108,11 +108,11 @@ class _CreateAccountState extends State<CreateAccount> {
             controller: userController,
             validator: (value) {
               if (value!.isEmpty) {
-                return 'กรุณากรอก ชื่อผู้ใช้ ด้วย';
+                return 'กรุณากรอก ชื่อบัญชี ด้วย';
               } else {}
             },
             decoration: InputDecoration(
-              hintText: 'ชื่อผู้ใช้ :',
+              hintText: 'ชื่อบัญชี :',
               hintStyle: MyConstant().h3Style(),
               prefixIcon: Icon(
                 Icons.mail,
@@ -350,7 +350,7 @@ class _CreateAccountState extends State<CreateAccount> {
               } else {}
             },
             decoration: InputDecoration(
-              hintText: 'เฟสบุ๊ก :',
+              hintText: 'facebook :',
               hintStyle: MyConstant().h3Style(),
               prefixIcon: Icon(
                 Icons.facebook_outlined,
@@ -388,7 +388,7 @@ class _CreateAccountState extends State<CreateAccount> {
               } else {}
             },
             decoration: InputDecoration(
-              hintText: 'ไลน์ไอดี :',
+              hintText: 'line ID :',
               hintStyle: MyConstant().h3Style(),
               prefixIcon: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 13),
@@ -426,7 +426,7 @@ class _CreateAccountState extends State<CreateAccount> {
         actions: [
           buildCreateNewAccount(),
         ],
-        title: Text('สมัครสมมาชิก'),
+        title: Text('สมัครสมาชิก'),
       ),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(

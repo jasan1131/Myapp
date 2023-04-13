@@ -24,7 +24,7 @@ class _AddWalletState extends State<AddWallet> {
     Icons.credit_card_outlined,
   ];
 
-  List<String> titles = ['ธนาคาร', 'พร้อมเพ', 'เก็บเงินปลายทาง'];
+  List<String> titles = ['ธนาคาร', 'พร้อมเพย์ ', 'เก็บเงินปลายทาง'];
 
   int indexPosition = 0;
 

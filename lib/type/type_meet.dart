@@ -59,27 +59,28 @@ class _TypeMeetState extends State<TypeMeet> {
               builder: (context) => TypeMeetPork(userModel: userModel!),
             ));
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.15,
-            width: MediaQuery.of(context).size.width * 0.75,
-            child: Card(
-              child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ShowTitle(
-                      title: 'เนื้อหมู ',
-                      textStyle: MyConstant().h2BackStyle(),
-                    ),
-                  ],
+      child: Container(
+        width: MediaQuery.of(context).size.width * 1.0,
+        child: Card(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 45),
+                child: ShowTitle(
+                  title: 'เนื้อหมู ',
+                  textStyle: MyConstant().h2BackStyle(),
                 ),
               ),
-            ),
+              Container(
+                child: Image.asset(
+                  MyConstant.pook,
+                  width: 250,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -90,30 +91,31 @@ class _TypeMeetState extends State<TypeMeet> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => TypeMeetChicken(userModel: userModel!),
+              builder: (context) => TypeMeetBeef(userModel: userModel!),
             ));
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.15,
-            width: MediaQuery.of(context).size.width * 0.75,
-            child: Card(
-              child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ShowTitle(
-                      title: 'เนื้อไก่  ',
-                      textStyle: MyConstant().h2BackStyle(),
-                    ),
-                  ],
+      child: Container(
+        width: MediaQuery.of(context).size.width * 1.0,
+        child: Card(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 45),
+                child: ShowTitle(
+                  title: 'เนื้อวัว ',
+                  textStyle: MyConstant().h2BackStyle(),
                 ),
               ),
-            ),
+              Container(
+                child: Image.asset(
+                  MyConstant.beef,
+                  width: 250,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -124,25 +126,31 @@ class _TypeMeetState extends State<TypeMeet> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => TypeMeetBeef(userModel: userModel!),
+              builder: (context) => TypeMeetChicken(userModel: userModel!),
             ));
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.15,
-            width: MediaQuery.of(context).size.width * 0.75,
-            child: Card(
-              child: Center(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 1.0,
+        child: Card(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 45),
                 child: ShowTitle(
-                  title: 'เนื้อวัว  ',
+                  title: 'เนื้อไก่ ',
                   textStyle: MyConstant().h2BackStyle(),
                 ),
               ),
-            ),
+              Container(
+                child: Image.asset(
+                  MyConstant.chicken,
+                  width: 250,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -156,22 +164,28 @@ class _TypeMeetState extends State<TypeMeet> {
               builder: (context) => TypeMeetSeaFood(userModel: userModel!),
             ));
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.15,
-            width: MediaQuery.of(context).size.width * 0.75,
-            child: Card(
-              child: Center(
+     child: Container(
+        width: MediaQuery.of(context).size.width * 1.0,
+        child: Card(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: ShowTitle(
-                  title: 'อาหารทะเล  ',
+                  title: 'อาหารทะเล ',
                   textStyle: MyConstant().h2BackStyle(),
                 ),
               ),
-            ),
+              Container(
+                child: Image.asset(
+                  MyConstant.seafood,
+                  width: 250,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

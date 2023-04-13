@@ -59,6 +59,11 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
             height: MediaQuery.of(context).size.height * 0.15,
             width: MediaQuery.of(context).size.width * 0.75,
             child: Card(
+              color: MyConstant.light,
+              shape: RoundedRectangleBorder(
+                side: BorderSide(color: Colors.orange.shade400, width: 10),
+                borderRadius: BorderRadius.circular(15.0),
+              ),
               child: Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -94,6 +99,11 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
             height: MediaQuery.of(context).size.height * 0.15,
             width: MediaQuery.of(context).size.width * 0.75,
             child: Card(
+              color: MyConstant.light,
+              shape: RoundedRectangleBorder(
+                side: BorderSide(color: Colors.orange.shade400, width: 10),
+                borderRadius: BorderRadius.circular(15.0),
+              ),
               child: Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -118,7 +128,8 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => BuyerSpecialProduct30(userModel: userModel!),
+              builder: (context) =>
+                  BuyerSpecialProduct30(userModel: userModel!),
             ));
       },
       child: Row(
@@ -128,6 +139,11 @@ class _BuyerSpecialProductState extends State<BuyerSpecialProduct> {
             height: MediaQuery.of(context).size.height * 0.15,
             width: MediaQuery.of(context).size.width * 0.75,
             child: Card(
+              color: MyConstant.light,
+              shape: RoundedRectangleBorder(
+                side: BorderSide(color: Colors.orange.shade400, width: 10),
+                borderRadius: BorderRadius.circular(15.0),
+              ),
               child: Center(
                 child: ShowTitle(
                   title: 'ส่วนลด 30%  ',

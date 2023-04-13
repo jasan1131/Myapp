@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/states/edit_profile_buyer.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
+import 'package:flutter_myappication_1/widgets/show_image.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -26,7 +27,6 @@ class _ShowManageBuyerState extends State<ShowManageBuyer> {
     // TODO: implement initState
     super.initState();
     userModel = widget.userModel;
-    refreshUserModel();
   }
 
   Future<Null> refreshUserModel() async {
@@ -66,7 +66,6 @@ class _ShowManageBuyerState extends State<ShowManageBuyer> {
             padding: const EdgeInsets.all(8.0),
             child: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,10 +74,17 @@ class _ShowManageBuyerState extends State<ShowManageBuyer> {
                         title: 'รูปโปรไฟล์ :',
                         textStyle: MyConstant().h2Stylebold(),
                       ),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       Container(
                         width: constraints.maxWidth * 0.6,
                         height: constraints.maxWidth * 0.6,
                         child: CachedNetworkImage(
+                          errorWidget: (context, url, error) =>
+                              ShowImage(path: MyConstant.avatar),
                           imageUrl: '${MyConstant.domain}${userModel!.avatar}',
                           placeholder: (context, url) => ShowProgress(),
                         ),

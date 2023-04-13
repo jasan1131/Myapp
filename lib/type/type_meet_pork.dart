@@ -17,6 +17,7 @@ import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TypeMeetPork extends StatefulWidget {
   final UserModel userModel;
@@ -44,7 +45,7 @@ class _TypeMeetPorkState extends State<TypeMeetPork> {
     super.initState();
     userModel = widget.userModel;
     readApiAllShop();
-    // findLocation();
+    findLocation();
   }
 
   Future<Null> findLocation() async {
@@ -55,7 +56,8 @@ class _TypeMeetPorkState extends State<TypeMeetPork> {
   }
 
   Future<Null> readApiAllShop() async {
-    String urlAPI = '${MyConstant.domain}/shopping/getProductWhereTypePork.php';
+    String urlAPI =
+        '${MyConstant.domain}/shopping/getProductWhereTypePork.php';
     await Dio().get(urlAPI).then(
       (value) {
         if (value.toString() == 'null') {
@@ -94,7 +96,7 @@ class _TypeMeetPorkState extends State<TypeMeetPork> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: MyConstant.primary,
-        title: Text('ประเภทเนื้อหมู'),
+        title: Text('ประเภทเนื้อหมู  '),
         actions: [
           IconButton(
               onPressed: () => Navigator.push(
@@ -387,6 +389,12 @@ class _TypeMeetPorkState extends State<TypeMeetPork> {
                   children: [
                     TextButton(
                       onPressed: () async {
+                        SharedPreferences preferences = await SharedPreferences.getInstance();
+                        String address = preferences.getString('address')!;
+                        String phone = preferences.getString('phone')!;
+                        String facebook = preferences.getString('facebook')!;
+                        String line = preferences.getString('line')!;
+
                         String idSeller = userModel!.id;
                         String nameSeller = userModel!.nameseller;
                         String idProduct = productmodel.id;
@@ -409,8 +417,8 @@ class _TypeMeetPorkState extends State<TypeMeetPork> {
                         String distancestring = myFormat.format(distance);
 
                         int transport = MyAPI().calculateTransport(distance);
-                        print(
-                            'idproduct = $idProduct, nameproduct = $nameProduct, numberproduct = $numberProduct, priceproduct = $priceProduct, amount = $amount, sum = $sum, distance = $distancestring, transport = $transport');
+                        // print(
+                        //     'idproduct = $idProduct, nameproduct = $nameProduct, numberproduct = $numberProduct, priceproduct = $priceProduct, amount = $amount, sum = $sum, distance = $distancestring, transport = $transport');
 
                         SQLiteModel sqLiteModel = SQLiteModel(
                             idSeller: idSeller,
@@ -422,7 +430,12 @@ class _TypeMeetPorkState extends State<TypeMeetPork> {
                             amount: amount,
                             sum: sum,
                             distance: distancestring,
-                            transport: transport.toString());
+                            transport: transport.toString(),
+                            address: address,
+                            phone: phone,
+                            facebook: facebook,
+                            line: line
+                            );
                         await SQLiteHelpper()
                             .insertValueSQLite(sqLiteModel)
                             .then((value) {

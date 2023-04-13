@@ -3,9 +3,11 @@ import 'package:flutter_myappication_1/models/splite_model.dart';
 import 'package:flutter_myappication_1/models/user_models.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/utility/sqlite_helpper.dart';
+import 'package:flutter_myappication_1/widgets/navigator_add_order.dart';
 import 'package:flutter_myappication_1/widgets/show_image.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
+import 'package:intl/intl.dart';
 
 class ShowCart extends StatefulWidget {
   const ShowCart({Key? key}) : super(key: key);
@@ -54,7 +56,7 @@ class _ShowCartState extends State<ShowCart> {
         result = result! + sumInt;
         total = result! + sql;
       });
-      print('total = $total');
+      // print('total = $total');
     }
   }
 
@@ -79,7 +81,7 @@ class _ShowCartState extends State<ShowCart> {
                     ),
                   ],
                 )
-              : buildContent(),
+              : buildContent(),floatingActionButton: NavigatorAddOrder(),
     );
   }
 
@@ -112,6 +114,8 @@ class _ShowCartState extends State<ShowCart> {
       ),
     );
   }
+
+
 
   Widget buildNameShop() {
     return Container(
@@ -147,7 +151,7 @@ class _ShowCartState extends State<ShowCart> {
                     Padding(
                       padding: const EdgeInsets.only(top: 2),
                       child: ShowTitle(
-                        title: '${sqliteModels[0].distance} / กิโลเมตร',
+                        title: '${sqliteModels[0].distance} กิโลเมตร',
                         textStyle: MyConstant().h3Style(),
                       ),
                     ),
@@ -167,7 +171,7 @@ class _ShowCartState extends State<ShowCart> {
                       textStyle: MyConstant().h3Stylebold(),
                     ),
                     ShowTitle(
-                      title: 'ค่าจัดส่ง : ${sqliteModels[0].transport} / บาท',
+                      title: 'ค่าจัดส่ง : ${sqliteModels[0].transport} บาท',
                       textStyle: MyConstant().h3Style(),
                     ),
                   ],
@@ -222,7 +226,7 @@ class _ShowCartState extends State<ShowCart> {
           onPressed: () {
             Navigator.pushNamed(context, MyConstant.rounteAddWallet);
           },
-          child: Text('ยืนยัย'),
+          child: Text('ยืนยัน'),
         ),
         Container(
           margin: EdgeInsets.only(left: 4, right: 8),
@@ -235,7 +239,8 @@ class _ShowCartState extends State<ShowCart> {
     );
   }
 
-  Row buildTotal() {
+  Widget buildTotal() {
+    NumberFormat myFormat = NumberFormat.decimalPattern('en_us');
     return Row(
       children: [
         Row(
@@ -249,9 +254,17 @@ class _ShowCartState extends State<ShowCart> {
             ),
           ],
         ),
-        ShowTitle(
-          title: total == null ? '' : '${total.toString()} / บาท',
-          textStyle: MyConstant().h3Style(),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 2.0),
+              child: ShowTitle(
+                title: total == null ? '' : myFormat.format(total),
+                textStyle: MyConstant().h3Style(),
+              ),
+            ),
+            ShowTitle(title: ' บาท')
+          ],
         ),
       ],
     );

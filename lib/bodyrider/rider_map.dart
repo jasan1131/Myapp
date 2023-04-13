@@ -29,7 +29,7 @@ class _RiderMapsState extends State<RiderMaps> {
   CameraPosition? position;
   GoogleMapController? mapController;
   PolylinePoints polylinePoints = PolylinePoints();
-  String googleAPiKey = "AIzaSyDnIQCYp-e4OoLMf-Q5YrfKNyTo94Lvpfg";
+  String googleAPiKey = "AIzaSyDsZE5oAGc6HPl_dnn3tjC6asUJAZU1BdU";
   Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
   double distance = 0.0;

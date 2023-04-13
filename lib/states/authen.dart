@@ -102,7 +102,7 @@ class _AuthenState extends State<Authen> {
     await Dio().get(apiCheckAuthen).then((value) async {
       print('## value for Api ==>> $value');
       if (value.toString() == 'null') {
-        MyDialog().normalDialog(context, 'ชื่อผู้ใช้ไม่ถูกต้อง !!!',
+        MyDialog().normalDialog(context, 'ชื่อบัญชีไม่ถูกต้อง !!!',
             'ไม่มีชื่อ $user นี้อยู่ในระบบ');
       } else {
         for (var item in json.decode(value.data)) {
@@ -110,8 +110,9 @@ class _AuthenState extends State<Authen> {
           if (password == model.password) {
             // Success Auten
             String type = model.type;
-
-            print('## Auten Success in type ==> $type');
+            String address = model.address;
+            String secondname = model.seconname;
+            print('## Auten Success in type ==> $secondname');
 
             SharedPreferences preferences =
                 await SharedPreferences.getInstance();
@@ -119,6 +120,11 @@ class _AuthenState extends State<Authen> {
             preferences.setString(MyConstant().keyType, type);
             preferences.setString(MyConstant().keyUser, model.user);
             preferences.setString(MyConstant().keyName, model.name);
+            preferences.setString(MyConstant().keySecondName, secondname);
+            preferences.setString(MyConstant().keyAddress, address);
+            preferences.setString(MyConstant().keyPhone, model.phone);
+            preferences.setString(MyConstant().keyFacebook, model.facebook);
+            preferences.setString(MyConstant().keyLine, model.line);
             switch (type) {
               case 'buyer':
                 Navigator.pushNamedAndRemoveUntil(
@@ -155,7 +161,7 @@ class _AuthenState extends State<Authen> {
             controller: userController,
             validator: ((value) {
               if (value!.isEmpty) {
-                return 'กรุณากรอกชื่อผู้ใช้';
+                return 'กรุณากรอกชื่อบัญชี';
               } else {
                 return null;
               }
@@ -163,7 +169,7 @@ class _AuthenState extends State<Authen> {
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white.withOpacity(0.75),
-              hintText: 'ชื่อผู้ใช้ :',
+              hintText: 'ชื่อบัญชี :',
               hintStyle: MyConstant().h3Style(),
               prefixIcon: Icon(
                 Icons.account_circle_outlined,

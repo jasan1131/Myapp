@@ -111,16 +111,21 @@ class _CheckStockProductState extends State<CheckStockProduct> {
           Row(
             children: [
               Expanded(
-                flex: 2,
-                child: ShowTitle(title: 'ชื่อสินค้า'),
+                flex: 3,
+                child: ShowTitle(
+                  title: 'ชื่อสินค้า',
+                  textStyle: MyConstant().h3Stylebold(),
+                ),
               ),
               Expanded(
                 flex: 2,
-                child: ShowTitle(title: 'จำนวนสินค้า'),
+                child: ShowTitle(title: 'จำนวนสินค้า',
+                  textStyle: MyConstant().h3Stylebold(),),
               ),
               Expanded(
-                flex: 1,
-                child: ShowTitle(title: 'ราคาสินค้า'),
+                flex: 2,
+                child: ShowTitle(title: 'ราคาสินค้า',
+                  textStyle: MyConstant().h3Stylebold(),),
               ),
             ],
           ),
@@ -142,21 +147,21 @@ class _CheckStockProductState extends State<CheckStockProduct> {
             Row(
               children: [
                 Expanded(
-                  flex: 2,
+                  flex: 3,
                   child: ShowTitle(title: productModels[index].nameproduct),
                 ),
                 Expanded(
                   flex: 2,
                   child: ShowTitle(
                       title:
-                          '${productModels[index].numberproduct} / ${productModels[index].unitproduct}'),
+                          '${productModels[index].numberproduct} ${productModels[index].unitproduct}'),
                 ),
                 buildDivider(),
                 Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: ShowTitle(
                       title:
-                          '${productModels[index].priceproduct} / ${productModels[index].unitprice}'),
+                          '${productModels[index].priceproduct} บาท / ${productModels[index].unitprice}'),
                 ),
               ],
             ),

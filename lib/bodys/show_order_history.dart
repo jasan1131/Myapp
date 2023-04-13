@@ -6,6 +6,7 @@ import 'package:flutter_myappication_1/models/history_model.dart';
 import 'package:flutter_myappication_1/utility/my_constant.dart';
 import 'package:flutter_myappication_1/widgets/show_progress.dart';
 import 'package:flutter_myappication_1/widgets/show_title.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ShowOrderHistory extends StatefulWidget {
@@ -22,6 +23,7 @@ class _ShowOrderHistoryState extends State<ShowOrderHistory> {
   List<List<String>> listPriceProducts = [];
   List<List<String>> listAmunts = [];
   List<List<String>> listSums = [];
+  List<int> totalProductTnts = [];
   String? idBuyer;
   bool historyData = true;
   bool? havedata;
@@ -58,15 +60,21 @@ class _ShowOrderHistoryState extends State<ShowOrderHistory> {
                 changeArrey(history.priceProduct);
             List<String> historyAmunts = changeArrey(history.amount);
             List<String> historySums = changeArrey(history.sum);
+
+            int total = int.parse(history.transport!);
+            for (var string in historySums) {
+              total = total + int.parse(string.trim());
+              // total = transport + total;
+            }
             setState(() {
               historyData = false;
               havedata = true;
               historyModels.add(history);
-
               listNameProducts.add(historyNameProducts);
               listPriceProducts.add(historyPriceProducts);
               listAmunts.add(historyAmunts);
               listSums.add(historySums);
+              totalProductTnts.add(total);
             });
           }
         }
@@ -239,7 +247,7 @@ class _ShowOrderHistoryState extends State<ShowOrderHistory> {
           Padding(
             padding: const EdgeInsets.only(top: 3),
             child: ShowTitle(
-              title: '${historyModels[index].transport}',
+              title: '${historyModels[index].transport} บาท',
               textStyle: MyConstant().h3Style(),
             ),
           ),
@@ -255,7 +263,7 @@ class _ShowOrderHistoryState extends State<ShowOrderHistory> {
           Padding(
             padding: const EdgeInsets.only(top: 4),
             child: ShowTitle(
-              title: '${historyModels[index].distance}',
+              title: '${historyModels[index].distance} กิโลเมตร',
               textStyle: MyConstant().h3Style(),
             ),
           ),
@@ -312,19 +320,31 @@ class _ShowOrderHistoryState extends State<ShowOrderHistory> {
         ],
       );
 
-  Widget buildTotal(int index) => Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            ShowTitle(
-              title: 'ยอดรวมสินค้า : ',
-              textStyle: MyConstant().h3Stylebold(),
-            ),
-            ShowTitle(
-              title: '${historyModels[index].total} / บาท',
-              textStyle: MyConstant().h3Style(),
-            ),
-          ],
-        ),
-      );
+  Widget buildTotal(int index) {
+    NumberFormat myFormat = NumberFormat.decimalPattern('en_us');
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ShowTitle(
+                title: 'ยอดรวมสินค้า : ',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 2.0),
+                child: ShowTitle(
+                  title: myFormat.format(totalProductTnts[index]),
+                  textStyle: MyConstant().h3Style(),
+                ),
+              ),
+              ShowTitle(title: ' บาท')
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 }

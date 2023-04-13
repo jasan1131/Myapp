@@ -26,13 +26,13 @@ class _ShowAboutBuyerState extends State<ShowAboutBuyer> {
     super.initState();
     orderModel = widget.orderModel;
     listWidgets.add(ShowProfileBuyer(orderModel: orderModel!));
-    listWidgets.add(ShowStatusMoney());
+    listWidgets.add(ShowStatusMoney(orderModel: orderModel!));
   }
 
   BottomNavigationBarItem showProduct() {
     return BottomNavigationBarItem(
       backgroundColor: MyConstant.dark,
-      icon: Icon(Icons.shop_outlined),
+      icon: Icon(Icons.info),
       label: 'ข้อมูลผู้ใช้ ',
     );
   }
@@ -40,7 +40,7 @@ class _ShowAboutBuyerState extends State<ShowAboutBuyer> {
   BottomNavigationBarItem showTypeProduct() {
     return BottomNavigationBarItem(
       backgroundColor: MyConstant.dark,
-      icon: Icon(Icons.account_tree_outlined),
+      icon: Icon(Icons.receipt_long_outlined),
       label: 'สถานะการจ่ายเงิน',
     );
   }

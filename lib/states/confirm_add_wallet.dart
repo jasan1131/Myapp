@@ -28,6 +28,8 @@ class _ConfirmAddWalletState extends State<ConfirmAddWallet> {
   bool load = true;
   String? idbuyer;
   String? namebuyer;
+  String? secondnamebuyer;
+  String pathslip = '';
 
   @override
   void initState() {
@@ -43,6 +45,8 @@ class _ConfirmAddWalletState extends State<ConfirmAddWallet> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     idbuyer = preferences.getString('id');
     namebuyer = preferences.getString('name');
+    secondnamebuyer = preferences.getString('secondname');
+    print(namebuyer);
   }
 
   void finedCurrentTime() {
@@ -109,7 +113,8 @@ class _ConfirmAddWalletState extends State<ConfirmAddWallet> {
     // upload image to sever
 
     String APISaveSlip = '${MyConstant.domain}/shopping/saveSlip.php';
-    String nameSlip = 'slip${Random().nextInt(1000000)}.jpg';
+    int i = Random().nextInt(1000000);
+    String nameSlip = 'slip$i.jpg';
 
     MyDialog().showProgressDialog(context);
 
@@ -120,12 +125,11 @@ class _ConfirmAddWalletState extends State<ConfirmAddWallet> {
       FormData data = FormData.fromMap(map);
       await Dio().post(APISaveSlip, data: data).then((value) async {
         Navigator.pop(context);
-
         // inset value to mySQL
-        var pathslip = '/slip/nameslip';
-        var status = 'โอนเงิน';
+        pathslip = '/shopping/slip/$nameSlip';
+
         var urlAPIInsert =
-            '${MyConstant.domain}/shopping/insertSlip.php?isAdd=true&idbuyer=$idbuyer&namebuyer=$namebuyer&dateDay=$dateDays&dateTime=$dateTimes&pathslip=$pathslip&statuswallet=$status';
+            '${MyConstant.domain}/shopping/insertSlip.php?isAdd=true&idbuyer=$idbuyer&namebuyer=$namebuyer&secondnamebuyer=$secondnamebuyer&dateDay=$dateDays&dateTime=$dateTimes&pathslip=$pathslip&status=โอนเงิน';
         await Dio().get(urlAPIInsert).then(
               (value) => MyDialog(funcAction: success).actionDialog(
                 context,

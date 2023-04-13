@@ -58,7 +58,7 @@ class _PrompayState extends State<Prompay> {
           Row(
             children: [
               Text(
-                'วิธีการชำระเงินแบบการโอนเงินผ่าน พร้อมเพย์',
+                'วิธีการชำระเงินแบบการโอนเงินผ่าน พร้อมเพย์ ',
                 style: TextStyle(color: Colors.red, fontSize: 16),
               ),
             ],
@@ -66,7 +66,7 @@ class _PrompayState extends State<Prompay> {
           Row(
             children: [
               Text(
-                '1. ทำการกดปุ่มคัดลอกเพื่อคัดลอกเบอร์โทรศัพท์',
+                '1. ทำการกดปุ่มคัดลอกเพื่อคัดลอกเบอร์โทรศัพท์ ',
                 style: TextStyle(color: Colors.red, fontSize: 16),
               ),
             ],

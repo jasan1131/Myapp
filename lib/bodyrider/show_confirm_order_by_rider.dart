@@ -87,11 +87,10 @@ class _ShowConfirmOrderByRiderState extends State<ShowConfirmOrderByRider> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('รายการสินค้าที่ลุกค้าสั่ง'),
+        title: Text('รายการสินค้าที่ลูกค้าสั่ง'),
         backgroundColor: MyConstant.primary,
       ),
       body: Container(
-        decoration: MyConstant().gradientRadioBackground(),
         child: ListView.builder(
           itemCount: userModels.length,
           itemBuilder: (context, index) => Column(
@@ -194,17 +193,17 @@ class _ShowConfirmOrderByRiderState extends State<ShowConfirmOrderByRider> {
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.75,
                   child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                          Colors.white.withOpacity(0.75),
-                        ),
-                      ),
+                      // style: ButtonStyle(
+                      //   backgroundColor: MaterialStateProperty.all(
+                      //     Colors.white.withOpacity(0.75),
+                      //   ),
+                      // ),
                       onPressed: () {
                         confirmOrder(index);
                       },
                       child: ShowTitle(
-                        title: 'ยันยันการรับสินค้า',
-                        textStyle: MyConstant().h3BlackStyle(),
+                        title: 'ยืนยันการรับสินค้า',
+                        textStyle: MyConstant().h3WhiteStyle(),
                       )),
                 ),
               ),
@@ -242,7 +241,7 @@ class _ShowConfirmOrderByRiderState extends State<ShowConfirmOrderByRider> {
         markerId: MarkerId('userMarker'),
         position: LatLng(lat1!, lng1!),
         icon: BitmapDescriptor.defaultMarkerWithHue(150.0),
-        infoWindow: InfoWindow(title: 'คุณอยู่ที่นี้'),
+        infoWindow: InfoWindow(title: 'ลูกค้า'),
       );
     }
 

@@ -182,7 +182,7 @@ class _ShowStatusAwaitOrderState extends State<ShowStatusAwaitOrder> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ShowTitle(
-                  title: 'ยอดรวมสินค้า : ${totalProductTnts[index].toString()} / บาท',
+                  title: 'ยอดรวมสินค้า : ${totalProductTnts[index].toString()} บาท',
                   textStyle: MyConstant().h3Style(),
                 )
               ],
@@ -240,7 +240,7 @@ class _ShowStatusAwaitOrderState extends State<ShowStatusAwaitOrder> {
                 textStyle: MyConstant().h3Stylebold(),
               ),
               ShowTitle(
-                title: '${orderModels[index].distance} / กิโลเมต',
+                title: '${orderModels[index].distance} กิโลเมต',
                 textStyle: MyConstant().h3Style(),
               ),
             ],
@@ -252,7 +252,7 @@ class _ShowStatusAwaitOrderState extends State<ShowStatusAwaitOrder> {
                 textStyle: MyConstant().h3Stylebold(),
               ),
               ShowTitle(
-                title: '${orderModels[index].transport} / บาท',
+                title: '${orderModels[index].transport} บาท',
                 textStyle: MyConstant().h3Style(),
               ),
             ],

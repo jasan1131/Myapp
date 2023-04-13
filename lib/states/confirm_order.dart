@@ -116,7 +116,22 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
             ],
           ),
           buildDivider(),
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: ShowTitle(
+              title: 'ข้อมูลการสั่ง :',
+              textStyle: MyConstant().h3Stylebold(),
+            ),
+          ),
           buildNameShop(),
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: ShowTitle(
+              title: 'ข้อมูลผู้สั่ง :',
+              textStyle: MyConstant().h3Stylebold(),
+            ),
+          ),
+          buildBuyer(),
           buildHead(),
           listProductOrder(),
           buildDivider(),
@@ -130,7 +145,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
 
   Widget buildNameShop() {
     return Container(
-      margin: EdgeInsets.only(left: 8.0),
+      margin: EdgeInsets.only(left: 4.0),
       child: Column(
         children: <Widget>[
           Row(
@@ -150,7 +165,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 8, bottom: 8),
+            padding: const EdgeInsets.only(top: 4, bottom: 4),
             child: Row(
               children: <Widget>[
                 Row(
@@ -162,7 +177,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                     Padding(
                       padding: const EdgeInsets.only(top: 2),
                       child: ShowTitle(
-                        title: '${sqliteModels[0].distance} / กิโลเมตร',
+                        title: '${sqliteModels[0].distance} กิโลเมตร',
                         textStyle: MyConstant().h3Style(),
                       ),
                     ),
@@ -172,7 +187,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
+            padding: const EdgeInsets.only(bottom: 4.0),
             child: Row(
               children: <Widget>[
                 Row(
@@ -182,7 +197,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                       textStyle: MyConstant().h3Stylebold(),
                     ),
                     ShowTitle(
-                      title: 'ค่าจัดส่ง : ${sqliteModels[0].transport} / บาท',
+                      title: '${sqliteModels[0].transport} บาท',
                       textStyle: MyConstant().h3Style(),
                     ),
                   ],
@@ -192,6 +207,93 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
           ),
         ],
       ),
+    );
+  }
+
+  Column buildBuyer() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              ShowTitle(
+                title: 'ที่อยู่ : ',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 1),
+                width: MediaQuery.of(context).size.width * 0.75,
+                child: ShowTitle(
+                  title: sqliteModels[0].address,
+                  textStyle: MyConstant().h3Style(),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              ShowTitle(
+                title: 'เบอร์โทรศัพท์ : ',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 3.5),
+                width: MediaQuery.of(context).size.width * 0.75,
+                child: ShowTitle(
+                  title: sqliteModels[0].phone,
+                  textStyle: MyConstant().h3Style(),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              ShowTitle(
+                title: 'เฟสบุ๊ก : ',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 2.5),
+                width: MediaQuery.of(context).size.width * 0.75,
+                child: ShowTitle(
+                  title: sqliteModels[0].facebook,
+                  textStyle: MyConstant().h3Style(),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              ShowTitle(
+                title: 'ไลน์ไอดี : ',
+                textStyle: MyConstant().h3Stylebold(),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 2.5),
+                width: MediaQuery.of(context).size.width * 0.75,
+                child: ShowTitle(
+                  title: sqliteModels[0].line,
+                  textStyle: MyConstant().h3Style(),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -212,7 +314,8 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
     );
   }
 
-  Row buildTotal() {
+  Widget buildTotal() {
+    NumberFormat myFormat = NumberFormat.decimalPattern('en_us');
     return Row(
       children: [
         Row(
@@ -226,9 +329,17 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
             ),
           ],
         ),
-        ShowTitle(
-          title: total == null ? '' : '${total.toString()} / บาท',
-          textStyle: MyConstant().h3Style(),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 2.0),
+              child: ShowTitle(
+                title: total == null ? '' : myFormat.format(total),
+                textStyle: MyConstant().h3Style(),
+              ),
+            ),
+            ShowTitle(title: ' บาท')
+          ],
         ),
       ],
     );
@@ -361,15 +472,12 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String idBuyer = preferences.getString('id')!;
     String nameBuyer = preferences.getString('name')!;
-    // String facebook = userModel!.facebook;
-    // String phone = userModel!.phone;
+
+    // String phone = userModel.phone;
     // String line = userModel!.line;
 
     // print('dateOrdre = $dateOrder, timeOrder = $timeOrder');
     // print('idSeller = $idSeller, nameSeller = $nameSeller, distance = $distance, transport = $transport');
-    // print(
-    //   'idProduct = $idProduct, nameProduct = $nameProduct, idBuyer = $idBuyer, nameBuyer = $nameBuyer, priceProduct = $priceProduct, amount = $amount, sum = $sum, total = $totals',
-    // );
 
     String url =
         '${MyConstant.domain}/shopping/insertOrder.php?isAdd=true&idSeller=$idSeller&nameSeller=$nameSeller&idBuyer=$idBuyer&nameBuyer=$nameBuyer&distance=$distance&transport=$transport&dateOrder=$dateOrder&timeOrder=$timeOrder&nameProduct=$nameProduct&priceProduct=$priceProduct&amount=$amount&sum=$sum&total=$total&status=awaitOrder';

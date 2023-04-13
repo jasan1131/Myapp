@@ -35,7 +35,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   image_picker: ^0.8.5
-  geolocator: ^8.2.0
+  geolocator: ^9.0.2
   flutter_polyline_points: ^1.0.0
   google_maps_flutter: ^2.1.9
   location: ^4.2.0
@@ -46,15 +46,17 @@ dependencies:
   gallery_saver: ^2.3.2
   path_provider: ^2.0.11
   fluttertoast: ^8.0.9
-  firebase_messaging: ^12.0.0
-  firebase_core: ^1.19.2
+  firebase_messaging: ^14.2.0
+  firebase_core: ^2.4.0
   steps_indicator: ^1.2.0
   url_launcher: ^6.1.5
   sqflite: ^2.0.2+1
   carousel_slider: ^4.1.1
   smooth_page_indicator: ^1.0.0+2
-  flutter_launcher_icons: ^0.10.0
-  intl: ^0.17.0
+  flutter_launcher_icons: ^0.11.0
+  intl: ^0.18.0
+  firebase_core_platform_interface: ^4.5.2
+  cloud_firestore_web: ^3.3.5
 
 
 flutter_icons:
